@@ -1,8 +1,15 @@
 export {
   UserSchema,
-  CreateUserSchema,
+  RegisterUserSchema,
+  LoginUserSchema,
   UpdateUserSchema,
-  UserResponseSchema,
+  AuthUserResponseSchema,
 } from "./user.schema";
 
-export type { User, CreateUser, UpdateUser, UserResponse } from "./user.schema";
+export type {
+  User,
+  RegisterUser,
+  LoginUser,
+  UpdateUser,
+  AuthUserResponse,
+} from "./user.schema";

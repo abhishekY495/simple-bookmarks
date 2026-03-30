@@ -1,46 +1,54 @@
 import { z } from "zod";
 
 // user schema
-export const UserSchema = z
-  .object({
-    id: z.uuid(),
-    fullName: z.string().min(1, "Name is required").max(100),
-    email: z.email("Invalid email address"),
-    password: z.string(),
-    createdAt: z.iso.datetime(),
-    updatedAt: z.iso.datetime(),
-  })
-  .meta({
-    id: "User",
-  });
+export const UserSchema = z.object({
+  id: z.uuid(),
+  fullName: z
+    .string({
+      error: "Full name is required",
+    })
+    .min(1, "Full name is required")
+    .max(100),
+  email: z.email({
+    error: "Invalid email address",
+  }),
+  password: z
+    .string({
+      error: "Password is required",
+    })
+    .min(8, "Password must be at least 8 characters"),
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
+});
 export type User = z.infer<typeof UserSchema>;
 
-// create user schema
-export const CreateUserSchema = UserSchema.omit({
+// register user schema
+export const RegisterUserSchema = UserSchema.omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-}).meta({
-  id: "CreateUser",
 });
-export type CreateUser = z.infer<typeof CreateUserSchema>;
+export type RegisterUser = z.infer<typeof RegisterUserSchema>;
+
+// login user schema
+export const LoginUserSchema = UserSchema.omit({
+  id: true,
+  fullName: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export type LoginUser = z.infer<typeof LoginUserSchema>;
 
 // update user schema
-export const UpdateUserSchema = CreateUserSchema.partial().meta({
-  id: "UpdateUser",
-});
+export const UpdateUserSchema = RegisterUserSchema.partial();
 export type UpdateUser = z.infer<typeof UpdateUserSchema>;
 
-// user response schema
-export const UserResponseSchema = UserSchema.omit({
+// auth user response schema
+export const AuthUserResponseSchema = UserSchema.omit({
   password: true,
   createdAt: true,
   updatedAt: true,
-})
-  //   .extend({
-  //     token: z.string(),
-  //   })
-  .meta({
-    id: "UserResponse",
-  });
-export type UserResponse = z.infer<typeof UserResponseSchema>;
+}).extend({
+  accessToken: z.string(),
+});
+export type AuthUserResponse = z.infer<typeof AuthUserResponseSchema>;
