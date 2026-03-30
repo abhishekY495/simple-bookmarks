@@ -8,6 +8,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -41,6 +42,40 @@ export class AuthService {
       const token = await this.jwtService.signAsync(createdUser);
       return {
         ...createdUser,
+        accessToken: token,
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
+  async loginUser(loginUserDto: LoginUserDto) {
+    try {
+      const { email, password } = loginUserDto;
+      // check if user exists
+      const user = await this.prisma.user.findUnique({
+        where: { email },
+      });
+      if (!user) {
+        throw new BadRequestException('Invalid email or password');
+      }
+
+      // compare password
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        throw new BadRequestException('Invalid email or password');
+      }
+
+      // generate jwt token
+      const token = await this.jwtService.signAsync({
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+      });
+      return {
+        ...user,
         accessToken: token,
       };
     } catch (error) {
