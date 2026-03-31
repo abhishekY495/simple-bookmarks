@@ -1,4 +1,4 @@
-import { AuthUserResponseSchema } from '@repo/schemas';
+import { UserResponseSchema } from '@repo/schemas';
 import { createZodDto } from 'nestjs-zod';
 
-export class AuthUserResponseDto extends createZodDto(AuthUserResponseSchema) {}
+export class UserResponseDto extends createZodDto(UserResponseSchema) {}

@@ -3,7 +3,10 @@ export {
   RegisterUserSchema,
   LoginUserSchema,
   UpdateUserSchema,
-  AuthUserResponseSchema,
+  UserResponseSchema,
+  UpdateUserEmailSchema,
+  UpdateUserFullNameSchema,
+  UpdateUserPasswordSchema,
 } from "./user.schema";
 
 export type {
@@ -11,5 +14,8 @@ export type {
   RegisterUser,
   LoginUser,
   UpdateUser,
-  AuthUserResponse,
+  UserResponse,
+  UpdateUserEmail,
+  UpdateUserFullName,
+  UpdateUserPassword,
 } from "./user.schema";
