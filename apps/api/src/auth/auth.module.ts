@@ -10,7 +10,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   imports: [
     UserModule,
     PrismaModule,
-    ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

@@ -1,6 +1,7 @@
 {
   "name": "@repo/schemas",
   "version": "1.0.0",
+  "private": true,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -8,7 +9,7 @@
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "import": "./dist/index.js",
-      "default": "./src/index.ts"
+      "default": "./dist/index.ts"
     }
   },
   "scripts": {
@@ -16,6 +17,6 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "zod": "4.3.6"
+    "zod": "^4.3.6"
   }
 }

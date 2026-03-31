@@ -9,9 +9,11 @@ export const UserSchema = z.object({
     })
     .min(1, "Full name is required")
     .max(100),
-  email: z.email({
-    error: "Invalid email address",
-  }),
+  email: z
+    .email({
+      error: "Invalid email address",
+    })
+    .min(1, "Email is required"),
   password: z
     .string({
       error: "Password is required",
