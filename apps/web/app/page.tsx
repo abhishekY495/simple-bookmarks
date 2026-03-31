@@ -1,19 +1,14 @@
-import { AuthUserResponse } from "@repo/schemas";
+import { Footer } from "@/components/home/footer";
+import { Header } from "@/components/home/header";
 
 export default function Home() {
-  const user: AuthUserResponse = {
-    id: "123",
-    email: "asd",
-    fullName: "asd",
-    accessToken: "asd",
-  };
-
   return (
-    <div>
-      <h1>Simple Bookmarks</h1>
-      <p>{user.id}</p>
-      <p>{user.fullName}</p>
-      <p>{user.email}</p>
+    <div className="force-light flex flex-col min-h-screen bg-background text-foreground">
+      <div className="flex-1">
+        <Header />
+        <div className="p-5 px-8 pb-28 mt-5"></div>
+      </div>
+      <Footer />
     </div>
   );
 }
