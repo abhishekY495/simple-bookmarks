@@ -2,6 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import bcrypt from 'bcrypt';
+import { REFRESH_TOKEN_EXPIRES_IN } from 'src/auth/utils/constants';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class UserService {
@@ -18,6 +20,27 @@ export class UserService {
         },
       });
       return createdUser;
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
+  async createUserSession(userId: string, refreshToken: string) {
+    try {
+      // hash refresh token
+      const refreshTokenHash = createHash('sha256')
+        .update(refreshToken)
+        .digest('hex');
+
+      await this.prisma.userSession.create({
+        data: {
+          userId,
+          refreshTokenHash,
+          expiresAt: new Date(Date.now() + REFRESH_TOKEN_EXPIRES_IN),
+        },
+      });
     } catch (error) {
       throw new BadRequestException(
         error instanceof Error ? error.message : 'Unknown error',

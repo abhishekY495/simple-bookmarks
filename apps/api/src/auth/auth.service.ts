@@ -9,6 +9,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
+import { generateAuthTokens } from './utils/generate-token';
 
 @Injectable()
 export class AuthService {
@@ -38,11 +39,19 @@ export class AuthService {
         password: hash,
       });
 
-      // generate jwt token
-      const token = await this.jwtService.signAsync(createdUser);
+      // generate tokens
+      const { accessToken, refreshToken } = await generateAuthTokens(
+        createdUser,
+        this.jwtService,
+      );
+
+      // create user session
+      await this.userService.createUserSession(createdUser.id, refreshToken);
+
       return {
         ...createdUser,
-        accessToken: token,
+        accessToken,
+        refreshToken,
       };
     } catch (error) {
       throw new BadRequestException(
