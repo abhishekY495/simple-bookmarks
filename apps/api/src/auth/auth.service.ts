@@ -66,6 +66,12 @@ export class AuthService {
       // check if user exists
       const user = await this.prisma.user.findUnique({
         where: { email },
+        select: {
+          id: true,
+          fullName: true,
+          email: true,
+          password: true,
+        },
       });
       if (!user) {
         throw new BadRequestException('Invalid email or password');
@@ -77,15 +83,21 @@ export class AuthService {
         throw new BadRequestException('Invalid email or password');
       }
 
-      // generate jwt token
-      const token = await this.jwtService.signAsync({
-        id: user.id,
-        fullName: user.fullName,
-        email: user.email,
-      });
+      const { accessToken, refreshToken } = await generateAuthTokens(
+        {
+          id: user.id,
+          fullName: user.fullName,
+          email: user.email,
+        },
+        this.jwtService,
+      );
+
+      await this.userService.createUserSession(user.id, refreshToken);
+
       return {
         ...user,
-        accessToken: token,
+        accessToken,
+        refreshToken,
       };
     } catch (error) {
       throw new BadRequestException(
