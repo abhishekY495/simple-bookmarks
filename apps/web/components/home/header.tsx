@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export function Header() {
   return (
-    <nav className="lg:w-[60%] w-full flex items-center lg:justify-between justify-center lg:mx-auto bg-neutral-100/50 backdrop-blur-xl p-3 px-6 border rounded sticky lg:top-5">
+    <nav className="lg:w-[60%] w-full flex items-center lg:justify-between justify-center lg:mx-auto bg-neutral-100 p-3 px-6 border-2 rounded sticky lg:top-5">
       <Link href="/" className="flex items-center gap-1.5">
         <Image src="/app-icon.png" alt="logo" width={28} height={28} />
         <h1 className="lg:text-2xl font-bold text-xl">Simple Bookmarks</h1>
