@@ -7,6 +7,7 @@ export {
   UpdateUserEmailSchema,
   UpdateUserFullNameSchema,
   UpdateUserPasswordSchema,
+  RefreshTokenResponseSchema,
 } from "./user.schema";
 
 export type {
@@ -18,4 +19,5 @@ export type {
   UpdateUserEmail,
   UpdateUserFullName,
   UpdateUserPassword,
+  RefreshTokenResponse,
 } from "./user.schema";

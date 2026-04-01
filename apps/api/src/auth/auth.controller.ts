@@ -1,10 +1,18 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
-import type { Response } from 'express';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
+import type { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { ZodResponse } from 'nestjs-zod';
 import { UserResponseDto } from './dto/auth-user-response.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { RefreshTokenResponseDto } from './dto/refresh-token-response-dto';
 import {
   REFRESH_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_EXPIRES_IN,
@@ -48,5 +56,18 @@ export class AuthController {
       this.setRefreshTokenCookie(res, refreshToken);
     }
     return user;
+  }
+
+  @Post('/refresh-token')
+  @ZodResponse({ type: RefreshTokenResponseDto })
+  async refreshToken(
+    @Req() req: Request & { cookies: { [REFRESH_TOKEN_COOKIE_NAME]: string } },
+  ) {
+    const refreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME];
+    if (!refreshToken) {
+      throw new BadRequestException('Refresh token is required');
+    }
+    const accessToken = await this.authService.refreshToken(refreshToken);
+    return accessToken;
   }
 }

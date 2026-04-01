@@ -90,3 +90,9 @@ export const UpdateUserPasswordSchema = z.object({
     .min(8, "New password must be at least 8 characters"),
 });
 export type UpdateUserPassword = z.infer<typeof UpdateUserPasswordSchema>;
+
+// refresh token response schema
+export const RefreshTokenResponseSchema = z.object({
+  accessToken: z.string(),
+});
+export type RefreshTokenResponse = z.infer<typeof RefreshTokenResponseSchema>;

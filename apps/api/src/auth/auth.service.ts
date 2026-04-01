@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login-user.dto';
 import { generateAuthTokens } from './utils/generate-token';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -99,6 +100,42 @@ export class AuthService {
         accessToken,
         refreshToken,
       };
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
+  async refreshToken(refreshToken: string) {
+    try {
+      // hash refresh token
+      const refreshTokenHash = createHash('sha256')
+        .update(refreshToken)
+        .digest('hex');
+
+      // find user session
+      const userSession = await this.prisma.userSession.findFirst({
+        where: { refreshTokenHash },
+      });
+      if (!userSession) {
+        throw new BadRequestException('Invalid refresh token');
+      }
+
+      // check if session is expired
+      if (userSession.expiresAt < new Date()) {
+        throw new BadRequestException('Refresh token expired');
+      }
+
+      // Get user by id
+      const user = await this.userService.findUserById(userSession.userId);
+      if (!user) {
+        throw new BadRequestException('User not found');
+      }
+
+      // generate new access token
+      const accessToken = await generateAuthTokens(user, this.jwtService);
+      return accessToken;
     } catch (error) {
       throw new BadRequestException(
         error instanceof Error ? error.message : 'Unknown error',
