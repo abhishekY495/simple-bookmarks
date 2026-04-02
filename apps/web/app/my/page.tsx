@@ -3,7 +3,7 @@
 import { useAuthStore } from "@/store/auth-store";
 import { redirect } from "next/navigation";
 
-export default function Account() {
+export default function MyPage() {
   const user = useAuthStore((s) => s.user);
 
   if (!user) {

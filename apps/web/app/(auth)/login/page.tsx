@@ -19,7 +19,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      router.push("/account");
+      router.push("/my");
     }
   }, [user, router]);
 
@@ -27,7 +27,7 @@ export default function Login() {
     mutationFn: login,
     onSuccess: (data) => {
       setAuth(data);
-      router.push("/account");
+      router.push("/my");
     },
     onError: (error) => {
       setValidationError(error.message);
