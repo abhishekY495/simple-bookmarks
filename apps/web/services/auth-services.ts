@@ -23,6 +23,7 @@ export const register = async (
 ): Promise<UserResponse> => {
   const response = await fetch(`${API_URL}/auth/register`, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(registerUser),
     credentials: "include",
   });
@@ -36,6 +37,7 @@ export const register = async (
 export const login = async (loginUser: LoginUser): Promise<UserResponse> => {
   const response = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(loginUser),
     credentials: "include",
   });
