@@ -2,11 +2,11 @@ import { Body, Controller, Put, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import type { AuthenticatedRequest } from 'src/auth/auth.guard';
 import { UserService } from './user.service';
-import { UpdateUserFullNameDto } from './dto/update-fullname.dto';
+import { UserFullNameDto } from './dto/full-name.dto';
 import { ZodResponse } from 'nestjs-zod';
 import { UserResponseDto } from 'src/auth/dto/auth-user-response.dto';
-import { UpdateUserEmailDto } from './dto/update-email.dto';
-import { UpdateUserPasswordDto } from './dto/update-password.dto';
+import { UserEmailDto } from './dto/update-email.dto';
+import { UserPasswordDto } from './dto/update-password.dto';
 
 @Controller('user')
 export class UserController {
@@ -17,12 +17,12 @@ export class UserController {
   @ZodResponse({ type: UserResponseDto })
   async updateFullname(
     @Req() req: AuthenticatedRequest,
-    @Body() updateUserFullname: UpdateUserFullNameDto,
+    @Body() userFullNameDto: UserFullNameDto,
   ) {
     const userId = req.user.id;
     const user = await this.userService.updateFullNameById(
       userId,
-      String(updateUserFullname.fullName),
+      String(userFullNameDto.fullName),
     );
     return user;
   }
@@ -32,12 +32,12 @@ export class UserController {
   @ZodResponse({ type: UserResponseDto })
   async updateEmail(
     @Req() req: AuthenticatedRequest,
-    @Body() updateUserEmail: UpdateUserEmailDto,
+    @Body() userEmailDto: UserEmailDto,
   ) {
     const userId = req.user.id;
     const user = await this.userService.updateEmailById(
       userId,
-      String(updateUserEmail.email),
+      String(userEmailDto.email),
     );
     return user;
   }
@@ -47,13 +47,13 @@ export class UserController {
   @ZodResponse({ type: UserResponseDto })
   async updatePassword(
     @Req() req: AuthenticatedRequest,
-    @Body() UpdateUserPasswordDto: UpdateUserPasswordDto,
+    @Body() userPasswordDto: UserPasswordDto,
   ) {
     const userId = req.user.id;
     const user = await this.userService.updatePasswordById(
       userId,
-      String(UpdateUserPasswordDto.oldPassword),
-      String(UpdateUserPasswordDto.newPassword),
+      String(userPasswordDto.oldPassword),
+      String(userPasswordDto.newPassword),
     );
     return user;
   }

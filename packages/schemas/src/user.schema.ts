@@ -41,10 +41,6 @@ export const LoginUserSchema = UserSchema.omit({
 });
 export type LoginUser = z.infer<typeof LoginUserSchema>;
 
-// update user schema
-export const UpdateUserSchema = RegisterUserSchema.partial();
-export type UpdateUser = z.infer<typeof UpdateUserSchema>;
-
 // auth user response schema
 export const UserResponseSchema = UserSchema.omit({
   password: true,
@@ -56,17 +52,17 @@ export const UserResponseSchema = UserSchema.omit({
 export type UserResponse = z.infer<typeof UserResponseSchema>;
 
 // update email schema
-export const UpdateUserEmailSchema = z.object({
+export const UserEmailSchema = z.object({
   email: z
     .email({
       error: "Invalid email address",
     })
     .min(1, "Email is required"),
 });
-export type UpdateUserEmail = z.infer<typeof UpdateUserEmailSchema>;
+export type UserEmail = z.infer<typeof UserEmailSchema>;
 
 // update fullName schema
-export const UpdateUserFullNameSchema = z.object({
+export const UserFullNameSchema = z.object({
   fullName: z
     .string({
       error: "Full name is required",
@@ -74,10 +70,10 @@ export const UpdateUserFullNameSchema = z.object({
     .min(1, "Full name is required")
     .max(100),
 });
-export type UpdateUserFullName = z.infer<typeof UpdateUserFullNameSchema>;
+export type UserFullName = z.infer<typeof UserFullNameSchema>;
 
 // update password schema
-export const UpdateUserPasswordSchema = z.object({
+export const UserPasswordSchema = z.object({
   oldPassword: z
     .string({
       error: "Old password is required",
@@ -89,7 +85,7 @@ export const UpdateUserPasswordSchema = z.object({
     })
     .min(8, "New password must be at least 8 characters"),
 });
-export type UpdateUserPassword = z.infer<typeof UpdateUserPasswordSchema>;
+export type UserPassword = z.infer<typeof UserPasswordSchema>;
 
 // refresh token response schema
 export const RefreshTokenResponseSchema = z.object({

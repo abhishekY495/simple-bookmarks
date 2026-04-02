@@ -1,13 +1,13 @@
 import { API_URL } from "@/utils/constants";
-import { UpdateUserFullName, UserResponse } from "@repo/schemas";
+import { UserFullName, UserResponse } from "@repo/schemas";
 
-export const updateFullNameService = async (
-  updateUserFullName: UpdateUserFullName,
+export const updateUserFullNameService = async (
+  userFullName: UserFullName,
   token: string,
 ): Promise<UserResponse> => {
   const response = await fetch(`${API_URL}/user/full-name`, {
     method: "PUT",
-    body: JSON.stringify(updateUserFullName),
+    body: JSON.stringify(userFullName),
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,

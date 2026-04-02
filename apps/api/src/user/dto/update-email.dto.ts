@@ -1,4 +1,4 @@
-import { UpdateUserEmailSchema } from '@repo/schemas';
+import { UserEmailSchema } from '@repo/schemas';
 import { createZodDto } from 'nestjs-zod';
 
-export class UpdateUserEmailDto extends createZodDto(UpdateUserEmailSchema) {}
+export class UserEmailDto extends createZodDto(UserEmailSchema) {}

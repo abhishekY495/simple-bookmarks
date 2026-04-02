@@ -1,13 +1,9 @@
 import { useAuthStore } from "@/store/auth-store";
 import { Button } from "../ui/button";
-import {
-  UpdateUserFullName,
-  UpdateUserFullNameSchema,
-  UserResponse,
-} from "@repo/schemas";
+import { UserFullName, UserFullNameSchema, UserResponse } from "@repo/schemas";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { updateFullNameService } from "@/services/user-services";
+import { updateUserFullNameService } from "@/services/user-services";
 
 export function AccountDetails({ user }: { user: UserResponse }) {
   const setAuth = useAuthStore((s) => s.setAuth);
@@ -15,9 +11,9 @@ export function AccountDetails({ user }: { user: UserResponse }) {
   const [fullNameValue, setFullNameValue] = useState(user.fullName);
   const [validationError, setValidationError] = useState("");
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (updateUserFullName: UpdateUserFullName) =>
-      updateFullNameService(updateUserFullName, user.accessToken ?? ""),
+  const { mutate: updateUserFullName, isPending } = useMutation({
+    mutationFn: (userFullName: UserFullName) =>
+      updateUserFullNameService(userFullName, user.accessToken ?? ""),
     onSuccess: (data) => {
       setAuth({ ...user, fullName: data.fullName });
     },
@@ -30,7 +26,7 @@ export function AccountDetails({ user }: { user: UserResponse }) {
     e.preventDefault();
     setValidationError("");
 
-    const result = UpdateUserFullNameSchema.safeParse({
+    const result = UserFullNameSchema.safeParse({
       fullName: fullNameValue,
     });
     if (!result.success) {
@@ -39,7 +35,7 @@ export function AccountDetails({ user }: { user: UserResponse }) {
       return;
     }
 
-    mutate(result.data);
+    updateUserFullName(result.data);
   };
 
   return (
