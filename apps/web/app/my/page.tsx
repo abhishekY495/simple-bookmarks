@@ -11,8 +11,8 @@ export default function MyPage() {
   }
 
   return (
-    <>
-      <h1>Account</h1>
-    </>
+    <div className="w-full">
+      <div className="mt-3 px-1"></div>
+    </div>
   );
 }

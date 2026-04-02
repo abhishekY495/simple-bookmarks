@@ -1,3 +1,4 @@
+import { API_URL } from "@/utils/constants";
 import {
   LoginUser,
   RefreshTokenResponse,
@@ -6,7 +7,7 @@ import {
 } from "@repo/schemas";
 
 export const refreshToken = async (): Promise<RefreshTokenResponse> => {
-  const response = await fetch("/api/auth/refresh-token", {
+  const response = await fetch(`${API_URL}/auth/refresh-token`, {
     method: "POST",
     credentials: "include",
   });
@@ -20,9 +21,10 @@ export const refreshToken = async (): Promise<RefreshTokenResponse> => {
 export const register = async (
   registerUser: RegisterUser,
 ): Promise<UserResponse> => {
-  const response = await fetch("/api/auth/register", {
+  const response = await fetch(`${API_URL}/auth/register`, {
     method: "POST",
     body: JSON.stringify(registerUser),
+    credentials: "include",
   });
   const data = await response.json();
   if (!response.ok) {
@@ -32,9 +34,10 @@ export const register = async (
 };
 
 export const login = async (loginUser: LoginUser): Promise<UserResponse> => {
-  const response = await fetch("/api/auth/login", {
+  const response = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
     body: JSON.stringify(loginUser),
+    credentials: "include",
   });
   const data = await response.json();
   if (!response.ok) {
