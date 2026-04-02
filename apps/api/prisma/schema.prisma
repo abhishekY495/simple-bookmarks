@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider     = "prisma-client"
   output       = "../generated/prisma"
@@ -21,14 +16,87 @@ model User {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   userSessions UserSession[]
+  bookmarks    Bookmark[]
+  tags         Tag[]
+  collections  Collection[]
 }
 
 model UserSession {
   id               String   @id @default(uuid())
   userId           String
-  user             User     @relation(fields: [userId], references: [id])
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   refreshTokenHash String
   expiresAt        DateTime
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Bookmark {
+  id                  String               @id @default(uuid())
+  userId              String
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url                 String
+  domain              String
+  title               String
+  cover               String?
+  isFavorite          Boolean              @default(false)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  tags                BookmarkTag[]
+  collectionBookmarks CollectionBookmark[]
+
+  @@index([userId])
+  @@index([domain])
+}
+
+model Tag {
+  id        String        @id @default(uuid())
+  name      String
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime      @default(now())
+  bookmarks BookmarkTag[]
+
+  @@unique([name, userId]) // prevents duplicate tags per user
+  @@index([userId])
+}
+
+model BookmarkTag {
+  bookmarkId String
+  bookmark   Bookmark @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+
+  tagId String
+  tag   Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([bookmarkId, tagId])
+  @@index([tagId])
+}
+
+model Collection {
+  id                  String               @id @default(uuid())
+  userId              String
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                String
+  isPublic            Boolean              @default(false)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  collectionBookmarks CollectionBookmark[]
+
+  @@unique([name, userId]) // prevents duplicate collection per user
+  @@index([userId])
+}
+
+model CollectionBookmark {
+  collectionId String
+  bookmarkId   String
+
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  bookmark   Bookmark   @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+
+  addedAt DateTime @default(now())
+
+  @@id([collectionId, bookmarkId])
+  @@index([bookmarkId])
 }
