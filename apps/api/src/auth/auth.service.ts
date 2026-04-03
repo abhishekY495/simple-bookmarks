@@ -142,4 +142,30 @@ export class AuthService {
       );
     }
   }
+
+  async logoutUser(refreshToken: string) {
+    try {
+      // hash refresh token
+      const refreshTokenHash = createHash('sha256')
+        .update(refreshToken)
+        .digest('hex');
+
+      // find user session
+      const userSession = await this.prisma.userSession.findFirst({
+        where: { refreshTokenHash },
+      });
+      if (!userSession) {
+        throw new BadRequestException('Invalid refresh token');
+      }
+
+      // delete user session
+      await this.prisma.userSession.delete({
+        where: { id: userSession.id },
+      });
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
 }

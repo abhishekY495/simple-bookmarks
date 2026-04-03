@@ -70,4 +70,17 @@ export class AuthController {
     const accessToken = await this.authService.refreshToken(refreshToken);
     return accessToken;
   }
+
+  @Post('/logout')
+  async logout(
+    @Req() req: Request & { cookies: { [REFRESH_TOKEN_COOKIE_NAME]: string } },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const refreshToken = req.cookies[REFRESH_TOKEN_COOKIE_NAME];
+    if (!refreshToken) {
+      throw new BadRequestException('Refresh token is required');
+    }
+    this.setRefreshTokenCookie(res, '');
+    await this.authService.logoutUser(refreshToken);
+  }
 }
