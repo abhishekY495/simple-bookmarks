@@ -4,17 +4,17 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white">
       <div className="flex-1 p-5 pt-0 px-8 pb-28">
         <Header />
         <div className="flex flex-col gap-4 items-center justify-center mt-28">
-          <h1 className="text-6xl font-black text-center tracking-tight">
+          <h1 className="text-6xl font-black text-center tracking-tight text-black">
             <span>
               Bookmark manager <br /> for{" "}
             </span>
             <span className="text-red-500">the modern web</span>
           </h1>
-          <p className="text-lg text-muted-foreground text-balance w-full max-w-2xl text-center">
+          <p className="text-lg text-neutral-500 dark:text-neutral-500 text-balance w-full max-w-2xl text-center">
             Keep everything you discover — all in one place
           </p>
           <Link
