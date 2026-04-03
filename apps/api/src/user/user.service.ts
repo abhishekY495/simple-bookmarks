@@ -4,6 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import bcrypt from 'bcrypt';
 import { REFRESH_TOKEN_EXPIRES_IN } from 'src/auth/utils/constants';
 import { createHash } from 'crypto';
+import { Prisma } from 'generated/prisma/client';
 
 @Injectable()
 export class UserService {
@@ -80,6 +81,11 @@ export class UserService {
       });
       return user;
     } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new BadRequestException('Email already in use');
+        }
+      }
       throw new BadRequestException(
         error instanceof Error ? error.message : 'Unknown error',
       );
