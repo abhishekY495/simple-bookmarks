@@ -1,11 +1,17 @@
 import { getAvatar } from "@/utils/get-avatar";
-import { UserResponse } from "@repo/schemas";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { useAuthStore } from "@/store/auth-store";
 
-export function Header({ user }: { user: UserResponse }) {
+export function Header() {
+  const user = useAuthStore((s) => s.user);
+
+  if (!user) {
+    redirect("/login");
+  }
+
   const avatar = getAvatar(user.fullName);
   const pathname = usePathname();
 
