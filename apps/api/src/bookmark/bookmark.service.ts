@@ -12,6 +12,25 @@ import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
 export class BookmarkService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getAllBookmarksByUserId(userId: string): Promise<BookmarkResponse[]> {
+    try {
+      const bookmarks = await this.prisma.bookmark.findMany({
+        where: { userId },
+      });
+      if (!bookmarks) {
+        throw new NotFoundException('Bookmarks not found');
+      }
+      return bookmarks.map((bookmark) => ({
+        ...bookmark,
+        createdAt: bookmark.createdAt.toISOString(),
+      }));
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
   async createBookmark(
     userId: string,
     createBookmarkDto: CreateBookmarkDto,
@@ -83,6 +102,28 @@ export class BookmarkService {
       return {
         ...updatedBookmark,
         createdAt: updatedBookmark.createdAt.toISOString(),
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
+  async getBookmarkById(
+    userId: string,
+    bookmarkId: string,
+  ): Promise<BookmarkResponse> {
+    try {
+      const bookmark = await this.prisma.bookmark.findUnique({
+        where: { id: bookmarkId, userId },
+      });
+      if (!bookmark) {
+        throw new NotFoundException('Bookmark not found');
+      }
+      return {
+        ...bookmark,
+        createdAt: bookmark.createdAt.toISOString(),
       };
     } catch (error) {
       throw new BadRequestException(

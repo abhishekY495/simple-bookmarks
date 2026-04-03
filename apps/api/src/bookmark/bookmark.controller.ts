@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   ParseUUIDPipe,
   Post,
@@ -18,6 +19,31 @@ import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
 @Controller('bookmark')
 export class BookmarkController {
   constructor(private readonly bookmarkService: BookmarkService) {}
+
+  @Get('all')
+  @UseGuards(AuthGuard)
+  @ZodResponse({ type: [BookmarkResponseDto] })
+  async getAllBookmarks(@Req() req: AuthenticatedRequest) {
+    const userId = req.user.id;
+    const bookmarks =
+      await this.bookmarkService.getAllBookmarksByUserId(userId);
+    return bookmarks;
+  }
+
+  @Get(':bookmarkId')
+  @UseGuards(AuthGuard)
+  @ZodResponse({ type: BookmarkResponseDto })
+  async getBookmarkById(
+    @Param('bookmarkId', ParseUUIDPipe) bookmarkId: string,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const userId = req.user.id;
+    const bookmark = await this.bookmarkService.getBookmarkById(
+      userId,
+      bookmarkId,
+    );
+    return bookmark;
+  }
 
   @Post('create')
   @UseGuards(AuthGuard)
