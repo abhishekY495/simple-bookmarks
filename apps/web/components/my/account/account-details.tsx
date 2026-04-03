@@ -1,9 +1,9 @@
-import { useAuthStore } from "@/store/auth-store";
-import { Button } from "../ui/button";
-import { UserFullName, UserFullNameSchema, UserResponse } from "@repo/schemas";
 import { useState } from "react";
+import { useAuthStore } from "@/store/auth-store";
+import { UserFullName, UserFullNameSchema, UserResponse } from "@repo/schemas";
 import { useMutation } from "@tanstack/react-query";
 import { updateUserFullNameService } from "@/services/user-services";
+import { Button } from "@/components/ui/button";
 
 export function AccountDetails({ user }: { user: UserResponse }) {
   const setAuth = useAuthStore((s) => s.setAuth);

@@ -47,3 +47,15 @@ export const login = async (loginUser: LoginUser): Promise<UserResponse> => {
   }
   return data;
 };
+
+export const logoutService = async (): Promise<void> => {
+  const response = await fetch(`${API_URL}/auth/logout`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message ?? "Logout failed");
+  }
+};

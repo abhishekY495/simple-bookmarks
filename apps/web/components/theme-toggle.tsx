@@ -10,8 +10,8 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
 
   return (
     <Button
-      variant="outline"
-      className={`px-6 cursor-pointer ${className}`}
+      variant="secondary"
+      className={`rounded cursor-pointer px-6 border border-border ${className}`}
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
       <div className="flex items-center gap-2 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90">
