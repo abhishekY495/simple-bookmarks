@@ -1,10 +1,13 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { RegisterUserDto } from 'src/auth/dto/register-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import bcrypt from 'bcrypt';
 import { REFRESH_TOKEN_EXPIRES_IN } from 'src/auth/utils/constants';
 import { createHash } from 'crypto';
-import { Prisma } from 'generated/prisma/client';
 
 @Injectable()
 export class UserService {
@@ -70,6 +73,13 @@ export class UserService {
 
   async updateEmailById(id: string, email: string) {
     try {
+      // check if email already exists
+      const existingUser = await this.prisma.user.findUnique({
+        where: { email },
+      });
+      if (existingUser) {
+        throw new ConflictException('Email already in use');
+      }
       const user = await this.prisma.user.update({
         where: { id },
         data: { email },
@@ -81,11 +91,6 @@ export class UserService {
       });
       return user;
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new BadRequestException('Email already in use');
-        }
-      }
       throw new BadRequestException(
         error instanceof Error ? error.message : 'Unknown error',
       );
