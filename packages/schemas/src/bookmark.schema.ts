@@ -46,15 +46,17 @@ export const CreateBookmarkSchema = BookmarkSchema.omit({
 export type CreateBookmark = z.infer<typeof CreateBookmarkSchema>;
 
 // update bookmark schema
-export const UpdateBookmarkSchema = BookmarkSchema.omit({
-  id: true,
-  userId: true,
-  url: true,
-  domain: true,
-  parsingStatus: true,
-  createdAt: true,
-  updatedAt: true,
-}).partial();
+export const UpdateBookmarkSchema = z
+  .object({
+    title: z.string().nullable().optional(),
+    cover: z.string().nullable().optional(),
+    parsingStatus: z.enum(BookmarkParsingStatus).optional(),
+    isFavorite: z.boolean().optional(),
+  })
+  .refine((data) => Object.keys(data).length > 0, {
+    message:
+      "At least one field (title, cover, parsingStatus, isFavorite) is required",
+  });
 export type UpdateBookmark = z.infer<typeof UpdateBookmarkSchema>;
 
 // bookmark response schema
