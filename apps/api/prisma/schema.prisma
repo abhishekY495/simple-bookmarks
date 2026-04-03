@@ -33,17 +33,24 @@ model UserSession {
   @@index([userId])
 }
 
+enum BookmarkParsingStatus {
+  processing
+  success
+  failed
+}
+
 model Bookmark {
-  id                  String               @id @default(uuid())
+  id                  String                @id @default(uuid())
   userId              String
-  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
   url                 String
   domain              String
-  title               String
+  title               String?
   cover               String?
-  isFavorite          Boolean              @default(false)
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  parsingStatus       BookmarkParsingStatus @default(processing)
+  isFavorite          Boolean               @default(false)
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
   tags                BookmarkTag[]
   collectionBookmarks CollectionBookmark[]
 
