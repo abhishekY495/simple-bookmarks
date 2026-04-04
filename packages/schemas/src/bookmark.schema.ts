@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  DEFAULT_PAGINATION_TAKE,
+  MAX_PAGINATION_TAKE,
+  MIN_PAGINATION_TAKE,
+} from "./constants";
 
 export const BookmarkParsingStatus = {
   processing: "processing",
@@ -65,3 +70,27 @@ export const BookmarkResponseSchema = BookmarkSchema.omit({
   updatedAt: true,
 });
 export type BookmarkResponse = z.infer<typeof BookmarkResponseSchema>;
+
+// paginated bookmarks query schema
+export const PaginatedBookmarkRequestSchema = z.object({
+  cursor: z.uuid().optional(),
+  take: z.coerce
+    .number()
+    .int()
+    .min(MIN_PAGINATION_TAKE)
+    .max(MAX_PAGINATION_TAKE)
+    .default(DEFAULT_PAGINATION_TAKE),
+});
+export type PaginatedBookmarkRequest = z.infer<
+  typeof PaginatedBookmarkRequestSchema
+>;
+
+// paginated bookmarks response schema
+export const PaginatedBookmarkResponseSchema = z.object({
+  data: z.array(BookmarkResponseSchema),
+  nextCursor: z.string().nullable(),
+  hasNextPage: z.boolean(),
+});
+export type PaginatedBookmarkResponse = z.infer<
+  typeof PaginatedBookmarkResponseSchema
+>;

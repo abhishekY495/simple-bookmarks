@@ -6,15 +6,19 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
 import { BookmarkService } from './bookmark.service';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
 import { BookmarkResponseDto } from './dto/bookmark-response.dto';
+import { PaginatedBookmarkRequestDto } from './dto/paginated-bookmark-request.dto';
 import { AuthGuard, type AuthenticatedRequest } from 'src/auth/auth.guard';
 import { ZodResponse } from 'nestjs-zod';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
+import type { PaginatedBookmarkResponse } from '@repo/schemas';
+import { PaginatedBookmarkResponseDto } from './dto/paginated-bookmark-response.dto';
 
 @Controller('bookmark')
 export class BookmarkController {
@@ -22,12 +26,17 @@ export class BookmarkController {
 
   @Get('all')
   @UseGuards(AuthGuard)
-  @ZodResponse({ type: [BookmarkResponseDto] })
-  async getAllBookmarks(@Req() req: AuthenticatedRequest) {
+  @ZodResponse({ type: PaginatedBookmarkResponseDto })
+  async getAllBookmarks(
+    @Req() req: AuthenticatedRequest,
+    @Query() query: PaginatedBookmarkRequestDto,
+  ): Promise<PaginatedBookmarkResponse> {
     const userId = req.user.id;
-    const bookmarks =
-      await this.bookmarkService.getAllBookmarksByUserId(userId);
-    return bookmarks;
+    return this.bookmarkService.getAllBookmarksByUserId(
+      userId,
+      query.cursor,
+      query.take,
+    );
   }
 
   @Get(':bookmarkId')

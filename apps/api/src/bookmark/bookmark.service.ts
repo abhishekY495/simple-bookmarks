@@ -1,4 +1,7 @@
-import type { BookmarkResponse } from '@repo/schemas';
+import {
+  type BookmarkResponse,
+  type PaginatedBookmarkResponse,
+} from '@repo/schemas';
 import {
   BadRequestException,
   Injectable,
@@ -12,18 +15,34 @@ import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
 export class BookmarkService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getAllBookmarksByUserId(userId: string): Promise<BookmarkResponse[]> {
+  async getAllBookmarksByUserId(
+    userId: string,
+    cursor?: string,
+    take: number = 20,
+  ): Promise<PaginatedBookmarkResponse> {
     try {
-      const bookmarks = await this.prisma.bookmark.findMany({
+      const results = await this.prisma.bookmark.findMany({
         where: { userId },
+        take: take + 1,
+        ...(cursor && {
+          skip: 1,
+          cursor: { id: cursor },
+        }),
+        orderBy: { createdAt: 'asc' },
       });
-      if (!bookmarks) {
-        throw new NotFoundException('Bookmarks not found');
-      }
-      return bookmarks.map((bookmark) => ({
-        ...bookmark,
-        createdAt: bookmark.createdAt.toISOString(),
-      }));
+
+      const hasNextPage = results.length > take;
+      const data = hasNextPage ? results.slice(0, take) : results;
+      const nextCursor = hasNextPage ? data[data.length - 1].id : null;
+
+      return {
+        data: data.map((bookmark) => ({
+          ...bookmark,
+          createdAt: bookmark.createdAt.toISOString(),
+        })),
+        nextCursor,
+        hasNextPage,
+      };
     } catch (error) {
       throw new BadRequestException(
         error instanceof Error ? error.message : 'Unknown error',

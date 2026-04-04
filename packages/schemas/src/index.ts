@@ -28,6 +28,8 @@ export {
   UpdateBookmarkSchema,
   BookmarkResponseSchema,
   BookmarkParsingStatus,
+  PaginatedBookmarkRequestSchema,
+  PaginatedBookmarkResponseSchema,
 } from "./bookmark.schema";
 
 export type {
@@ -35,4 +37,6 @@ export type {
   CreateBookmark,
   UpdateBookmark,
   BookmarkResponse,
+  PaginatedBookmarkRequest,
+  PaginatedBookmarkResponse,
 } from "./bookmark.schema";

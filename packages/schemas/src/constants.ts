@@ -1,0 +1,3 @@
+export const DEFAULT_PAGINATION_TAKE = 20;
+export const MAX_PAGINATION_TAKE = 100;
+export const MIN_PAGINATION_TAKE = 1;
