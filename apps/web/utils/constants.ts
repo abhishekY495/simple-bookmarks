@@ -4,3 +4,5 @@ export const API_URL =
     : process.env.NEXT_PUBLIC_PROD_BACKEND_URL;
 
 export const DICEBEAR_API_URL = "https://api.dicebear.com/9.x";
+
+export const TAKE_VALUE = 21;
