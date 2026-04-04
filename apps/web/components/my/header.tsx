@@ -18,7 +18,7 @@ export function Header() {
   const isAccountPage = pathname === "/my/account";
 
   return (
-    <header className="w-full sticky top-0 flex  justify-between items-center p-3 px-3 pr-4 bg-muted border-b border-x-0 border-2">
+    <header className="w-full sticky top-0 flex justify-between items-center p-3 px-4 bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 border-x-2 border-b-2 rounded-b">
       <Link href="/my" className="flex items-center gap-1.5">
         <Image
           src={isAccountPage ? "/back-icon.png" : "/app-icon.png"}
