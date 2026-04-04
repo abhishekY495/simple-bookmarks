@@ -23,10 +23,10 @@ export function Header() {
         <Image
           src={isAccountPage ? "/back-icon.png" : "/app-icon.png"}
           alt="logo"
-          width={28}
-          height={28}
+          width={26}
+          height={26}
         />
-        <h1 className="lg:text-2xl font-bold text-xl">
+        <h1 className="font-bold text-xl">
           {isAccountPage ? "Settings" : "Simple Bookmarks"}
         </h1>
       </Link>
