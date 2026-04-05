@@ -64,7 +64,7 @@ export default function UnsortedPage() {
   return (
     <>
       <div className="grid gap-5 sm:grid-cols-3 grid-cols-2">
-        {bookmarks.length !== 0 ? (
+        {bookmarks.length === 0 ? (
           <p className="text-muted-foreground py-10 text-center col-span-full">
             Start saving bookmarks
           </p>
