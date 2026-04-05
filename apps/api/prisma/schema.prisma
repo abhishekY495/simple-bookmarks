@@ -40,19 +40,20 @@ enum BookmarkParsingStatus {
 }
 
 model Bookmark {
-  id                  String                @id @default(uuid())
-  userId              String
-  user                User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  url                 String
-  domain              String
-  title               String?
-  cover               String?
-  parsingStatus       BookmarkParsingStatus @default(processing)
-  isFavorite          Boolean               @default(false)
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  tags                BookmarkTag[]
-  collectionBookmarks CollectionBookmark[]
+  id            String                @id @default(uuid())
+  userId        String
+  user          User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url           String
+  domain        String
+  title         String?
+  cover         String?
+  parsingStatus BookmarkParsingStatus @default(processing)
+  isFavorite    Boolean               @default(false)
+  tags          BookmarkTag[]
+  collectionId  String?
+  collection    Collection?           @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
 
   @@index([userId])
   @@index([domain])
@@ -64,6 +65,7 @@ model Tag {
   userId    String
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
   bookmarks BookmarkTag[]
 
   @@unique([name, userId]) // prevents duplicate tags per user
@@ -82,29 +84,16 @@ model BookmarkTag {
 }
 
 model Collection {
-  id                  String               @id @default(uuid())
-  userId              String
-  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                String
-  cover               String?
-  isPublic            Boolean              @default(false)
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  collectionBookmarks CollectionBookmark[]
+  id        String     @id @default(uuid())
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  cover     String?
+  isPublic  Boolean    @default(false)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  bookmarks Bookmark[]
 
   @@unique([name, userId]) // prevents duplicate collection per user
   @@index([userId])
-}
-
-model CollectionBookmark {
-  collectionId String
-  bookmarkId   String
-
-  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-  bookmark   Bookmark   @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
-
-  addedAt DateTime @default(now())
-
-  @@id([collectionId, bookmarkId])
-  @@index([bookmarkId])
 }
