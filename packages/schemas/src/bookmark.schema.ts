@@ -4,6 +4,7 @@ import {
   MAX_PAGINATION_TAKE,
   MIN_PAGINATION_TAKE,
 } from "./constants";
+import { TagResponseSchema } from "./tag.schema";
 
 // Bookmark parsing status schema
 export const BookmarkParsingStatus = {
@@ -43,6 +44,7 @@ export const BookmarkSchema = z.object({
     })
     .default(BookmarkParsingStatus.processing),
   isFavorite: z.boolean().default(false),
+  collectionId: z.uuid().optional().nullable(),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
 });
@@ -83,10 +85,11 @@ export const UpdateBookmarkSchema = z
       .optional(),
     parsingStatus: z.enum(BookmarkParsingStatus).optional(),
     isFavorite: z.boolean().optional(),
+    collectionId: z.uuid().optional().nullable(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message:
-      "At least one field (title, cover, parsingStatus, isFavorite) is required",
+      "At least one field (title, cover, parsingStatus, isFavorite, collectionId) is required",
   });
 export type UpdateBookmark = z.infer<typeof UpdateBookmarkSchema>;
 
@@ -99,6 +102,8 @@ export type UpdateBookmark = z.infer<typeof UpdateBookmarkSchema>;
 export const BookmarkResponseSchema = BookmarkSchema.omit({
   userId: true,
   updatedAt: true,
+}).extend({
+  tags: z.array(TagResponseSchema).default([]),
 });
 export type BookmarkResponse = z.infer<typeof BookmarkResponseSchema>;
 

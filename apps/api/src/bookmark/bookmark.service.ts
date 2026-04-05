@@ -23,6 +23,18 @@ export class BookmarkService {
     try {
       const results = await this.prisma.bookmark.findMany({
         where: { userId },
+        include: {
+          tags: {
+            select: {
+              tag: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
         take: take + 1,
         ...(cursor && {
           skip: 1,
@@ -38,6 +50,7 @@ export class BookmarkService {
       return {
         data: data.map((bookmark) => ({
           ...bookmark,
+          tags: bookmark.tags.map((tag) => tag.tag),
           createdAt: bookmark.createdAt.toISOString(),
         })),
         nextCursor,
@@ -61,19 +74,22 @@ export class BookmarkService {
           ...createBookmarkDto,
           title: null,
         },
-        select: {
-          id: true,
-          url: true,
-          domain: true,
-          title: true,
-          cover: true,
-          parsingStatus: true,
-          isFavorite: true,
-          createdAt: true,
+        include: {
+          tags: {
+            select: {
+              tag: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
         },
       });
       return {
         ...createdBookmark,
+        tags: createdBookmark.tags.map((tag) => tag.tag),
         createdAt: createdBookmark.createdAt.toISOString(),
       };
     } catch (error) {
@@ -105,22 +121,25 @@ export class BookmarkService {
         where: {
           id: bookmarkId,
         },
-        data: updateBookmarkDto,
-        select: {
-          id: true,
-          url: true,
-          domain: true,
-          title: true,
-          cover: true,
-          parsingStatus: true,
-          isFavorite: true,
-          createdAt: true,
+        include: {
+          tags: {
+            select: {
+              tag: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
         },
+        data: updateBookmarkDto,
       });
 
       return {
         ...updatedBookmark,
         createdAt: updatedBookmark.createdAt.toISOString(),
+        tags: updatedBookmark.tags.map((tag) => tag.tag),
       };
     } catch (error) {
       throw new BadRequestException(
@@ -136,6 +155,18 @@ export class BookmarkService {
     try {
       const bookmark = await this.prisma.bookmark.findUnique({
         where: { id: bookmarkId, userId },
+        include: {
+          tags: {
+            select: {
+              tag: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
       });
       if (!bookmark) {
         throw new NotFoundException('Bookmark not found');
@@ -143,6 +174,7 @@ export class BookmarkService {
       return {
         ...bookmark,
         createdAt: bookmark.createdAt.toISOString(),
+        tags: bookmark.tags.map((tag) => tag.tag),
       };
     } catch (error) {
       throw new BadRequestException(
