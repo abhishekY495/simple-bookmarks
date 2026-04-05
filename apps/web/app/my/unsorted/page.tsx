@@ -6,6 +6,7 @@ import { getBookmarksService } from "@/services/bookmark-service";
 import { useAuthStore } from "@/store/auth-store";
 import { QUERY_KEYS, TAKE_VALUE } from "@/utils/constants";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 
@@ -64,17 +65,23 @@ export default function UnsortedPage() {
 
   return (
     <>
-      <div className="grid gap-5 sm:grid-cols-3 grid-cols-2">
-        {bookmarks.length === 0 ? (
-          <p className="text-muted-foreground py-10 text-center col-span-full">
-            Start saving bookmarks
-          </p>
-        ) : (
-          bookmarks.map((bookmark) => (
+      {bookmarks.length > 0 ? (
+        <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
+          {bookmarks.map((bookmark) => (
             <Bookmark key={bookmark.id} bookmark={bookmark} />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      ) : !isLoading ? (
+        <div className="flex flex-col items-center justify-center gap-2 text-center mt-10">
+          <Image
+            src="/empty-inbox-icon.png"
+            alt="No bookmarks"
+            width={62}
+            height={62}
+          />
+          <p className="font-semibold">No bookmarks</p>
+        </div>
+      ) : null}
       <div ref={loadMoreRef} className="flex justify-center py-6 pb-40">
         {isLoading && <Spinner className="size-8 text-muted-foreground" />}
         {!isLoading && isFetchingNextPage && (
