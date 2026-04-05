@@ -64,19 +64,20 @@ export default function UnsortedPage() {
   return (
     <>
       <div className="grid gap-5 sm:grid-cols-3 grid-cols-2">
-        {bookmarks.map((bookmark) => (
-          <Bookmark key={bookmark.id} bookmark={bookmark} />
-        ))}
+        {bookmarks.length !== 0 ? (
+          <p className="text-muted-foreground py-10 text-center col-span-full">
+            Start saving bookmarks
+          </p>
+        ) : (
+          bookmarks.map((bookmark) => (
+            <Bookmark key={bookmark.id} bookmark={bookmark} />
+          ))
+        )}
       </div>
       <div ref={loadMoreRef} className="flex justify-center py-6 pb-40">
         {isLoading && <Spinner className="size-8 text-muted-foreground" />}
         {!isLoading && isFetchingNextPage && (
           <Spinner className="size-8 text-muted-foreground mt-10" />
-        )}
-        {!isLoading && !hasNextPage && bookmarks.length > 0 && (
-          <p className="text-muted-foreground py-10">
-            You have reached the end.
-          </p>
         )}
       </div>
     </>
