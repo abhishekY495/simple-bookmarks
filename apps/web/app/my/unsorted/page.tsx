@@ -4,7 +4,7 @@ import { Bookmark } from "@/components/my/bookmark/bookmark";
 import { Spinner } from "@/components/ui/spinner";
 import { getBookmarksService } from "@/services/bookmark-service";
 import { useAuthStore } from "@/store/auth-store";
-import { TAKE_VALUE } from "@/utils/constants";
+import { QUERY_KEYS, TAKE_VALUE } from "@/utils/constants";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
@@ -19,7 +19,7 @@ export default function UnsortedPage() {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
-      queryKey: ["bookmarks", TAKE_VALUE, user.id],
+      queryKey: QUERY_KEYS.getBookmarks,
       queryFn: ({ pageParam }) =>
         getBookmarksService(user.accessToken ?? "", {
           take: TAKE_VALUE,

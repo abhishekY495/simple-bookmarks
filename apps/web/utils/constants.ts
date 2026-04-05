@@ -26,3 +26,7 @@ export const NAV_ITEMS = [
   { href: "/my/tags", label: "Tags", icon: HashIcon },
   { href: "/my/account", label: "Account", icon: UserIcon },
 ];
+
+export const QUERY_KEYS = {
+  getBookmarks: ["getBookmarks"],
+};
