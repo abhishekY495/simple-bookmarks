@@ -1,14 +1,25 @@
 "use client";
 
-import { Header } from "@/components/my/header";
+import { Sidebar } from "@/components/my/sidebar";
 import { ProtectedRoute } from "@/components/protected-route";
+import { NAV_ITEMS } from "@/utils/constants";
+import { usePathname } from "next/navigation";
 
 export default function MyLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  const headerTitle = NAV_ITEMS.find((item) => item.href === pathname)?.label;
+
   return (
     <ProtectedRoute>
-      <div className="flex flex-col items-center max-w-4xl mx-auto min-h-screen lg:p-2 lg:pt-0 px-0 pt-0">
-        <Header />
-        {children}
+      <div className="max-w-6xl mx-auto flex">
+        <Sidebar />
+        <div className="w-full border-x">
+          <p className="cursor-pointer border-b p-3 px-5 sticky top-0 bg-background font-semibold">
+            {headerTitle}
+          </p>
+          <div className="p-5">{children}</div>
+        </div>
       </div>
     </ProtectedRoute>
   );
