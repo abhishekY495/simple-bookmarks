@@ -5,6 +5,7 @@ import {
   MIN_PAGINATION_TAKE,
 } from "./constants";
 
+// Bookmark parsing status schema
 export const BookmarkParsingStatus = {
   processing: "processing",
   success: "success",
@@ -13,6 +14,12 @@ export const BookmarkParsingStatus = {
 export type BookmarkParsingStatus =
   (typeof BookmarkParsingStatus)[keyof typeof BookmarkParsingStatus];
 
+//
+//
+//
+//
+//
+// Bookmark schema
 export const BookmarkSchema = z.object({
   id: z.uuid(),
   userId: z.uuid(),
@@ -25,7 +32,11 @@ export const BookmarkSchema = z.object({
       message: "Domain must include a TLD",
     }),
   title: z.string().nullable(),
-  cover: z.string().nullable(),
+  cover: z
+    .httpUrl({
+      error: "Invalid URL",
+    })
+    .nullable(),
   parsingStatus: z
     .enum(BookmarkParsingStatus, {
       error: "Invalid parsing status",
@@ -37,6 +48,11 @@ export const BookmarkSchema = z.object({
 });
 export type Bookmark = z.infer<typeof BookmarkSchema>;
 
+//
+//
+//
+//
+//
 // create bookmark schema
 export const CreateBookmarkSchema = BookmarkSchema.omit({
   id: true,
@@ -50,11 +66,21 @@ export const CreateBookmarkSchema = BookmarkSchema.omit({
 });
 export type CreateBookmark = z.infer<typeof CreateBookmarkSchema>;
 
+//
+//
+//
+//
+//
 // update bookmark schema
 export const UpdateBookmarkSchema = z
   .object({
     title: z.string().nullable().optional(),
-    cover: z.string().nullable().optional(),
+    cover: z
+      .httpUrl({
+        error: "Invalid URL",
+      })
+      .nullable()
+      .optional(),
     parsingStatus: z.enum(BookmarkParsingStatus).optional(),
     isFavorite: z.boolean().optional(),
   })
@@ -64,6 +90,11 @@ export const UpdateBookmarkSchema = z
   });
 export type UpdateBookmark = z.infer<typeof UpdateBookmarkSchema>;
 
+//
+//
+//
+//
+//
 // bookmark response schema
 export const BookmarkResponseSchema = BookmarkSchema.omit({
   userId: true,
@@ -71,6 +102,11 @@ export const BookmarkResponseSchema = BookmarkSchema.omit({
 });
 export type BookmarkResponse = z.infer<typeof BookmarkResponseSchema>;
 
+//
+//
+//
+//
+//
 // paginated bookmarks query schema
 export const PaginatedBookmarkRequestSchema = z.object({
   cursor: z.uuid().optional(),
@@ -85,6 +121,11 @@ export type PaginatedBookmarkRequest = z.infer<
   typeof PaginatedBookmarkRequestSchema
 >;
 
+//
+//
+//
+//
+//
 // paginated bookmarks response schema
 export const PaginatedBookmarkResponseSchema = z.object({
   data: z.array(BookmarkResponseSchema),
