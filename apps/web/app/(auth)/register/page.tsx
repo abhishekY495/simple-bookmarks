@@ -20,7 +20,7 @@ export default function Register() {
 
   useEffect(() => {
     if (user) {
-      router.push("/my");
+      router.push("/my/unsorted");
     }
   }, [user, router]);
 
@@ -28,7 +28,7 @@ export default function Register() {
     mutationFn: register,
     onSuccess: (data) => {
       setAuth(data);
-      router.push("/my");
+      router.push("/my/unsorted");
     },
     onError: (error) => {
       setValidationError(error.message);

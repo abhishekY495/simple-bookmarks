@@ -18,7 +18,7 @@ export default function Home() {
             Keep everything you discover — all in one place
           </p>
           <Link
-            href="/my"
+            href="/my/unsorted"
             className="bg-black text-white p-2 px-6 mt-6 rounded hover:bg-neutral-800 shadow-[3px_3px_0_rgba(244,67,54,0.7)] active:translate-y-[3px] active:shadow-none transition-all"
           >
             Get Started
