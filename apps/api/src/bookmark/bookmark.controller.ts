@@ -17,7 +17,6 @@ import { PaginatedBookmarkRequestDto } from './dto/paginated-bookmark-request.dt
 import { AuthGuard, type AuthenticatedRequest } from 'src/auth/auth.guard';
 import { ZodResponse } from 'nestjs-zod';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
-import type { PaginatedBookmarkResponse } from '@repo/schemas';
 import { PaginatedBookmarkResponseDto } from './dto/paginated-bookmark-response.dto';
 
 @Controller('bookmark')
@@ -30,13 +29,15 @@ export class BookmarkController {
   async getAllBookmarks(
     @Req() req: AuthenticatedRequest,
     @Query() query: PaginatedBookmarkRequestDto,
-  ): Promise<PaginatedBookmarkResponse> {
+  ) {
     const userId = req.user.id;
-    return this.bookmarkService.getAllBookmarksByUserId(
+    const bookmarks = await this.bookmarkService.getAllBookmarksByUserId(
       userId,
+      query.type,
       query.cursor,
       query.take,
     );
+    return bookmarks;
   }
 
   @Get(':bookmarkId')

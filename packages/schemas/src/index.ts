@@ -30,6 +30,7 @@ export {
   BookmarkParsingStatus,
   PaginatedBookmarkRequestSchema,
   PaginatedBookmarkResponseSchema,
+  BookmarkType,
 } from "./bookmark.schema";
 
 export type {

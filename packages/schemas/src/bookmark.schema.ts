@@ -112,6 +112,14 @@ export type BookmarkResponse = z.infer<typeof BookmarkResponseSchema>;
 //
 //
 //
+// type schema
+export const BookmarkType = {
+  all: "all",
+  favorites: "favorites",
+  unsorted: "unsorted",
+} as const;
+export type BookmarkType = (typeof BookmarkType)[keyof typeof BookmarkType];
+
 // paginated bookmarks query schema
 export const PaginatedBookmarkRequestSchema = z.object({
   cursor: z.uuid().optional(),
@@ -121,6 +129,15 @@ export const PaginatedBookmarkRequestSchema = z.object({
     .min(MIN_PAGINATION_TAKE)
     .max(MAX_PAGINATION_TAKE)
     .default(DEFAULT_PAGINATION_TAKE),
+  type: z
+    .string({ error: "Type is required" })
+    .refine(
+      (value): value is BookmarkType =>
+        Object.values(BookmarkType).includes(value as BookmarkType),
+      {
+        message: "Type must be - all, favorites or unsorted",
+      },
+    ),
 });
 export type PaginatedBookmarkRequest = z.infer<
   typeof PaginatedBookmarkRequestSchema

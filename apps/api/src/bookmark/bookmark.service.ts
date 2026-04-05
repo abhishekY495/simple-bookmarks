@@ -1,7 +1,4 @@
-import {
-  type BookmarkResponse,
-  type PaginatedBookmarkResponse,
-} from '@repo/schemas';
+import type { BookmarkType } from '@repo/schemas';
 import {
   BadRequestException,
   Injectable,
@@ -17,12 +14,19 @@ export class BookmarkService {
 
   async getAllBookmarksByUserId(
     userId: string,
+    type: BookmarkType,
     cursor?: string,
     take: number = 20,
-  ): Promise<PaginatedBookmarkResponse> {
+  ) {
     try {
+      const where = {
+        userId,
+        ...(type === 'unsorted' && { collectionId: null }),
+        ...(type === 'favorites' && { isFavorite: true }),
+      };
+
       const results = await this.prisma.bookmark.findMany({
-        where: { userId },
+        where,
         include: {
           tags: {
             select: {
@@ -63,10 +67,7 @@ export class BookmarkService {
     }
   }
 
-  async createBookmark(
-    userId: string,
-    createBookmarkDto: CreateBookmarkDto,
-  ): Promise<BookmarkResponse> {
+  async createBookmark(userId: string, createBookmarkDto: CreateBookmarkDto) {
     try {
       const createdBookmark = await this.prisma.bookmark.create({
         data: {
@@ -104,7 +105,7 @@ export class BookmarkService {
     userId: string,
     bookmarkId: string,
     updateBookmarkDto: UpdateBookmarkDto,
-  ): Promise<BookmarkResponse> {
+  ) {
     try {
       const existingBookmark = await this.prisma.bookmark.findFirst({
         where: {
@@ -148,10 +149,7 @@ export class BookmarkService {
     }
   }
 
-  async getBookmarkById(
-    userId: string,
-    bookmarkId: string,
-  ): Promise<BookmarkResponse> {
+  async getBookmarkById(userId: string, bookmarkId: string) {
     try {
       const bookmark = await this.prisma.bookmark.findUnique({
         where: { id: bookmarkId, userId },
