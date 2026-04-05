@@ -11,8 +11,8 @@ export const getBookmarksService = async (
   paginatedBookmarkRequest: PaginatedBookmarkRequest,
 ): Promise<PaginatedBookmarkResponse> => {
   const finalApiUrl = paginatedBookmarkRequest.cursor
-    ? `${API_URL}/bookmark/all?cursor=${paginatedBookmarkRequest.cursor}&take=${paginatedBookmarkRequest.take}`
-    : `${API_URL}/bookmark/all?take=${paginatedBookmarkRequest.take}`;
+    ? `${API_URL}/bookmark/all?type=${paginatedBookmarkRequest.type}&cursor=${paginatedBookmarkRequest.cursor}&take=${paginatedBookmarkRequest.take}`
+    : `${API_URL}/bookmark/all?type=${paginatedBookmarkRequest.type}&take=${paginatedBookmarkRequest.take}`;
 
   const response = await fetch(finalApiUrl, {
     method: "GET",

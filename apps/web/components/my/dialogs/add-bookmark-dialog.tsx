@@ -35,7 +35,9 @@ export function AddBookmarkDialog({
       addBookmarkService(user?.accessToken ?? "", createBookmark),
     onSuccess: () => {
       handleClose();
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.getBookmarks });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.getUnsortedBookmarks,
+      });
     },
     onError: (error) => {
       setValidationError(error.message);

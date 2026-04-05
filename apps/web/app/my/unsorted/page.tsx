@@ -19,10 +19,11 @@ export default function UnsortedPage() {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
-      queryKey: QUERY_KEYS.getBookmarks,
+      queryKey: QUERY_KEYS.getUnsortedBookmarks,
       queryFn: ({ pageParam }) =>
         getBookmarksService(user.accessToken ?? "", {
           take: TAKE_VALUE,
+          type: "unsorted",
           ...(pageParam ? { cursor: pageParam } : {}),
         }),
       initialPageParam: null as string | null,

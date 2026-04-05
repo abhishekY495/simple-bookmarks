@@ -28,5 +28,5 @@ export const NAV_ITEMS = [
 ];
 
 export const QUERY_KEYS = {
-  getBookmarks: ["getBookmarks"],
+  getUnsortedBookmarks: ["getUnsortedBookmarks"],
 };
