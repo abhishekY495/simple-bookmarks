@@ -29,4 +29,6 @@ export const NAV_ITEMS = [
 
 export const QUERY_KEYS = {
   getUnsortedBookmarks: ["getUnsortedBookmarks"],
+  getAllBookmarks: ["getAllBookmarks"],
+  getFavoritesBookmarks: ["getFavoritesBookmarks"],
 };
