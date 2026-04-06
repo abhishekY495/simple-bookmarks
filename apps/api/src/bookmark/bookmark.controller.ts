@@ -118,7 +118,6 @@ export class BookmarkController {
 
   @Delete(':bookmarkId/collection')
   @UseGuards(AuthGuard)
-  @ZodResponse({ type: BookmarkResponseDto })
   async removeBookmarkFromCollection(
     @Param('bookmarkId', ParseUUIDPipe) bookmarkId: string,
     @Req() req: AuthenticatedRequest,

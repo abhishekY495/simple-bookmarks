@@ -110,8 +110,7 @@ export const BookmarkResponseSchema = BookmarkSchema.omit({
       id: z.uuid(),
       name: z.string(),
     })
-    .nullable()
-    .optional(),
+    .nullable(),
 });
 export type BookmarkResponse = z.infer<typeof BookmarkResponseSchema>;
 

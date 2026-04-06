@@ -93,6 +93,12 @@ export class BookmarkService {
               },
             },
           },
+          collection: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
         },
       });
       return {
@@ -140,6 +146,12 @@ export class BookmarkService {
               },
             },
           },
+          collection: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
         },
         data: updateBookmarkDto,
       });
@@ -169,6 +181,12 @@ export class BookmarkService {
                   name: true,
                 },
               },
+            },
+          },
+          collection: {
+            select: {
+              id: true,
+              name: true,
             },
           },
         },
@@ -218,15 +236,34 @@ export class BookmarkService {
       if (!existingBookmark) {
         throw new NotFoundException('Bookmark not found');
       }
-      await this.prisma.bookmark.update({
+      const updatedBookmark = await this.prisma.bookmark.update({
         where: { id: bookmarkId, userId },
         data: {
           collectionId: addBookmarkToCollectionDto.collectionId,
         },
+        include: {
+          tags: {
+            select: {
+              tag: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          collection: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
       });
       return {
-        ...existingBookmark,
-        createdAt: existingBookmark.createdAt.toISOString(),
+        ...updatedBookmark,
+        createdAt: updatedBookmark.createdAt.toISOString(),
+        tags: updatedBookmark.tags.map((tag) => tag.tag),
       };
     } catch (error) {
       throw new BadRequestException(
