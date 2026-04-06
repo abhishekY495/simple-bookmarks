@@ -31,6 +31,7 @@ export {
   PaginatedBookmarkRequestSchema,
   PaginatedBookmarkResponseSchema,
   BookmarkType,
+  AddBookmarkToCollectionSchema,
 } from "./bookmark.schema";
 
 export type {
@@ -40,6 +41,7 @@ export type {
   BookmarkResponse,
   PaginatedBookmarkRequest,
   PaginatedBookmarkResponse,
+  AddBookmarkToCollection,
 } from "./bookmark.schema";
 
 //

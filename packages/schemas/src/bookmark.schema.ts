@@ -157,3 +157,16 @@ export const PaginatedBookmarkResponseSchema = z.object({
 export type PaginatedBookmarkResponse = z.infer<
   typeof PaginatedBookmarkResponseSchema
 >;
+
+//
+//
+//
+//
+//
+// add bookmark to collection schema
+export const AddBookmarkToCollectionSchema = z.object({
+  collectionId: z.uuid({ error: "Collection ID is required" }),
+});
+export type AddBookmarkToCollection = z.infer<
+  typeof AddBookmarkToCollectionSchema
+>;

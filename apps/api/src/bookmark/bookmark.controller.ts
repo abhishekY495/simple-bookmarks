@@ -19,6 +19,7 @@ import { AuthGuard, type AuthenticatedRequest } from 'src/auth/auth.guard';
 import { ZodResponse } from 'nestjs-zod';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
 import { PaginatedBookmarkResponseDto } from './dto/paginated-bookmark-response.dto';
+import { AddBookmarkToCollectionDto } from './dto/add-bookmark-to-collection.dto';
 
 @Controller('bookmark')
 export class BookmarkController {
@@ -96,5 +97,37 @@ export class BookmarkController {
   ) {
     const userId = req.user.id;
     await this.bookmarkService.deleteBookmarkById(userId, bookmarkId);
+  }
+
+  @Post(':bookmarkId/collection')
+  @UseGuards(AuthGuard)
+  @ZodResponse({ type: BookmarkResponseDto })
+  async addBookmarkToCollection(
+    @Param('bookmarkId', ParseUUIDPipe) bookmarkId: string,
+    @Req() req: AuthenticatedRequest,
+    @Body() addBookmarkToCollectionDto: AddBookmarkToCollectionDto,
+  ) {
+    const userId = req.user.id;
+    const bookmark = await this.bookmarkService.addBookmarkToCollection(
+      userId,
+      bookmarkId,
+      addBookmarkToCollectionDto,
+    );
+    return bookmark;
+  }
+
+  @Delete(':bookmarkId/collection')
+  @UseGuards(AuthGuard)
+  @ZodResponse({ type: BookmarkResponseDto })
+  async removeBookmarkFromCollection(
+    @Param('bookmarkId', ParseUUIDPipe) bookmarkId: string,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const userId = req.user.id;
+    const bookmark = await this.bookmarkService.removeBookmarkFromCollection(
+      userId,
+      bookmarkId,
+    );
+    return bookmark;
   }
 }

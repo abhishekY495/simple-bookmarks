@@ -7,6 +7,7 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
+import { AddBookmarkToCollectionDto } from './dto/add-bookmark-to-collection.dto';
 
 @Injectable()
 export class BookmarkService {
@@ -192,6 +193,58 @@ export class BookmarkService {
       await this.prisma.bookmark.delete({
         where: { id: bookmarkId, userId },
       });
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
+  async addBookmarkToCollection(
+    userId: string,
+    bookmarkId: string,
+    addBookmarkToCollectionDto: AddBookmarkToCollectionDto,
+  ) {
+    try {
+      const existingBookmark = await this.prisma.bookmark.findFirst({
+        where: { id: bookmarkId, userId },
+      });
+      if (!existingBookmark) {
+        throw new NotFoundException('Bookmark not found');
+      }
+      await this.prisma.bookmark.update({
+        where: { id: bookmarkId, userId },
+        data: {
+          collectionId: addBookmarkToCollectionDto.collectionId,
+        },
+      });
+      return {
+        ...existingBookmark,
+        createdAt: existingBookmark.createdAt.toISOString(),
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
+  async removeBookmarkFromCollection(userId: string, bookmarkId: string) {
+    try {
+      const existingBookmark = await this.prisma.bookmark.findFirst({
+        where: { id: bookmarkId, userId },
+      });
+      if (!existingBookmark) {
+        throw new NotFoundException('Bookmark not found');
+      }
+      await this.prisma.bookmark.update({
+        where: { id: bookmarkId, userId },
+        data: { collectionId: null },
+      });
+      return {
+        ...existingBookmark,
+        createdAt: existingBookmark.createdAt.toISOString(),
+      };
     } catch (error) {
       throw new BadRequestException(
         error instanceof Error ? error.message : 'Unknown error',
