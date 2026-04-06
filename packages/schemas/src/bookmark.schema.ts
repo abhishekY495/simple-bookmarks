@@ -102,8 +102,16 @@ export type UpdateBookmark = z.infer<typeof UpdateBookmarkSchema>;
 export const BookmarkResponseSchema = BookmarkSchema.omit({
   userId: true,
   updatedAt: true,
+  collectionId: true,
 }).extend({
   tags: z.array(TagResponseSchema).default([]),
+  collection: z
+    .object({
+      id: z.uuid(),
+      name: z.string(),
+    })
+    .nullable()
+    .optional(),
 });
 export type BookmarkResponse = z.infer<typeof BookmarkResponseSchema>;
 

@@ -39,6 +39,12 @@ export class BookmarkService {
               },
             },
           },
+          collection: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
         },
         take: take + 1,
         ...(cursor && {
