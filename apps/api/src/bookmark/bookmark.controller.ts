@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseUUIDPipe,
@@ -85,5 +86,15 @@ export class BookmarkController {
       updateBookmarkDto,
     );
     return bookmark;
+  }
+
+  @Delete(':bookmarkId')
+  @UseGuards(AuthGuard)
+  async deleteBookmarkById(
+    @Param('bookmarkId', ParseUUIDPipe) bookmarkId: string,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const userId = req.user.id;
+    await this.bookmarkService.deleteBookmarkById(userId, bookmarkId);
   }
 }

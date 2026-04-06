@@ -180,4 +180,22 @@ export class BookmarkService {
       );
     }
   }
+
+  async deleteBookmarkById(userId: string, bookmarkId: string) {
+    try {
+      const existingBookmark = await this.prisma.bookmark.findFirst({
+        where: { id: bookmarkId, userId },
+      });
+      if (!existingBookmark) {
+        throw new NotFoundException('Bookmark not found');
+      }
+      await this.prisma.bookmark.delete({
+        where: { id: bookmarkId, userId },
+      });
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
 }
