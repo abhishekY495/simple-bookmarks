@@ -99,7 +99,7 @@ export class BookmarkController {
     await this.bookmarkService.deleteBookmarkById(userId, bookmarkId);
   }
 
-  @Post(':bookmarkId/collection')
+  @Put(':bookmarkId/collection')
   @UseGuards(AuthGuard)
   @ZodResponse({ type: BookmarkResponseDto })
   async addBookmarkToCollection(

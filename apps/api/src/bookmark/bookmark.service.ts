@@ -236,6 +236,21 @@ export class BookmarkService {
       if (!existingBookmark) {
         throw new NotFoundException('Bookmark not found');
       }
+
+      const existingCollection = await this.prisma.collection.findFirst({
+        where: { id: addBookmarkToCollectionDto.collectionId, userId },
+      });
+      if (!existingCollection) {
+        throw new NotFoundException('Collection not found');
+      }
+
+      if (
+        existingBookmark.collectionId ===
+        addBookmarkToCollectionDto.collectionId
+      ) {
+        throw new BadRequestException('Bookmark already in collection');
+      }
+
       const updatedBookmark = await this.prisma.bookmark.update({
         where: { id: bookmarkId, userId },
         data: {
