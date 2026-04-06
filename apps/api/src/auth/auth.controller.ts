@@ -12,7 +12,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { ZodResponse } from 'nestjs-zod';
 import { UserResponseDto } from './dto/auth-user-response.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { RefreshTokenResponseDto } from './dto/refresh-token-response-dto';
+import { RefreshTokenResponseDto } from './dto/refresh-token-response.dto';
 import {
   REFRESH_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_EXPIRES_IN,
