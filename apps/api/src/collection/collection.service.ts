@@ -1,0 +1,160 @@
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateCollectionDto } from './dto/create-collection.dto';
+import { UpdateCollectionDto } from './dto/update-collection.dto';
+
+@Injectable()
+export class CollectionService {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async getAllCollectionsByUserId(
+    userId: string,
+    cursor?: string,
+    take: number = 20,
+  ) {
+    try {
+      const where = { userId };
+
+      const results = await this.prisma.collection.findMany({
+        where,
+        include: {
+          bookmarks: true,
+        },
+        take: take + 1,
+        ...(cursor && {
+          skip: 1,
+          cursor: { id: cursor },
+        }),
+        orderBy: { createdAt: 'desc' },
+      });
+
+      const hasNextPage = results.length > take;
+      const data = hasNextPage ? results.slice(0, take) : results;
+      const nextCursor = hasNextPage ? data[data.length - 1].id : null;
+
+      return {
+        data: data.map((collection) => ({
+          ...collection,
+          bookmarks: collection.bookmarks.map((bookmark) => bookmark.id),
+          createdAt: collection.createdAt.toISOString(),
+        })),
+        nextCursor,
+        hasNextPage,
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
+  async getCollectionById(userId: string, collectionId: string) {
+    try {
+      const collection = await this.prisma.collection.findUnique({
+        where: { id: collectionId, userId },
+        include: {
+          bookmarks: true,
+        },
+      });
+      if (!collection) {
+        throw new NotFoundException('Collection not found');
+      }
+      return {
+        ...collection,
+        createdAt: collection.createdAt.toISOString(),
+        bookmarks: collection.bookmarks.map((bookmark) => bookmark.id),
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
+  async createCollection(
+    userId: string,
+    createCollectionDto: CreateCollectionDto,
+  ) {
+    try {
+      const existingCollection = await this.prisma.collection.findFirst({
+        where: { name: createCollectionDto.name, userId },
+      });
+      if (existingCollection) {
+        throw new BadRequestException('Collection already exists');
+      }
+      const createdCollection = await this.prisma.collection.create({
+        data: { userId, ...createCollectionDto },
+      });
+      return {
+        ...createdCollection,
+        createdAt: createdCollection.createdAt.toISOString(),
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
+  async updateCollectionById(
+    userId: string,
+    collectionId: string,
+    updateCollectionDto: UpdateCollectionDto,
+  ) {
+    try {
+      const existingCollection = await this.prisma.collection.findFirst({
+        where: { id: collectionId, userId },
+      });
+      if (!existingCollection) {
+        throw new NotFoundException('Collection not found');
+      }
+
+      if (existingCollection.name !== updateCollectionDto.name) {
+        const existingCollectionWithSameName =
+          await this.prisma.collection.findFirst({
+            where: { name: updateCollectionDto.name, userId },
+          });
+        if (existingCollectionWithSameName) {
+          throw new BadRequestException(
+            'Collection with same name already exists',
+          );
+        }
+      }
+
+      const updatedCollection = await this.prisma.collection.update({
+        where: { id: collectionId, userId },
+        data: updateCollectionDto,
+      });
+      return {
+        ...updatedCollection,
+        createdAt: updatedCollection.createdAt.toISOString(),
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
+  async deleteCollectionById(userId: string, collectionId: string) {
+    try {
+      const existingCollection = await this.prisma.collection.findFirst({
+        where: { id: collectionId, userId },
+      });
+      if (!existingCollection) {
+        throw new NotFoundException('Collection not found');
+      }
+      await this.prisma.collection.delete({
+        where: { id: collectionId, userId },
+      });
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+}

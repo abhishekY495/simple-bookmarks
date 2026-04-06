@@ -1,0 +1,6 @@
+import { PaginatedCollectionResponseSchema } from '@repo/schemas';
+import { createZodDto } from 'nestjs-zod';
+
+export class PaginatedCollectionResponseDto extends createZodDto(
+  PaginatedCollectionResponseSchema,
+) {}

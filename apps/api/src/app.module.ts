@@ -9,6 +9,7 @@ import { createZodValidationPipe, ZodSerializerInterceptor } from 'nestjs-zod';
 import { ZodError } from 'zod';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { BookmarkModule } from './bookmark/bookmark.module';
+import { CollectionModule } from './collection/collection.module';
 
 const CustomZodValidationPipe = createZodValidationPipe({
   createValidationException: (error: unknown) => {
@@ -27,6 +28,7 @@ const CustomZodValidationPipe = createZodValidationPipe({
     AuthModule,
     UserModule,
     BookmarkModule,
+    CollectionModule,
   ],
   controllers: [AppController],
   providers: [
