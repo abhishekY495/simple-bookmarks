@@ -9,7 +9,7 @@ import {
 export const CollectionSchema = z.object({
   id: z.string(),
   name: z
-    .string()
+    .string({ error: "Name is required" })
     .min(1, "Name is required")
     .max(100, "Name must be less than 100 characters"),
   isPublic: z.boolean().default(false),
@@ -17,7 +17,8 @@ export const CollectionSchema = z.object({
     .httpUrl({
       error: "Invalid URL",
     })
-    .nullable(),
+    .nullable()
+    .optional(),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
 });
@@ -42,11 +43,24 @@ export type CreateCollection = z.infer<typeof CreateCollectionSchema>;
 //
 //
 // update collection schema
-export const UpdateCollectionSchema = CollectionSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const UpdateCollectionSchema = z
+  .object({
+    name: z
+      .string()
+      .min(1, "Name is required")
+      .max(100, "Name must be less than 100 characters")
+      .optional(),
+    cover: z
+      .httpUrl({
+        error: "Invalid URL",
+      })
+      .nullable()
+      .optional(),
+    isPublic: z.boolean().optional(),
+  })
+  .refine((data) => Object.keys(data).length > 0, {
+    message: "At least one field (name, cover, isPublic) is required",
+  });
 export type UpdateCollection = z.infer<typeof UpdateCollectionSchema>;
 
 //
@@ -67,7 +81,7 @@ export type CollectionResponse = z.infer<typeof CollectionResponseSchema>;
 //
 //
 // paginated collections query schema
-export const PaginatedCollectionsRequestSchema = z.object({
+export const PaginatedCollectionRequestSchema = z.object({
   cursor: z.uuid().optional(),
   take: z.coerce
     .number()
@@ -76,8 +90,8 @@ export const PaginatedCollectionsRequestSchema = z.object({
     .max(MAX_PAGINATION_TAKE)
     .default(DEFAULT_PAGINATION_TAKE),
 });
-export type PaginatedCollectionsRequest = z.infer<
-  typeof PaginatedCollectionsRequestSchema
+export type PaginatedCollectionRequest = z.infer<
+  typeof PaginatedCollectionRequestSchema
 >;
 
 //
@@ -86,11 +100,11 @@ export type PaginatedCollectionsRequest = z.infer<
 //
 //
 // paginated collections response schema
-export const PaginatedCollectionsResponseSchema = z.object({
+export const PaginatedCollectionResponseSchema = z.object({
   data: z.array(CollectionResponseSchema),
   nextCursor: z.uuid().nullable(),
   hasNextPage: z.boolean(),
 });
-export type PaginatedCollectionsResponse = z.infer<
-  typeof PaginatedCollectionsResponseSchema
+export type PaginatedCollectionResponse = z.infer<
+  typeof PaginatedCollectionResponseSchema
 >;

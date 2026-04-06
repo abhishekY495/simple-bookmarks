@@ -41,3 +41,23 @@ export type {
   PaginatedBookmarkRequest,
   PaginatedBookmarkResponse,
 } from "./bookmark.schema";
+
+//
+
+export {
+  CollectionSchema,
+  CreateCollectionSchema,
+  UpdateCollectionSchema,
+  CollectionResponseSchema,
+  PaginatedCollectionRequestSchema,
+  PaginatedCollectionResponseSchema,
+} from "./collection.schema";
+
+export type {
+  Collection,
+  CreateCollection,
+  UpdateCollection,
+  CollectionResponse,
+  PaginatedCollectionRequest,
+  PaginatedCollectionResponse,
+} from "./collection.schema";
