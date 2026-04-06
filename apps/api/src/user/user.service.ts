@@ -164,4 +164,35 @@ export class UserService {
       );
     }
   }
+
+  async getCount(userId: string) {
+    try {
+      const allCount = await this.prisma.bookmark.count({
+        where: { userId },
+      });
+      const unsortedCount = await this.prisma.bookmark.count({
+        where: { userId, collectionId: null },
+      });
+      const favoritesCount = await this.prisma.bookmark.count({
+        where: { userId, isFavorite: true },
+      });
+      const collectionsCount = await this.prisma.collection.count({
+        where: { userId },
+      });
+      const tagsCount = await this.prisma.tag.count({
+        where: { userId },
+      });
+      return {
+        all: allCount,
+        unsorted: unsortedCount,
+        favorites: favoritesCount,
+        collections: collectionsCount,
+        tags: tagsCount,
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
 }

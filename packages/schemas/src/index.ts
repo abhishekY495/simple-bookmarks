@@ -7,8 +7,8 @@ export {
   UserFullNameSchema,
   UserPasswordSchema,
   RefreshTokenResponseSchema,
+  CountSchema,
 } from "./user.schema";
-
 export type {
   User,
   RegisterUser,
@@ -18,6 +18,7 @@ export type {
   UserFullName,
   UserPassword,
   RefreshTokenResponse,
+  Count,
 } from "./user.schema";
 
 //
@@ -33,7 +34,6 @@ export {
   BookmarkType,
   AddBookmarkToCollectionSchema,
 } from "./bookmark.schema";
-
 export type {
   Bookmark,
   CreateBookmark,
@@ -54,7 +54,6 @@ export {
   PaginatedCollectionRequestSchema,
   PaginatedCollectionResponseSchema,
 } from "./collection.schema";
-
 export type {
   Collection,
   CreateCollection,

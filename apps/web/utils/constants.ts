@@ -31,4 +31,5 @@ export const QUERY_KEYS = {
   getUnsortedBookmarks: ["getUnsortedBookmarks"],
   getAllBookmarks: ["getAllBookmarks"],
   getFavoritesBookmarks: ["getFavoritesBookmarks"],
+  getCount: ["getCount"],
 };

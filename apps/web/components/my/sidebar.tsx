@@ -5,16 +5,31 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV_ITEMS } from "@/utils/constants";
+import { NAV_ITEMS, QUERY_KEYS } from "@/utils/constants";
 import { Button } from "../ui/button";
 import { PlusIcon } from "lucide-react";
 import { AddBookmarkDialog } from "./dialogs/add-bookmark-dialog";
+import { useQuery } from "@tanstack/react-query";
+import { getCountService } from "@/services/user-services";
+import { useAuthStore } from "@/store/auth-store";
+import { Count } from "@repo/schemas";
+import { Skeleton } from "../ui/skeleton";
 
 export function Sidebar() {
   const pathname = usePathname();
   const [isAddBookmarkDialogOpen, setIsAddBookmarkDialogOpen] = useState(false);
+  const user = useAuthStore((s) => s.user);
 
   const isActive = (href: string) => pathname === href;
+
+  const {
+    data: count,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: QUERY_KEYS.getCount,
+    queryFn: () => getCountService(user?.accessToken ?? ""),
+  });
 
   return (
     <>
@@ -30,15 +45,27 @@ export function Sidebar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex gap-2 items-center p-2",
+                  "flex justify-between gap-2 items-center p-2",
                   isActive(item.href) && "font-semibold bg-muted rounded",
                 )}
               >
-                <item.icon
-                  className="size-4"
-                  strokeWidth={isActive(item.href) ? 2.5 : 2}
-                />
-                {item.label}
+                <div className="flex items-center justify-between gap-2">
+                  <item.icon
+                    className="size-4"
+                    strokeWidth={isActive(item.href) ? 2.5 : 2}
+                  />
+                  {item.label}
+                </div>
+                {isLoading && (
+                  <div className="text-sm text-muted-foreground">
+                    <Skeleton className="size-5 rounded" />
+                  </div>
+                )}
+                {!error && !isLoading && (
+                  <div className="text-sm text-muted-foreground">
+                    {count?.[item.label.toLowerCase() as keyof Count]}
+                  </div>
+                )}
               </Link>
             ))}
           </div>

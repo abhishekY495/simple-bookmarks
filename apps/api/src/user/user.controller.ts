@@ -1,4 +1,4 @@
-import { Body, Controller, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import type { AuthenticatedRequest } from 'src/auth/auth.guard';
 import { UserService } from './user.service';
@@ -7,6 +7,7 @@ import { ZodResponse } from 'nestjs-zod';
 import { UserResponseDto } from 'src/auth/dto/auth-user-response.dto';
 import { UserEmailDto } from './dto/update-email.dto';
 import { UserPasswordDto } from './dto/update-password.dto';
+import { GetCountDto } from './dto/get-count.dto';
 
 @Controller('user')
 export class UserController {
@@ -56,5 +57,14 @@ export class UserController {
       String(userPasswordDto.newPassword),
     );
     return user;
+  }
+
+  @Get('count')
+  @UseGuards(AuthGuard)
+  @ZodResponse({ type: GetCountDto })
+  async getCount(@Req() req: AuthenticatedRequest) {
+    const userId = req.user.id;
+    const count = await this.userService.getCount(userId);
+    return count;
   }
 }

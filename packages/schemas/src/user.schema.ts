@@ -92,3 +92,13 @@ export const RefreshTokenResponseSchema = z.object({
   accessToken: z.string(),
 });
 export type RefreshTokenResponse = z.infer<typeof RefreshTokenResponseSchema>;
+
+// count schema
+export const CountSchema = z.object({
+  all: z.number(),
+  unsorted: z.number(),
+  favorites: z.number(),
+  collections: z.number(),
+  tags: z.number(),
+});
+export type Count = z.infer<typeof CountSchema>;

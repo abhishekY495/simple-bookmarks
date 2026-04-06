@@ -1,5 +1,6 @@
 import { API_URL } from "@/utils/constants";
 import {
+  Count,
   UserEmail,
   UserFullName,
   UserPassword,
@@ -59,6 +60,21 @@ export const updateUserEmailService = async (
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message ?? "Failed to update email");
+  }
+  return data;
+};
+
+export const getCountService = async (accessToken: string): Promise<Count> => {
+  const response = await fetch(`${API_URL}/user/count`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message ?? "Failed to get count");
   }
   return data;
 };
