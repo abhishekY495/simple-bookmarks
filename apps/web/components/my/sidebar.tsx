@@ -38,14 +38,14 @@ export function Sidebar() {
           <Image src="/app-icon.png" alt="logo" width={20} height={20} />
           <p className="font-semibold">Simple Bookmarks</p>
         </div>
-        <div className="flex flex-col justify-between mt-2 pr-4">
+        <div className="flex flex-col justify-between mt-2 pr-3">
           <div className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex justify-between gap-2 items-center p-2",
+                  "flex justify-between gap-2 items-center p-2 px-3",
                   isActive(item.href) && "font-semibold bg-muted rounded",
                 )}
               >
