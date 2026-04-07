@@ -15,6 +15,7 @@ import { CreateBookmark, CreateBookmarkSchema } from "@repo/schemas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/auth-store";
 import { QUERY_KEYS } from "@/utils/constants";
+import { getDomainFromUrl } from "@/utils/get-domain-fom-url";
 
 type AddBookmarkDialogProps = {
   open: boolean;
@@ -38,6 +39,9 @@ export function AddBookmarkDialog({
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.getUnsortedBookmarks,
       });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.getCount,
+      });
     },
     onError: (error) => {
       setValidationError(error.message);
@@ -56,7 +60,7 @@ export function AddBookmarkDialog({
     let domain = "";
 
     try {
-      domain = new URL(url).hostname;
+      domain = getDomainFromUrl(url);
       if (!domain) {
         setValidationError("Invalid URL");
         return;
