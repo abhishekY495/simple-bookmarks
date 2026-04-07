@@ -194,4 +194,31 @@ export class CollectionService {
       );
     }
   }
+
+  async searchCollectionsByQuery(userId: string, query: string) {
+    try {
+      const collections = await this.prisma.collection.findMany({
+        where: { userId, name: { contains: query, mode: 'insensitive' } },
+        include: {
+          _count: {
+            select: {
+              bookmarks: true,
+            },
+          },
+        },
+      });
+      return collections.map((collection) => {
+        const { _count, ...collectionData } = collection;
+        return {
+          ...collectionData,
+          bookmarksCount: _count.bookmarks,
+          createdAt: collection.createdAt.toISOString(),
+        };
+      });
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
 }

@@ -170,4 +170,21 @@ export class TagService {
       );
     }
   }
+
+  async searchTagsByQuery(userId: string, query: string) {
+    try {
+      const tags = await this.prisma.tag.findMany({
+        where: { userId, name: { contains: query, mode: 'insensitive' } },
+      });
+      return tags.map((tag) => ({
+        id: tag.id,
+        name: tag.name,
+        createdAt: tag.createdAt.toISOString(),
+      }));
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
 }

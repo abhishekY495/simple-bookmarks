@@ -19,6 +19,8 @@ import { PaginatedCollectionRequestDto } from './dto/paginated-collection-reques
 import { CollectionResponseDto } from './dto/collection-response.dto';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
+import { SearchCollectionRequestDto } from './dto/search-collection-request.dto';
+import { SearchCollectionResponseDto } from './dto/search-collection-response.dto';
 
 @Controller('collection')
 export class CollectionController {
@@ -36,6 +38,21 @@ export class CollectionController {
       userId,
       query.cursor,
       query.take,
+    );
+    return collections;
+  }
+
+  @Get('search')
+  @UseGuards(AuthGuard)
+  @ZodResponse({ type: SearchCollectionResponseDto })
+  async searchCollections(
+    @Req() req: AuthenticatedRequest,
+    @Query() query: SearchCollectionRequestDto,
+  ) {
+    const userId = req.user.id;
+    const collections = await this.collectionService.searchCollectionsByQuery(
+      userId,
+      query.query,
     );
     return collections;
   }

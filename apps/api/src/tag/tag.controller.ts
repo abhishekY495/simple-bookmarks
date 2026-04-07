@@ -19,6 +19,8 @@ import { PaginatedTagRequestDto } from './dto/paginated-tag-request.dto';
 import { TagResponseDto } from './dto/tag-response.dto';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
+import { SearchTagResponseDto } from './dto/search-tag-response.dto';
+import { SearchTagRequestDto } from './dto/search-tag-request.dto';
 
 @Controller('tag')
 export class TagController {
@@ -37,6 +39,18 @@ export class TagController {
       query.cursor,
       query.take,
     );
+    return tags;
+  }
+
+  @Get('search')
+  @UseGuards(AuthGuard)
+  @ZodResponse({ type: SearchTagResponseDto })
+  async searchTags(
+    @Req() req: AuthenticatedRequest,
+    @Query() query: SearchTagRequestDto,
+  ) {
+    const userId = req.user.id;
+    const tags = await this.tagService.searchTagsByQuery(userId, query.query);
     return tags;
   }
 
