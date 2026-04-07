@@ -32,5 +32,6 @@ export const QUERY_KEYS = {
   getAllBookmarks: ["getAllBookmarks"],
   getFavoritesBookmarks: ["getFavoritesBookmarks"],
   getCollections: ["getCollections"],
+  getTags: ["getTags"],
   getCount: ["getCount"],
 };
