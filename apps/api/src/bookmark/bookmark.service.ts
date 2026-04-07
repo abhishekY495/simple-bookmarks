@@ -107,7 +107,6 @@ export class BookmarkService {
         createdAt: createdBookmark.createdAt.toISOString(),
       };
     } catch (error) {
-      console.error(123123, error);
       throw new BadRequestException(
         error instanceof Error ? error.message : 'Unknown error',
       );
