@@ -20,10 +20,17 @@ import { ZodResponse } from 'nestjs-zod';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
 import { PaginatedBookmarkResponseDto } from './dto/paginated-bookmark-response.dto';
 import { AddBookmarkToCollectionDto } from './dto/add-bookmark-to-collection.dto';
+import { InjectQueue } from '@nestjs/bullmq';
+import { BOOKMARK_PARSING_QUEUE_NAME } from 'src/utils/constants';
+import { Queue } from 'bullmq';
 
 @Controller('bookmark')
 export class BookmarkController {
-  constructor(private readonly bookmarkService: BookmarkService) {}
+  constructor(
+    private readonly bookmarkService: BookmarkService,
+    @InjectQueue(BOOKMARK_PARSING_QUEUE_NAME)
+    private readonly bookmarkParsingQueue: Queue,
+  ) {}
 
   @Get('all')
   @UseGuards(AuthGuard)
@@ -69,6 +76,10 @@ export class BookmarkController {
       userId,
       createBookmarkDto,
     );
+    await this.bookmarkParsingQueue.add(BOOKMARK_PARSING_QUEUE_NAME, {
+      bookmarkId: bookmark.id,
+      url: createBookmarkDto.url,
+    });
     return bookmark;
   }
 

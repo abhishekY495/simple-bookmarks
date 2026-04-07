@@ -10,6 +10,8 @@ import { ZodError } from 'zod';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { BookmarkModule } from './bookmark/bookmark.module';
 import { CollectionModule } from './collection/collection.module';
+import { BullModule } from '@nestjs/bullmq';
+import { DEFFAULT_JOB_OPTIONS } from './utils/constants';
 
 const CustomZodValidationPipe = createZodValidationPipe({
   createValidationException: (error: unknown) => {
@@ -29,6 +31,18 @@ const CustomZodValidationPipe = createZodValidationPipe({
     UserModule,
     BookmarkModule,
     CollectionModule,
+    BullModule.forRoot({
+      connection: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT ?? '6379'),
+        password: process.env.REDIS_PASSWORD,
+      },
+      defaultJobOptions: {
+        attempts: DEFFAULT_JOB_OPTIONS.attempts,
+        removeOnComplete: DEFFAULT_JOB_OPTIONS.removeOnComplete,
+        removeOnFail: DEFFAULT_JOB_OPTIONS.removeOnFail,
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [
