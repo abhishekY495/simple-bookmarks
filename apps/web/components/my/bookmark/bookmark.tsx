@@ -68,12 +68,10 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
             <p className="font-semibold leading-5 text-[15px]">
               {bookmark.title ?? bookmark.domain}
             </p>
-            <div className="flex items-center gap-1.5">
-              <p className="text-sm text-muted-foreground">{bookmark.domain}</p>
-              <span className="text-sm text-muted-foreground">•</span>
-              <p className="text-xs text-muted-foreground">
-                {formatDate(bookmark.createdAt)}
-              </p>
+            <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              <p>{bookmark.domain}</p>
+              <span>•</span>
+              <p className="text-xs">{formatDate(bookmark.createdAt)}</p>
             </div>
           </div>
         </Link>

@@ -66,10 +66,10 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
             <p className="font-semibold leading-5 text-[15px]">
               {collection.name}
             </p>
-            <div className="flex items-center gap-1.5">
-              <p className="text-sm text-muted-foreground">
-                {collection.isPublic ? "Public" : "Private"}
-              </p>
+            <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              <p>{collection.bookmarksCount} bookmarks</p>
+              <span>•</span>
+              <p>{collection.isPublic ? "Public" : "Private"}</p>
             </div>
           </div>
         </Link>
