@@ -58,8 +58,16 @@ export const deleteBookmarkService = async (
       Authorization: `Bearer ${accessToken}`,
     },
   });
+  const responseText = await response.text();
+  let data: { message?: string } | null = null;
 
-  const data = await response.json().catch(() => null);
+  if (responseText) {
+    try {
+      data = JSON.parse(responseText) as { message?: string };
+    } catch {
+      data = null;
+    }
+  }
 
   if (!response.ok) {
     throw new Error(data?.message ?? "Failed to delete bookmark");

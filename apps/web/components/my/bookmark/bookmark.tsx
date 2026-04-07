@@ -19,10 +19,8 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
 
   return (
     <>
-      <Link
+      <div
         key={bookmark.id}
-        href={bookmark.url}
-        target="_blank"
         className="group relative flex flex-col bg-muted border rounded-t"
       >
         <DropdownMenu>
@@ -56,7 +54,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <div>
+        <Link href={bookmark.url} target="_blank">
           <Image
             src={bookmark.cover ?? getDefaultCoverImage(bookmark.url)}
             alt={bookmark.title ?? "cover image"}
@@ -77,8 +75,8 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
               </p>
             </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+      </div>
       <DeleteBookmarkDialog
         bookmarkId={bookmark.id}
         open={isDeleteDialogOpen}
