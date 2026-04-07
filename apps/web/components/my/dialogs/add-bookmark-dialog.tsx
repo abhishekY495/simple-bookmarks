@@ -34,14 +34,16 @@ export function AddBookmarkDialog({
   const { mutate: addBookmark, isPending } = useMutation({
     mutationFn: (createBookmark: CreateBookmark) =>
       addBookmarkService(user?.accessToken ?? "", createBookmark),
-    onSuccess: () => {
+    onSuccess: async () => {
       handleClose();
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.getUnsortedBookmarks,
-      });
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.getCount,
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: QUERY_KEYS.getUnsortedBookmarks,
+        }),
+        queryClient.invalidateQueries({
+          queryKey: QUERY_KEYS.getCount,
+        }),
+      ]);
     },
     onError: (error) => {
       setValidationError(error.message);
