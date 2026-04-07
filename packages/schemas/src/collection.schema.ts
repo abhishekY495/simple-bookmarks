@@ -4,6 +4,7 @@ import {
   MAX_PAGINATION_TAKE,
   MIN_PAGINATION_TAKE,
 } from "./constants";
+import { BookmarkResponseSchema } from "./bookmark.schema";
 
 // Collection schema
 export const CollectionSchema = z.object({
@@ -72,6 +73,11 @@ export type UpdateCollection = z.infer<typeof UpdateCollectionSchema>;
 export const CollectionResponseSchema = CollectionSchema.omit({
   createdAt: true,
   updatedAt: true,
+}).extend({
+  bookmarksCount: z.number().default(0),
+  bookmarks: z
+    .array(BookmarkResponseSchema.omit({ collection: true }))
+    .optional(),
 });
 export type CollectionResponse = z.infer<typeof CollectionResponseSchema>;
 

@@ -22,7 +22,11 @@ export class CollectionService {
       const results = await this.prisma.collection.findMany({
         where,
         include: {
-          bookmarks: true,
+          _count: {
+            select: {
+              bookmarks: true,
+            },
+          },
         },
         take: take + 1,
         ...(cursor && {
@@ -37,11 +41,15 @@ export class CollectionService {
       const nextCursor = hasNextPage ? data[data.length - 1].id : null;
 
       return {
-        data: data.map((collection) => ({
-          ...collection,
-          bookmarks: collection.bookmarks.map((bookmark) => bookmark.id),
-          createdAt: collection.createdAt.toISOString(),
-        })),
+        data: data.map((collection) => {
+          const { _count, ...collectionData } = collection;
+
+          return {
+            ...collectionData,
+            bookmarksCount: _count.bookmarks,
+            createdAt: collection.createdAt.toISOString(),
+          };
+        }),
         nextCursor,
         hasNextPage,
       };
@@ -57,7 +65,20 @@ export class CollectionService {
       const collection = await this.prisma.collection.findUnique({
         where: { id: collectionId, userId },
         include: {
-          bookmarks: true,
+          bookmarks: {
+            include: {
+              tags: {
+                select: {
+                  tag: {
+                    select: {
+                      id: true,
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       });
       if (!collection) {
@@ -65,8 +86,13 @@ export class CollectionService {
       }
       return {
         ...collection,
+        bookmarksCount: collection.bookmarks.length,
         createdAt: collection.createdAt.toISOString(),
-        bookmarks: collection.bookmarks.map((bookmark) => bookmark.id),
+        bookmarks: collection.bookmarks.map((bookmark) => ({
+          ...bookmark,
+          createdAt: bookmark.createdAt.toISOString(),
+          tags: bookmark.tags.map((tag) => tag.tag),
+        })),
       };
     } catch (error) {
       throw new BadRequestException(
@@ -91,6 +117,7 @@ export class CollectionService {
       });
       return {
         ...createdCollection,
+        bookmarksCount: 0,
         createdAt: createdCollection.createdAt.toISOString(),
       };
     } catch (error) {
@@ -128,9 +155,19 @@ export class CollectionService {
       const updatedCollection = await this.prisma.collection.update({
         where: { id: collectionId, userId },
         data: updateCollectionDto,
+        include: {
+          _count: {
+            select: {
+              bookmarks: true,
+            },
+          },
+        },
       });
+      const { _count, ...collectionData } = updatedCollection;
+
       return {
-        ...updatedCollection,
+        ...collectionData,
+        bookmarksCount: _count.bookmarks,
         createdAt: updatedCollection.createdAt.toISOString(),
       };
     } catch (error) {
