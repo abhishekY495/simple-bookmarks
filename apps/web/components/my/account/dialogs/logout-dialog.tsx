@@ -31,7 +31,7 @@ export function LogoutDialog({ open, onOpenChange }: LogoutDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="sm:max-w-md rounded mx-auto"
+        className="sm:max-w-md rounded mx-auto -mt-20 gap-1"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <DialogHeader>
@@ -42,7 +42,7 @@ export function LogoutDialog({ open, onOpenChange }: LogoutDialogProps) {
           Are you sure you want to logout?
         </p>
 
-        <div className="flex justify-end gap-2 mt-2">
+        <div className="flex justify-end gap-2 mt-5">
           <Button
             variant="outline"
             className="rounded cursor-pointer"
