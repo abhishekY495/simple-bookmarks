@@ -62,3 +62,26 @@ export type {
   PaginatedCollectionRequest,
   PaginatedCollectionResponse,
 } from "./collection.schema";
+
+//
+
+export {
+  TagSchema,
+  CreateTagSchema,
+  UpdateTagSchema,
+  TagResponseSchema,
+  PaginatedTagRequestSchema,
+  PaginatedTagResponseSchema,
+  SearchTagsRequestSchema,
+  SearchTagsResponseSchema,
+} from "./tag.schema";
+export type {
+  Tag,
+  CreateTag,
+  UpdateTag,
+  TagResponse,
+  PaginatedTagRequest,
+  PaginatedTagResponse,
+  SearchTagsRequest,
+  SearchTagsResponse,
+} from "./tag.schema";

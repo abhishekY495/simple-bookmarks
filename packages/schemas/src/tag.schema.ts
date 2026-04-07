@@ -10,7 +10,7 @@ export const TagSchema = z.object({
   id: z.uuid(),
   userId: z.uuid(),
   name: z
-    .string()
+    .string({ error: "Name is required" })
     .min(1, "Name is required")
     .max(100, "Name must be less than 100 characters"),
   createdAt: z.iso.datetime(),
@@ -46,6 +46,33 @@ export const UpdateTagSchema = TagSchema.omit({
 });
 export type UpdateTag = z.infer<typeof UpdateTagSchema>;
 
+// bookmark response schema for tag
+const TagBookmarkResponseSchema = z.object({
+  id: z.uuid(),
+  url: z.httpUrl({
+    error: "Invalid URL",
+  }),
+  domain: z
+    .hostname({ error: "Invalid domain" })
+    .refine((value) => value.includes("."), {
+      message: "Domain must include a TLD",
+    }),
+  title: z.string().nullable(),
+  cover: z
+    .httpUrl({
+      error: "Invalid URL",
+    })
+    .nullable(),
+  parsingStatus: z
+    .enum(["processing", "success", "failed"], {
+      error: "Invalid parsing status",
+    })
+    .default("processing"),
+  isFavorite: z.boolean().default(false),
+  createdAt: z.iso.datetime(),
+});
+//
+
 //
 //
 //
@@ -56,6 +83,9 @@ export const TagResponseSchema = TagSchema.omit({
   userId: true,
   createdAt: true,
   updatedAt: true,
+}).extend({
+  bookmarksCount: z.number().default(0),
+  bookmarks: z.array(TagBookmarkResponseSchema).optional(),
 });
 export type TagResponse = z.infer<typeof TagResponseSchema>;
 
@@ -88,3 +118,23 @@ export const PaginatedTagResponseSchema = z.object({
   hasNextPage: z.boolean(),
 });
 export type PaginatedTagResponse = z.infer<typeof PaginatedTagResponseSchema>;
+
+//
+//
+//
+//
+//
+// search tags query schema
+export const SearchTagsRequestSchema = z.object({
+  query: z.string().min(1, "Query is required"),
+});
+export type SearchTagsRequest = z.infer<typeof SearchTagsRequestSchema>;
+
+//
+//
+//
+//
+//
+// search tags response schema
+export const SearchTagsResponseSchema = z.array(TagResponseSchema);
+export type SearchTagsResponse = z.infer<typeof SearchTagsResponseSchema>;
