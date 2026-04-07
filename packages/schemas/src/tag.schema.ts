@@ -12,7 +12,12 @@ export const TagSchema = z.object({
   name: z
     .string({ error: "Name is required" })
     .min(1, "Name is required")
-    .max(100, "Name must be less than 100 characters"),
+    .max(100, "Name must be less than 100 characters")
+    .regex(
+      /^[a-z0-9-]+$/,
+      "Name can only contain letters, numbers, and hyphens",
+    )
+    .toLowerCase(),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
 });
