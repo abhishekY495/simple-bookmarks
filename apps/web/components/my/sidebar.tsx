@@ -9,6 +9,7 @@ import { NAV_ITEMS, QUERY_KEYS } from "@/utils/constants";
 import { Button } from "../ui/button";
 import { PlusIcon } from "lucide-react";
 import { AddBookmarkDialog } from "./dialogs/add-bookmark-dialog";
+import { AddCollectionDialog } from "./dialogs/add-collection-dialog";
 import { useQuery } from "@tanstack/react-query";
 import { getCountService } from "@/services/user-services";
 import { useAuthStore } from "@/store/auth-store";
@@ -18,9 +19,21 @@ import { Skeleton } from "../ui/skeleton";
 export function Sidebar() {
   const pathname = usePathname();
   const [isAddBookmarkDialogOpen, setIsAddBookmarkDialogOpen] = useState(false);
+  const [isAddCollectionDialogOpen, setIsAddCollectionDialogOpen] =
+    useState(false);
   const user = useAuthStore((s) => s.user);
 
   const isActive = (href: string) => pathname === href;
+  const isCollectionsTab = pathname === "/my/collections";
+
+  const handleAddClick = () => {
+    if (isCollectionsTab) {
+      setIsAddCollectionDialogOpen(true);
+      return;
+    }
+
+    setIsAddBookmarkDialogOpen(true);
+  };
 
   const {
     data: count,
@@ -70,10 +83,7 @@ export function Sidebar() {
             ))}
           </div>
           <div className="flex flex-col gap-2 border-t pt-3 mt-3">
-            <Button
-              className="rounded cursor-pointer"
-              onClick={() => setIsAddBookmarkDialogOpen(true)}
-            >
+            <Button className="rounded cursor-pointer" onClick={handleAddClick}>
               <PlusIcon className="size-4" /> Add
             </Button>
           </div>
@@ -83,6 +93,10 @@ export function Sidebar() {
       <AddBookmarkDialog
         open={isAddBookmarkDialogOpen}
         onOpenChange={setIsAddBookmarkDialogOpen}
+      />
+      <AddCollectionDialog
+        open={isAddCollectionDialogOpen}
+        onOpenChange={setIsAddCollectionDialogOpen}
       />
     </>
   );

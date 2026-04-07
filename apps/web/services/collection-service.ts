@@ -1,8 +1,29 @@
 import { API_URL } from "@/utils/constants";
 import {
+  CollectionResponse,
+  CreateCollection,
   PaginatedCollectionRequest,
   PaginatedCollectionResponse,
 } from "@repo/schemas";
+
+export const addCollectionService = async (
+  accessToken: string,
+  createCollection: CreateCollection,
+): Promise<CollectionResponse> => {
+  const response = await fetch(`${API_URL}/collection/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(createCollection),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message ?? "Failed to add collection");
+  }
+  return data;
+};
 
 export const getCollectionsService = async (
   accessToken: string,
