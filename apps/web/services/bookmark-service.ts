@@ -46,3 +46,22 @@ export const addBookmarkService = async (
   }
   return data;
 };
+
+export const deleteBookmarkService = async (
+  accessToken: string,
+  bookmarkId: string,
+): Promise<void> => {
+  const response = await fetch(`${API_URL}/bookmark/${bookmarkId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw new Error(data?.message ?? "Failed to delete bookmark");
+  }
+};

@@ -3,37 +3,87 @@ import { BookmarkResponse } from "@repo/schemas";
 import Link from "next/link";
 import Image from "next/image";
 import { formatDate } from "@/utils/format-date";
+import { DeleteBookmarkDialog } from "@/components/my/dialogs/delete-bookmark-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { EllipsisIcon, PencilIcon, TrashIcon } from "lucide-react";
+import { useState } from "react";
 
 export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
   return (
-    <Link
-      key={bookmark.id}
-      href={bookmark.url}
-      target="_blank"
-      className="flex flex-col bg-muted border rounded-t"
-    >
-      <div>
-        <Image
-          src={bookmark.cover ?? getDefaultCoverImage(bookmark.url)}
-          alt={bookmark.title ?? "cover image"}
-          loading="eager"
-          width={300}
-          height={200}
-          className="object-cover rounded-t w-full aspect-video"
-        />
-        <div className="p-1.5 px-2">
-          <p className="font-semibold leading-5">
-            {bookmark.title ?? bookmark.domain}
-          </p>
-          <div className="flex items-center gap-1.5">
-            <p className="text-sm text-muted-foreground">{bookmark.domain}</p>
-            <span className="text-sm text-muted-foreground">•</span>
-            <p className="text-xs text-muted-foreground">
-              {formatDate(bookmark.createdAt)}
+    <>
+      <Link
+        key={bookmark.id}
+        href={bookmark.url}
+        target="_blank"
+        className="group relative flex flex-col bg-muted border rounded-t"
+      >
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            asChild
+            className="absolute top-2 right-2 rounded"
+          >
+            <Button
+              variant="outline"
+              className="h-7 w-7 rounded cursor-pointer opacity-0 pointer-events-none transition-opacity group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto data-[state=open]:opacity-100 data-[state=open]:pointer-events-auto"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
+              <EllipsisIcon />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="rounded">
+            <DropdownMenuItem className="rounded border-b">
+              <PencilIcon />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="rounded"
+              variant="destructive"
+              onSelect={() => setIsDeleteDialogOpen(true)}
+            >
+              <TrashIcon />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <div>
+          <Image
+            src={bookmark.cover ?? getDefaultCoverImage(bookmark.url)}
+            alt={bookmark.title ?? "cover image"}
+            loading="eager"
+            width={300}
+            height={200}
+            className="object-cover rounded-t w-full aspect-video"
+          />
+          <div className="p-1.5 px-2">
+            <p className="font-semibold leading-5">
+              {bookmark.title ?? bookmark.domain}
             </p>
+            <div className="flex items-center gap-1.5">
+              <p className="text-sm text-muted-foreground">{bookmark.domain}</p>
+              <span className="text-sm text-muted-foreground">•</span>
+              <p className="text-xs text-muted-foreground">
+                {formatDate(bookmark.createdAt)}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+      <DeleteBookmarkDialog
+        bookmarkId={bookmark.id}
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      />
+    </>
   );
 }
