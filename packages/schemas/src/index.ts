@@ -53,6 +53,8 @@ export {
   CollectionResponseSchema,
   PaginatedCollectionRequestSchema,
   PaginatedCollectionResponseSchema,
+  SearchCollectionsRequestSchema,
+  SearchCollectionsResponseSchema,
 } from "./collection.schema";
 export type {
   Collection,
@@ -61,6 +63,8 @@ export type {
   CollectionResponse,
   PaginatedCollectionRequest,
   PaginatedCollectionResponse,
+  SearchCollectionsRequest,
+  SearchCollectionsResponse,
 } from "./collection.schema";
 
 //

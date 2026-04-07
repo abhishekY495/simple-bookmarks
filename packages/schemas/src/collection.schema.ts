@@ -114,3 +114,29 @@ export const PaginatedCollectionResponseSchema = z.object({
 export type PaginatedCollectionResponse = z.infer<
   typeof PaginatedCollectionResponseSchema
 >;
+
+//
+//
+//
+//
+//
+// search collections query schema
+export const SearchCollectionsRequestSchema = z.object({
+  query: z.string().min(1, "Query is required"),
+});
+export type SearchCollectionsRequest = z.infer<
+  typeof SearchCollectionsRequestSchema
+>;
+
+//
+//
+//
+//
+//
+// search collections response schema
+export const SearchCollectionsResponseSchema = z.array(
+  CollectionResponseSchema,
+);
+export type SearchCollectionsResponse = z.infer<
+  typeof SearchCollectionsResponseSchema
+>;
