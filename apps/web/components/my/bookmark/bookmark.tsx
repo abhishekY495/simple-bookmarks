@@ -66,7 +66,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
             className="object-cover rounded-t w-full aspect-video"
           />
           <div className="p-2.5">
-            <p className="font-semibold leading-5">
+            <p className="font-semibold leading-5 text-[15px]">
               {bookmark.title ?? bookmark.domain}
             </p>
             <div className="flex items-center gap-1.5">
