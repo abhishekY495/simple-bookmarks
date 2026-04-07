@@ -15,7 +15,7 @@ export default function MyLayout({ children }: { children: React.ReactNode }) {
       <div className="max-w-6xl mx-auto flex">
         <Sidebar />
         <div className="w-full border-x">
-          <p className="cursor-pointer border-b p-3 px-5 sticky top-0 bg-background font-semibold">
+          <p className="border-b p-3 px-5 sticky top-0 bg-background/90 backdrop-blur-sm z-10 font-semibold">
             {headerTitle}
           </p>
           <div className="p-5">{children}</div>

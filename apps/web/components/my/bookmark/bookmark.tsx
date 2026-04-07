@@ -32,7 +32,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
           >
             <Button
               variant="outline"
-              className="h-7 w-7 rounded cursor-pointer opacity-0 pointer-events-none transition-opacity group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto data-[state=open]:opacity-100 data-[state=open]:pointer-events-auto"
+              className="h-5 w-7 rounded cursor-pointer opacity-0 pointer-events-none transition-opacity group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto data-[state=open]:opacity-100 data-[state=open]:pointer-events-auto"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -41,7 +41,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
               <EllipsisIcon />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="rounded">
+          <DropdownMenuContent className="rounded">
             <DropdownMenuItem className="rounded border-b">
               <PencilIcon />
               Edit
@@ -65,7 +65,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
             height={200}
             className="object-cover rounded-t w-full aspect-video"
           />
-          <div className="p-1.5 px-2">
+          <div className="p-2.5">
             <p className="font-semibold leading-5">
               {bookmark.title ?? bookmark.domain}
             </p>
