@@ -19,10 +19,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
 
   return (
     <>
-      <div
-        key={bookmark.id}
-        className="group relative flex flex-col bg-muted border rounded-t"
-      >
+      <div key={bookmark.id} className="group relative">
         <DropdownMenu>
           <DropdownMenuTrigger
             asChild
@@ -54,7 +51,11 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Link href={bookmark.url} target="_blank">
+        <Link
+          href={bookmark.url}
+          target="_blank"
+          className="h-full flex flex-col bg-muted border rounded-t"
+        >
           <Image
             src={bookmark.cover ?? getDefaultCoverImage(bookmark.url)}
             alt={bookmark.title ?? "cover image"}
@@ -63,7 +64,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
             height={200}
             className="object-cover rounded-t w-full aspect-video"
           />
-          <div className="p-2.5">
+          <div className="p-2.5 border-t">
             <p className="font-semibold leading-5 text-[15px]">
               {bookmark.title ?? bookmark.domain}
             </p>

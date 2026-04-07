@@ -18,11 +18,7 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
 
   return (
     <>
-      <div
-        key={collection.id}
-        className="group relative flex flex-col bg-muted border rounded-t"
-      >
-        {" "}
+      <div key={collection.id} className="group relative">
         <DropdownMenu>
           <DropdownMenuTrigger
             asChild
@@ -54,7 +50,10 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Link href={`/my/collections/${collection.id}`}>
+        <Link
+          href={`/my/collections/${collection.id}`}
+          className="h-full flex flex-col bg-muted border rounded-t"
+        >
           <Image
             src={collection.cover ?? getDefaultCoverImage(collection.name)}
             alt={collection.name ?? "cover image"}
@@ -63,7 +62,7 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
             height={200}
             className="object-cover rounded-t w-full aspect-video"
           />
-          <div className="p-2.5">
+          <div className="p-2.5 border-t">
             <p className="font-semibold leading-5 text-[15px]">
               {collection.name}
             </p>
