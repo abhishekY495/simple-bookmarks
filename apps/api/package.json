@@ -34,6 +34,7 @@
     "bcrypt": "^6.0.0",
     "bullmq": "^5.73.0",
     "cheerio": "^1.2.0",
+    "cloudflare": "^5.2.0",
     "cookie-parser": "^1.4.7",
     "nestjs-zod": "^5.2.1",
     "reflect-metadata": "^0.2.2",

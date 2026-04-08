@@ -35,7 +35,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger
             asChild
-            className="absolute top-2 right-2 rounded bg-white dark:bg-white"
+            className="absolute top-2 right-2 rounded bg-white dark:bg-black"
           >
             <Button
               variant="outline"
@@ -45,7 +45,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
                 e.stopPropagation();
               }}
             >
-              <EllipsisIcon className="size-4 dark:text-black" />
+              <EllipsisIcon className="size-4 dark:text-white" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="rounded">
