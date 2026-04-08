@@ -128,13 +128,14 @@
 
   html {
     @apply font-sans;
+    scrollbar-gutter: stable;
   }
 }
 
 @layer utilities {
   .minimal-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 35%, transparent) transparent;
+    scrollbar-color: color-mix(in oklab, var(--primary) 35%, transparent) transparent;
   }
 
   .minimal-scrollbar::-webkit-scrollbar {
