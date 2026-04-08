@@ -3,7 +3,7 @@ import { BookmarkResponse } from "@repo/schemas";
 import Link from "next/link";
 import Image from "next/image";
 import { formatDate } from "@/utils/format-date";
-import { DeleteBookmarkDialog } from "@/components/my/bookmark/delete-bookmark-dialog";
+import { DeleteBookmarkDialog } from "@/components/my/bookmark/dialogs/delete-bookmark-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,

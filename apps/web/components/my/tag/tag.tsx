@@ -9,7 +9,7 @@ import {
 import { TagResponse } from "@repo/schemas";
 import { EllipsisIcon, HashIcon } from "lucide-react";
 import Link from "next/link";
-import { DeleteTagDialog } from "./delete-tag-dialog";
+import { DeleteTagDialog } from "./dialogs/delete-tag-dialog";
 import {
   ContextMenu,
   ContextMenuContent,
