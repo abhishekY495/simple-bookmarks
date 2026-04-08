@@ -21,9 +21,11 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { EditBookmarkDialog } from "./dialogs/edit-bookmark-dialog";
 
 export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const contextMenuItems: Array<{
     label: string;
@@ -50,7 +52,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
     {
       label: "Edit",
       variant: "default",
-      onClick: () => {},
+      onClick: () => setIsEditDialogOpen(true),
       separator: false,
     },
     {
@@ -81,7 +83,10 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="rounded">
-            <DropdownMenuItem className="cursor-pointer rounded border-b">
+            <DropdownMenuItem
+              className="cursor-pointer rounded border-b"
+              onSelect={() => setIsEditDialogOpen(true)}
+            >
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -148,6 +153,12 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
         bookmarkId={bookmark.id}
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
+      />
+      <EditBookmarkDialog
+        key={`${bookmark.id}-${bookmark.title ?? bookmark.url}-${bookmark.isFavorite}`}
+        bookmark={bookmark}
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
       />
     </>
   );

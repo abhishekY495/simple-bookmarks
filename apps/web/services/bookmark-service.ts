@@ -4,6 +4,7 @@ import {
   CreateBookmark,
   PaginatedBookmarkRequest,
   PaginatedBookmarkResponse,
+  UpdateBookmark,
 } from "@repo/schemas";
 
 export const getBookmarksService = async (
@@ -72,4 +73,24 @@ export const deleteBookmarkService = async (
   if (!response.ok) {
     throw new Error(data?.message ?? "Failed to delete bookmark");
   }
+};
+
+export const updateBookmarkService = async (
+  accessToken: string,
+  bookmarkId: string,
+  updateBookmark: UpdateBookmark,
+): Promise<BookmarkResponse> => {
+  const response = await fetch(`${API_URL}/bookmark/${bookmarkId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(updateBookmark),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message ?? "Failed to update bookmark");
+  }
+  return data;
 };
