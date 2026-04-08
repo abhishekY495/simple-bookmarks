@@ -3,7 +3,7 @@ import { BookmarkResponse } from "@repo/schemas";
 import Link from "next/link";
 import Image from "next/image";
 import { formatDate } from "@/utils/format-date";
-import { DeleteBookmarkDialog } from "@/components/my/dialogs/delete-bookmark-dialog";
+import { DeleteBookmarkDialog } from "@/components/my/bookmark/delete-bookmark-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { EllipsisIcon } from "lucide-react";
+import { EllipsisIcon, HeartIcon } from "lucide-react";
 import { ComponentProps, Fragment, useState } from "react";
 import {
   ContextMenu,
@@ -112,7 +112,13 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
                 <p className="font-semibold leading-5 text-[15px]">
                   {bookmark.title ?? bookmark.domain}
                 </p>
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  {bookmark.isFavorite && (
+                    <HeartIcon
+                      className="size-3 text-red-500"
+                      fill="currentColor"
+                    />
+                  )}
                   <p>{bookmark.domain}</p>
                   <span>•</span>
                   <p className="text-xs">{formatDate(bookmark.createdAt)}</p>

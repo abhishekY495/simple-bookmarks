@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ComponentProps, Fragment, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,12 +7,40 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TagResponse } from "@repo/schemas";
-import { EllipsisIcon, HashIcon, PencilIcon, TrashIcon } from "lucide-react";
+import { EllipsisIcon, HashIcon } from "lucide-react";
 import Link from "next/link";
-import { DeleteTagDialog } from "../dialogs/delete-tag-dialog";
+import { DeleteTagDialog } from "./delete-tag-dialog";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuGroup,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 
 export const Tag = ({ tag }: { tag: TagResponse }) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  const contextMenuItems: Array<{
+    label: string;
+    variant?: ComponentProps<typeof ContextMenuItem>["variant"];
+    onClick: () => void;
+    separator?: boolean;
+  }> = [
+    {
+      label: "Edit",
+      variant: "default",
+      onClick: () => {},
+      separator: false,
+    },
+    {
+      label: "Delete",
+      variant: "destructive",
+      onClick: () => setIsDeleteDialogOpen(true),
+      separator: false,
+    },
+  ];
 
   return (
     <>
@@ -35,7 +63,6 @@ export const Tag = ({ tag }: { tag: TagResponse }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="rounded">
             <DropdownMenuItem className="rounded border-b">
-              <PencilIcon />
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -43,25 +70,44 @@ export const Tag = ({ tag }: { tag: TagResponse }) => {
               variant="destructive"
               onSelect={() => setIsDeleteDialogOpen(true)}
             >
-              <TrashIcon />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Link
-          href={`/my/tags/${tag.id}`}
-          className="h-full flex flex-col bg-muted border rounded"
-        >
-          <div className="p-2.5 px-3">
-            <p className="font-semibold flex items-center">
-              <HashIcon className="size-4 text-muted-foreground" />
-              <span className="text-lg">{tag.name}</span>
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {tag.bookmarksCount} bookmarks
-            </p>
-          </div>
-        </Link>
+        <ContextMenu modal={false}>
+          <ContextMenuTrigger className="w-full h-full">
+            <Link
+              href={`/my/tags/${tag.id}`}
+              className="h-full w-full flex flex-col bg-muted border rounded-t"
+            >
+              <div className="p-2.5 px-3">
+                <p className="font-semibold flex items-center">
+                  <HashIcon className="size-4 text-muted-foreground" />
+                  <span className="text-lg">{tag.name}</span>
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {tag.bookmarksCount} bookmarks
+                </p>
+              </div>
+            </Link>
+            <ContextMenuContent className="rounded">
+              <ContextMenuGroup className="rounded">
+                {contextMenuItems.map((item) => (
+                  <Fragment key={item.label}>
+                    <ContextMenuItem
+                      className="rounded cursor-pointer"
+                      variant={item.variant}
+                      onClick={item.onClick}
+                    >
+                      {item.label}
+                    </ContextMenuItem>
+                    {item.separator && <ContextMenuSeparator />}
+                  </Fragment>
+                ))}
+              </ContextMenuGroup>
+            </ContextMenuContent>
+          </ContextMenuTrigger>
+        </ContextMenu>
       </div>
       <DeleteTagDialog
         tagId={tag.id}

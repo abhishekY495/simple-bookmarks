@@ -11,7 +11,7 @@ import { CollectionResponse } from "@repo/schemas";
 import { EllipsisIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { DeleteCollectionDialog } from "../dialogs/delete-collection-dialog";
+import { DeleteCollectionDialog } from "./delete-collection-dialog";
 import {
   ContextMenu,
   ContextMenuContent,
