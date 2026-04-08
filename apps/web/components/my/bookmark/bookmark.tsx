@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { EllipsisIcon, PencilIcon, TrashIcon } from "lucide-react";
-import { useState } from "react";
+import { ComponentProps, Fragment, useState } from "react";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -25,9 +25,41 @@ import {
 export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(bookmark.url);
-  };
+  const contextMenuItems: Array<{
+    label: string;
+    variant?: ComponentProps<typeof ContextMenuItem>["variant"];
+    onClick: () => void;
+    separator?: boolean;
+  }> = [
+    {
+      label: "Open in new tab",
+      variant: "default",
+      onClick: () => {
+        window.open(bookmark.url, "_blank");
+      },
+      separator: false,
+    },
+    {
+      label: "Copy to clipboard",
+      variant: "default",
+      onClick: () => {
+        navigator.clipboard.writeText(bookmark.url);
+      },
+      separator: true,
+    },
+    {
+      label: "Edit",
+      variant: "default",
+      onClick: () => {},
+      separator: false,
+    },
+    {
+      label: "Delete",
+      variant: "destructive",
+      onClick: () => setIsDeleteDialogOpen(true),
+      separator: false,
+    },
+  ];
 
   return (
     <>
@@ -49,16 +81,14 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="rounded">
-            <DropdownMenuItem className="rounded border-b">
-              <PencilIcon />
+            <DropdownMenuItem className="cursor-pointer rounded border-b">
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="rounded"
+              className="cursor-pointer rounded"
               variant="destructive"
               onSelect={() => setIsDeleteDialogOpen(true)}
             >
-              <TrashIcon />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -91,28 +121,18 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
             </Link>
             <ContextMenuContent className="rounded">
               <ContextMenuGroup className="rounded">
-                <ContextMenuItem className="rounded cursor-pointer">
-                  <Link href={bookmark.url} target="_blank">
-                    Open in new tab
-                  </Link>
-                </ContextMenuItem>
-                <ContextMenuItem
-                  className="rounded cursor-pointer"
-                  onSelect={handleCopyToClipboard}
-                >
-                  Copy to clipboard
-                </ContextMenuItem>
-                <ContextMenuSeparator />
-                <ContextMenuItem className="rounded cursor-pointer">
-                  Edit
-                </ContextMenuItem>
-                <ContextMenuItem
-                  className="rounded cursor-pointer"
-                  variant="destructive"
-                  onSelect={() => setIsDeleteDialogOpen(true)}
-                >
-                  Delete
-                </ContextMenuItem>
+                {contextMenuItems.map((item) => (
+                  <Fragment key={item.label}>
+                    <ContextMenuItem
+                      className="rounded cursor-pointer"
+                      variant={item.variant}
+                      onClick={item.onClick}
+                    >
+                      {item.label}
+                    </ContextMenuItem>
+                    {item.separator && <ContextMenuSeparator />}
+                  </Fragment>
+                ))}
               </ContextMenuGroup>
             </ContextMenuContent>
           </ContextMenuTrigger>
