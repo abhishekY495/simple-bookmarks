@@ -13,9 +13,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { EllipsisIcon, PencilIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuGroup,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 
 export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  const handleCopyToClipboard = () => {
+    navigator.clipboard.writeText(bookmark.url);
+  };
 
   return (
     <>
@@ -23,7 +35,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger
             asChild
-            className="absolute top-2 right-2 rounded"
+            className="absolute top-2 right-2 rounded bg-white dark:bg-white"
           >
             <Button
               variant="outline"
@@ -33,7 +45,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
                 e.stopPropagation();
               }}
             >
-              <EllipsisIcon />
+              <EllipsisIcon className="size-4 dark:text-black" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="rounded">
@@ -51,30 +63,60 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Link
-          href={bookmark.url}
-          target="_blank"
-          className="h-full flex flex-col bg-muted border rounded-t"
-        >
-          <Image
-            src={bookmark.cover ?? getDefaultCoverImage(bookmark.url)}
-            alt={bookmark.title ?? "cover image"}
-            loading="eager"
-            width={300}
-            height={200}
-            className="object-cover rounded-t w-full aspect-video"
-          />
-          <div className="p-2.5 border-t flex flex-col gap-0.5">
-            <p className="font-semibold leading-5 text-[15px]">
-              {bookmark.title ?? bookmark.domain}
-            </p>
-            <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <p>{bookmark.domain}</p>
-              <span>•</span>
-              <p className="text-xs">{formatDate(bookmark.createdAt)}</p>
-            </div>
-          </div>
-        </Link>
+        <ContextMenu modal={false}>
+          <ContextMenuTrigger className="flex w-full items-center justify-center">
+            <Link
+              href={bookmark.url}
+              target="_blank"
+              className="h-full w-full flex flex-col bg-muted border rounded-t"
+            >
+              <Image
+                src={bookmark.cover ?? getDefaultCoverImage(bookmark.url)}
+                alt={bookmark.title ?? "cover image"}
+                loading="eager"
+                width={300}
+                height={200}
+                className="object-cover rounded-t w-full aspect-video"
+              />
+              <div className="p-2.5 border-t flex flex-col gap-0.5">
+                <p className="font-semibold leading-5 text-[15px]">
+                  {bookmark.title ?? bookmark.domain}
+                </p>
+                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <p>{bookmark.domain}</p>
+                  <span>•</span>
+                  <p className="text-xs">{formatDate(bookmark.createdAt)}</p>
+                </div>
+              </div>
+            </Link>
+            <ContextMenuContent className="rounded">
+              <ContextMenuGroup className="rounded">
+                <ContextMenuItem className="rounded cursor-pointer">
+                  <Link href={bookmark.url} target="_blank">
+                    Open in new tab
+                  </Link>
+                </ContextMenuItem>
+                <ContextMenuItem
+                  className="rounded cursor-pointer"
+                  onSelect={handleCopyToClipboard}
+                >
+                  Copy to clipboard
+                </ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem className="rounded cursor-pointer">
+                  Edit
+                </ContextMenuItem>
+                <ContextMenuItem
+                  className="rounded cursor-pointer"
+                  variant="destructive"
+                  onSelect={() => setIsDeleteDialogOpen(true)}
+                >
+                  Delete
+                </ContextMenuItem>
+              </ContextMenuGroup>
+            </ContextMenuContent>
+          </ContextMenuTrigger>
+        </ContextMenu>
       </div>
       <DeleteBookmarkDialog
         bookmarkId={bookmark.id}
