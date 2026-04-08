@@ -12,6 +12,7 @@ import { deleteBookmarkService } from "@/services/bookmark-service";
 import { useAuthStore } from "@/store/auth-store";
 import { QUERY_KEYS } from "@/utils/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
 
 type DeleteBookmarkDialogProps = {
   bookmarkId: string;
@@ -26,6 +27,7 @@ export function DeleteBookmarkDialog({
 }: DeleteBookmarkDialogProps) {
   const user = useAuthStore((s) => s.user);
   const queryClient = useQueryClient();
+  const pathname = usePathname();
 
   const { mutate: deleteBookmark, isPending } = useMutation({
     mutationFn: () =>
@@ -36,6 +38,14 @@ export function DeleteBookmarkDialog({
         queryClient.invalidateQueries({
           queryKey: QUERY_KEYS.getCount,
         }),
+        pathname === "/my/unsorted" &&
+          queryClient.invalidateQueries({
+            queryKey: QUERY_KEYS.getUnsortedBookmarks,
+          }),
+        pathname === "/my/all" &&
+          queryClient.invalidateQueries({
+            queryKey: QUERY_KEYS.getAllBookmarks,
+          }),
       ]);
     },
   });

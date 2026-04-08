@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TagResponse } from "@repo/schemas";
-import { EllipsisIcon, PencilIcon, TrashIcon } from "lucide-react";
+import { EllipsisIcon, HashIcon, PencilIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { DeleteTagDialog } from "../dialogs/delete-tag-dialog";
 
@@ -53,9 +53,9 @@ export const Tag = ({ tag }: { tag: TagResponse }) => {
           className="h-full flex flex-col bg-muted border rounded"
         >
           <div className="p-2.5 px-3">
-            <p className="font-semibold text-lg flex items-center gap-0.5">
-              <span>#</span>
-              {tag.name}
+            <p className="font-semibold flex items-center">
+              <HashIcon className="size-4 text-muted-foreground" />
+              <span className="text-lg">{tag.name}</span>
             </p>
             <p className="text-sm text-muted-foreground">
               {tag.bookmarksCount} bookmarks
