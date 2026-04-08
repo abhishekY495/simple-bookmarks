@@ -20,7 +20,7 @@ export default function CollectionsPage() {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
-      queryKey: QUERY_KEYS.getCollections,
+      queryKey: [...QUERY_KEYS.getCollections, "infinite"],
       queryFn: ({ pageParam }) =>
         getCollectionsService(user.accessToken ?? "", {
           take: TAKE_VALUE,

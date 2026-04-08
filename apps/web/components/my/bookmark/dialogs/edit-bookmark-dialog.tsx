@@ -18,7 +18,8 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { HeartIcon } from "lucide-react";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { BookmarkCollectionPicker } from "./bookmark-collection-picker";
 
 type EditBookmarkDialogProps = {
   bookmark: BookmarkResponse;
@@ -34,12 +35,18 @@ export function EditBookmarkDialog({
   const user = useAuthStore((s) => s.user);
   const queryClient = useQueryClient();
   const [title, setTitle] = useState(bookmark.title ?? "");
+  const [collection, setCollection] = useState(bookmark.collection ?? null);
   const [isFavorite, setIsFavorite] = useState(bookmark.isFavorite);
   const [validationError, setValidationError] = useState("");
   const pathname = usePathname();
 
+  if (!user) {
+    redirect("/login");
+  }
+
   const handleClose = () => {
     setTitle(bookmark.title ?? "");
+    setCollection(bookmark.collection ?? null);
     setIsFavorite(bookmark.isFavorite);
     setValidationError("");
     onOpenChange(false);
@@ -83,6 +90,7 @@ export function EditBookmarkDialog({
     const result = UpdateBookmarkSchema.safeParse({
       title: trimmedTitle,
       isFavorite,
+      collectionId: collection ? collection.id : null,
     });
 
     if (!result.success) {
@@ -107,7 +115,7 @@ export function EditBookmarkDialog({
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-5">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="bookmark-title" className="text-sm font-medium">
               Title
@@ -121,6 +129,12 @@ export function EditBookmarkDialog({
               className="rounded"
             />
           </div>
+          <BookmarkCollectionPicker
+            open={open}
+            value={collection}
+            onChange={setCollection}
+            onError={setValidationError}
+          />
 
           <button
             type="button"
