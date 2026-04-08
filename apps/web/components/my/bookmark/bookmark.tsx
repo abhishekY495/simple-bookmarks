@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { EllipsisIcon, PencilIcon, TrashIcon } from "lucide-react";
+import { EllipsisIcon } from "lucide-react";
 import { ComponentProps, Fragment, useState } from "react";
 import {
   ContextMenu,

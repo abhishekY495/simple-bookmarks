@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { getDefaultCoverImage } from "@/utils/get-default-cover-image";
 import { CollectionResponse } from "@repo/schemas";
-import { EllipsisIcon, PencilIcon, TrashIcon } from "lucide-react";
+import { EllipsisIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { DeleteCollectionDialog } from "../dialogs/delete-collection-dialog";
