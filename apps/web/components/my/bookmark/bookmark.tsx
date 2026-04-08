@@ -64,7 +64,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
           </DropdownMenuContent>
         </DropdownMenu>
         <ContextMenu modal={false}>
-          <ContextMenuTrigger className="flex w-full items-center justify-center">
+          <ContextMenuTrigger className="w-full h-full">
             <Link
               href={bookmark.url}
               target="_blank"
