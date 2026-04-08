@@ -19,7 +19,7 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
   return (
     <>
       <div key={collection.id} className="group relative">
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger
             asChild
             className="absolute top-2 right-2 rounded"

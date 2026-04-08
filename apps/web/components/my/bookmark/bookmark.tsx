@@ -20,7 +20,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
   return (
     <>
       <div key={bookmark.id} className="group relative">
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger
             asChild
             className="absolute top-2 right-2 rounded"
