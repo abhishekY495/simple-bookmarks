@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { EllipsisIcon, HeartIcon } from "lucide-react";
+import { EllipsisIcon, FolderIcon, HashIcon, HeartIcon } from "lucide-react";
 import { ComponentProps, Fragment, useState } from "react";
 import {
   ContextMenu,
@@ -22,10 +22,12 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { EditBookmarkDialog } from "./dialogs/edit-bookmark-dialog";
+import { usePathname } from "next/navigation";
 
 export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const pathname = usePathname();
 
   const contextMenuItems: Array<{
     label: string;
@@ -62,6 +64,37 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
       separator: false,
     },
   ];
+
+  const renderCollection = () => {
+    if (!bookmark.collection) return null;
+    if (pathname === "/my/all" || pathname === "/my/favorites") {
+      return (
+        <div className="flex gap-1.5 items-center">
+          <FolderIcon className="size-3.5 text-muted-foreground fill-current" />
+          <p className="text-muted-foreground text-sm">
+            {bookmark.collection.name}
+          </p>
+        </div>
+      );
+    }
+  };
+
+  const renderTags = () => {
+    return (
+      <div className="flex gap-2 flex-wrap mt-0.5">
+        {bookmark.tags.map((tag) => (
+          <Link
+            href={`tags/${tag.id}`}
+            key={tag.id}
+            className="flex items-center bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800 w-fit pb-0.5 px-1.5 rounded hover:underline underline-offset-2 decoration-yellow-400"
+          >
+            <HashIcon className="size-3" />
+            <p className="text-xs">{tag.name}</p>
+          </Link>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -117,7 +150,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
                 <p className="font-semibold leading-5 text-[15px]">
                   {bookmark.title ?? bookmark.domain}
                 </p>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                   {bookmark.isFavorite && (
                     <HeartIcon
                       className="size-3 text-red-500"
@@ -125,9 +158,11 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
                     />
                   )}
                   <p>{bookmark.domain}</p>
-                  <span>•</span>
+                  <span className="text-muted-foreground/50">•</span>
                   <p className="text-xs">{formatDate(bookmark.createdAt)}</p>
                 </div>
+                {renderCollection()}
+                {renderTags()}
               </div>
             </Link>
             <ContextMenuContent className="rounded">
