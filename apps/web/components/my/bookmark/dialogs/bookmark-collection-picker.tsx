@@ -98,10 +98,10 @@ export function BookmarkCollectionPicker({
       <div className="flex flex-col gap-1">
         <div className="rounded border px-2.5 py-1.5 bg-muted">
           {value?.name ?? (
-            <p className="flex items-center gap-1">
+            <div className="flex items-center gap-1">
               <LayoutDashboardIcon className="size-4 text-muted-foreground" />
-              <span>Unsorted</span>
-            </p>
+              <p>Unsorted</p>
+            </div>
           )}
         </div>
         <div className="flex flex-col border rounded h-48">
@@ -121,7 +121,7 @@ export function BookmarkCollectionPicker({
                   value={collectionSearch}
                   onChange={(e) => setCollectionSearch(e.target.value)}
                   placeholder="Search collections"
-                  className="rounded-none h-8 pl-8 border-0"
+                  className="rounded-none h-8 pl-8 border-0 focus-visible:ring-0 focus-visible:border-0 focus:border-0 focus:ring-0"
                 />
               </div>
               <div className="overflow-y-auto minimal-scrollbar">
