@@ -1,6 +1,7 @@
 import { API_URL } from "@/utils/constants";
 import {
   CreateTag,
+  DetailedTagResponse,
   PaginatedTagRequest,
   PaginatedTagResponse,
   TagResponse,
@@ -75,7 +76,7 @@ export const addTagService = async (
 export const getTagByIdService = async (
   accessToken: string,
   tagId: string,
-): Promise<TagResponse> => {
+): Promise<DetailedTagResponse> => {
   const response = await fetch(`${API_URL}/tag/${tagId}`, {
     method: "GET",
     headers: {

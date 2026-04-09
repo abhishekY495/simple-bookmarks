@@ -21,6 +21,7 @@ import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { SearchTagResponseDto } from './dto/search-tag-response.dto';
 import { SearchTagRequestDto } from './dto/search-tag-request.dto';
+import { DetailedTagResponseDto } from './dto/detailed-tag-response.dto';
 
 @Controller('tag')
 export class TagController {
@@ -56,7 +57,7 @@ export class TagController {
 
   @Get(':tagId')
   @UseGuards(AuthGuard)
-  @ZodResponse({ type: TagResponseDto })
+  @ZodResponse({ type: DetailedTagResponseDto })
   async getTagById(
     @Param('tagId', ParseUUIDPipe) tagId: string,
     @Req() req: AuthenticatedRequest,

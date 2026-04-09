@@ -4,6 +4,11 @@ import {
   MAX_PAGINATION_TAKE,
   MIN_PAGINATION_TAKE,
 } from "./constants";
+import {
+  CollectionResponseSchema,
+  CollectionSchema,
+} from "./collection.schema";
+import { BookmarkResponseSchema } from "./bookmark.schema";
 
 // Tag schema
 export const TagSchema = z.object({
@@ -93,6 +98,33 @@ export const TagResponseSchema = TagSchema.omit({
   bookmarks: z.array(TagBookmarkResponseSchema).optional(),
 });
 export type TagResponse = z.infer<typeof TagResponseSchema>;
+
+// tag response schema for tag
+export const DetailedTagResponseSchema = TagSchema.omit({
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  bookmarksCount: z.number().default(0),
+  bookmarks: z
+    .array(
+      TagBookmarkResponseSchema.extend({
+        collection: z
+          .object({
+            id: z.uuid(),
+            name: z.string(),
+          })
+          .nullable(),
+        tags: z
+          .array(
+            TagSchema.omit({ userId: true, createdAt: true, updatedAt: true }),
+          )
+          .default([]),
+      }),
+    )
+    .optional(),
+});
+export type DetailedTagResponse = z.infer<typeof DetailedTagResponseSchema>;
 
 //
 //

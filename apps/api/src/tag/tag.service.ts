@@ -69,6 +69,22 @@ export class TagService {
                   parsingStatus: true,
                   isFavorite: true,
                   createdAt: true,
+                  collection: {
+                    select: {
+                      id: true,
+                      name: true,
+                    },
+                  },
+                  tags: {
+                    select: {
+                      tag: {
+                        select: {
+                          id: true,
+                          name: true,
+                        },
+                      },
+                    },
+                  },
                 },
               },
             },
@@ -81,6 +97,7 @@ export class TagService {
       const bookmarks = tag.bookmarks.map(({ bookmark }) => ({
         ...bookmark,
         createdAt: bookmark.createdAt.toISOString(),
+        tags: bookmark.tags.map(({ tag }) => tag),
       }));
 
       return {
