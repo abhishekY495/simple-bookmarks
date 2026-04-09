@@ -67,7 +67,11 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
 
   const renderCollection = () => {
     if (!bookmark.collection) return null;
-    if (pathname === "/my/all" || pathname === "/my/favorites") {
+    if (
+      pathname.includes("/my/all") ||
+      pathname.includes("/my/favorites") ||
+      pathname.includes("/my/tags")
+    ) {
       return (
         <div className="flex gap-1.5 items-center">
           <FolderIcon className="size-3.5 text-muted-foreground fill-current" />

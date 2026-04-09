@@ -45,7 +45,7 @@ export const Tag = ({ tag }: { tag: TagResponse }) => {
   return (
     <>
       <div key={tag.id} className="group relative">
-        <DropdownMenu modal={false}>
+        <DropdownMenu>
           <DropdownMenuTrigger
             asChild
             className="absolute top-2 right-2 rounded"

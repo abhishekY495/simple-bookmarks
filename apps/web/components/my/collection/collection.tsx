@@ -47,7 +47,7 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
   return (
     <>
       <div key={collection.id} className="group relative">
-        <DropdownMenu modal={false}>
+        <DropdownMenu>
           <DropdownMenuTrigger
             asChild
             className="absolute top-2 right-2 rounded"
@@ -96,8 +96,12 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
                 </p>
                 <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                   <p>{collection.bookmarksCount} bookmarks</p>
-                  <span>•</span>
-                  <p>{collection.isPublic ? "Public" : "Private"}</p>
+                  {collection.isPublic && (
+                    <>
+                      <span>•</span>
+                      <p>Public</p>
+                    </>
+                  )}
                 </div>
               </div>
             </Link>
