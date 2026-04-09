@@ -1,5 +1,10 @@
 import { API_URL } from "@/utils/constants";
-import { PaginatedTagRequest, PaginatedTagResponse } from "@repo/schemas";
+import {
+  CreateTag,
+  PaginatedTagRequest,
+  PaginatedTagResponse,
+  TagResponse,
+} from "@repo/schemas";
 
 export const getTagsService = async (
   accessToken: string,
@@ -46,4 +51,23 @@ export const deleteTagService = async (
   if (!response.ok) {
     throw new Error(data?.message ?? "Failed to delete tag");
   }
+};
+
+export const addTagService = async (
+  accessToken: string,
+  createTag: CreateTag,
+): Promise<TagResponse> => {
+  const response = await fetch(`${API_URL}/tag/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(createTag),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message ?? "Failed to add tag");
+  }
+  return data;
 };

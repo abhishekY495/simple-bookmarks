@@ -12,14 +12,15 @@ import {
   ComboboxValue,
   useComboboxAnchor,
 } from "@/components/ui/combobox";
+import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { getTagsService } from "@/services/tag-service";
+import { addTagService, getTagsService } from "@/services/tag-service";
 import { useAuthStore } from "@/store/auth-store";
 import { QUERY_KEYS } from "@/utils/constants";
-import { BookmarkResponse } from "@repo/schemas";
-import { useQuery } from "@tanstack/react-query";
+import { BookmarkResponse, CreateTag, CreateTagSchema } from "@repo/schemas";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { HashIcon } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 type BookmarkTagPickerProps = {
   open: boolean;
@@ -36,6 +37,8 @@ export function BookmarkTagPicker({
 }: BookmarkTagPickerProps) {
   const anchor = useComboboxAnchor();
   const user = useAuthStore((s) => s.user);
+  const queryClient = useQueryClient();
+  const [tagSearch, setTagSearch] = useState("");
 
   const {
     data: allTags,
@@ -50,6 +53,29 @@ export function BookmarkTagPicker({
     enabled: open && !!user,
   });
 
+  const { mutate: addTag, isPending: isAddingTag } = useMutation({
+    mutationFn: (payload: CreateTag) =>
+      addTagService(user?.accessToken ?? "", payload),
+    onSuccess: async (newTag) => {
+      onError("");
+      onChange(
+        value.some((tag) => tag.id === newTag.id) ? value : [...value, newTag],
+      );
+      setTagSearch("");
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: QUERY_KEYS.getCount,
+        }),
+        await queryClient.invalidateQueries({
+          queryKey: QUERY_KEYS.getTags,
+        }),
+      ]);
+    },
+    onError: (mutationError) => {
+      onError(mutationError.message);
+    },
+  });
+
   const tagsByName = useMemo(
     () => new Map((allTags?.data ?? []).map((tag) => [tag.name, tag])),
     [allTags?.data],
@@ -57,6 +83,12 @@ export function BookmarkTagPicker({
 
   const selectedTagNames = value.map((tag) => tag.name);
   const availableTagNames = (allTags?.data ?? []).map((tag) => tag.name);
+  const trimmedSearch = tagSearch.trim();
+  const normalizedSearch = trimmedSearch.toLowerCase();
+  const hasSearchMatch = availableTagNames.some((tagName) =>
+    tagName.toLowerCase().includes(normalizedSearch),
+  );
+  const canShowAddTag = normalizedSearch.length > 0 && !hasSearchMatch;
 
   const handleValueChange = (selectedNames: string[]) => {
     const selectedTags = selectedNames
@@ -65,6 +97,18 @@ export function BookmarkTagPicker({
 
     onError("");
     onChange(selectedTags);
+  };
+
+  const handleAddTag = () => {
+    const result = CreateTagSchema.safeParse({ name: trimmedSearch });
+
+    if (!result.success) {
+      const firstError = result.error.issues[0]?.message ?? "Failed to add tag";
+      onError(firstError);
+      return;
+    }
+
+    addTag(result.data);
   };
 
   return (
@@ -102,6 +146,8 @@ export function BookmarkTagPicker({
                       selectedTagNames.length > 0 ? "" : "Select tags"
                     }
                     className="rounded"
+                    value={tagSearch}
+                    onChange={(event) => setTagSearch(event.target.value)}
                   />
                 </>
               )}
@@ -121,6 +167,24 @@ export function BookmarkTagPicker({
                 </ComboboxItem>
               )}
             </ComboboxList>
+            {canShowAddTag && (
+              <div className="px-2 py-1.5 border-t flex items-center justify-between gap-2">
+                <div className="text-sm truncate flex items-center gap-1 text-muted-foreground">
+                  <HashIcon className="size-3" />
+                  <span className="truncate">{trimmedSearch}</span>
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="h-7 rounded cursor-pointer"
+                  onClick={handleAddTag}
+                  disabled={isAddingTag}
+                >
+                  {isAddingTag ? "Adding..." : "Add"}
+                </Button>
+              </div>
+            )}
           </ComboboxContent>
         </Combobox>
         {isLoading && (
