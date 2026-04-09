@@ -20,6 +20,7 @@ import { HeartIcon } from "lucide-react";
 import { useState } from "react";
 import { redirect, usePathname } from "next/navigation";
 import { BookmarkCollectionPicker } from "./bookmark-collection-picker";
+import { BookmarkTagPicker } from "./bookmark-tag-picker";
 
 type EditBookmarkDialogProps = {
   bookmark: BookmarkResponse;
@@ -35,6 +36,7 @@ export function EditBookmarkDialog({
   const user = useAuthStore((s) => s.user);
   const queryClient = useQueryClient();
   const [title, setTitle] = useState(bookmark.title ?? "");
+  const [tags, setTags] = useState(bookmark.tags);
   const [collection, setCollection] = useState(bookmark.collection ?? null);
   const [isFavorite, setIsFavorite] = useState(bookmark.isFavorite);
   const [validationError, setValidationError] = useState("");
@@ -46,6 +48,7 @@ export function EditBookmarkDialog({
 
   const handleClose = () => {
     setTitle(bookmark.title ?? "");
+    setTags(bookmark.tags);
     setCollection(bookmark.collection ?? null);
     setIsFavorite(bookmark.isFavorite);
     setValidationError("");
@@ -90,6 +93,7 @@ export function EditBookmarkDialog({
     const result = UpdateBookmarkSchema.safeParse({
       title: trimmedTitle,
       isFavorite,
+      tagIds: tags.map((tag) => tag.id),
       collectionId: collection ? collection.id : null,
     });
 
@@ -106,8 +110,8 @@ export function EditBookmarkDialog({
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent
-        className="sm:max-w-md rounded mx-auto -mt-20 gap-1"
-        onOpenAutoFocus={(e) => e.preventDefault()}
+        className="sm:max-w-md rounded mx-auto -mt-10 gap-1"
+        autoFocus={false}
       >
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
@@ -129,6 +133,12 @@ export function EditBookmarkDialog({
               className="rounded"
             />
           </div>
+          <BookmarkTagPicker
+            open={open}
+            value={tags}
+            onChange={setTags}
+            onError={setValidationError}
+          />
           <BookmarkCollectionPicker
             open={open}
             value={collection}

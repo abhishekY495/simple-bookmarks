@@ -86,10 +86,11 @@ export const UpdateBookmarkSchema = z
     parsingStatus: z.enum(BookmarkParsingStatus).optional(),
     isFavorite: z.boolean().optional(),
     collectionId: z.uuid().optional().nullable(),
+    tagIds: z.array(z.uuid()).optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message:
-      "At least one field (title, cover, parsingStatus, isFavorite, collectionId) is required",
+      "At least one field (title, cover, parsingStatus, isFavorite, collectionId, tagIds) is required",
   });
 export type UpdateBookmark = z.infer<typeof UpdateBookmarkSchema>;
 

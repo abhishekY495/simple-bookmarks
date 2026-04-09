@@ -130,29 +130,71 @@ export class BookmarkService {
         throw new NotFoundException('Bookmark not found');
       }
 
-      const updatedBookmark = await this.prisma.bookmark.update({
-        where: {
-          id: bookmarkId,
-        },
-        include: {
-          tags: {
-            select: {
-              tag: {
-                select: {
-                  id: true,
-                  name: true,
+      const { tagIds, ...bookmarkUpdateData } = updateBookmarkDto;
+      const uniqueTagIds = tagIds ? [...new Set(tagIds)] : undefined;
+
+      if (uniqueTagIds) {
+        const tags = await this.prisma.tag.findMany({
+          where: {
+            userId,
+            id: {
+              in: uniqueTagIds,
+            },
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        if (tags.length !== uniqueTagIds.length) {
+          throw new BadRequestException(
+            'One or more selected tags are invalid',
+          );
+        }
+      }
+
+      const updatedBookmark = await this.prisma.$transaction(async (tx) => {
+        if (uniqueTagIds) {
+          await tx.bookmarkTag.deleteMany({
+            where: {
+              bookmarkId,
+            },
+          });
+
+          if (uniqueTagIds.length > 0) {
+            await tx.bookmarkTag.createMany({
+              data: uniqueTagIds.map((tagId) => ({
+                bookmarkId,
+                tagId,
+              })),
+            });
+          }
+        }
+
+        return tx.bookmark.update({
+          where: {
+            id: bookmarkId,
+          },
+          include: {
+            tags: {
+              select: {
+                tag: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
                 },
               },
             },
-          },
-          collection: {
-            select: {
-              id: true,
-              name: true,
+            collection: {
+              select: {
+                id: true,
+                name: true,
+              },
             },
           },
-        },
-        data: updateBookmarkDto,
+          data: bookmarkUpdateData,
+        });
       });
 
       return {
