@@ -123,7 +123,7 @@ export function AddBookmarkDialog({
           )}
 
           <DialogFooter>
-            <DialogClose asChild>
+            <DialogClose>
               <Button variant="outline" className="rounded cursor-pointer">
                 Cancel
               </Button>

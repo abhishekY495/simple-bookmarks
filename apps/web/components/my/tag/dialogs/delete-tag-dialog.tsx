@@ -46,7 +46,7 @@ export function DeleteTagDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="sm:max-w-md rounded mx-auto -mt-20 gap-1"
-        onOpenAutoFocus={(e) => e.preventDefault()}
+        autoFocus={false}
       >
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
@@ -57,7 +57,7 @@ export function DeleteTagDialog({
           Are you sure you want to delete the tag?
         </DialogDescription>
         <DialogFooter className="mt-5">
-          <DialogClose asChild>
+          <DialogClose>
             <Button
               variant="outline"
               className="rounded cursor-pointer"

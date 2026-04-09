@@ -102,7 +102,7 @@ export function AddCollectionDialog({
           )}
 
           <DialogFooter>
-            <DialogClose asChild>
+            <DialogClose>
               <Button variant="outline" className="rounded cursor-pointer">
                 Cancel
               </Button>

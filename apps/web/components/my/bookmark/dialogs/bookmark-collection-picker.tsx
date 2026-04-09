@@ -121,7 +121,7 @@ export function BookmarkCollectionPicker({
                   value={collectionSearch}
                   onChange={(e) => setCollectionSearch(e.target.value)}
                   placeholder="Search collections"
-                  className="rounded-none h-8 pl-8 border-0 focus-visible:ring-0 focus-visible:border-0 focus:border-0 focus:ring-0"
+                  className="rounded-none h-8 pl-8 border-t-0 border-x-0 border-b focus-visible:ring-0 focus-visible:border-0 focus:border-0 focus:ring-0"
                 />
               </div>
               <div className="overflow-y-auto minimal-scrollbar">
