@@ -73,3 +73,21 @@ export const deleteCollectionService = async (
     throw new Error(data?.message ?? "Failed to delete collection");
   }
 };
+
+export const getCollectionByIdService = async (
+  accessToken: string,
+  collectionId: string,
+): Promise<CollectionResponse> => {
+  const response = await fetch(`${API_URL}/collection/${collectionId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message ?? "Failed to get collection by id");
+  }
+  return data;
+};

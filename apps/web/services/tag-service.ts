@@ -71,3 +71,21 @@ export const addTagService = async (
   }
   return data;
 };
+
+export const getTagByIdService = async (
+  accessToken: string,
+  tagId: string,
+): Promise<TagResponse> => {
+  const response = await fetch(`${API_URL}/tag/${tagId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message ?? "Failed to get tag by id");
+  }
+  return data;
+};

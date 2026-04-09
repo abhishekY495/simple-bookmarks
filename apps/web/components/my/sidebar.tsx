@@ -23,7 +23,7 @@ export function Sidebar() {
     useState(false);
   const user = useAuthStore((s) => s.user);
 
-  const isActive = (href: string) => pathname === href;
+  const isActive = (href: string) => pathname.includes(href);
   const isCollectionsTab = pathname === "/my/collections";
 
   const handleAddClick = () => {

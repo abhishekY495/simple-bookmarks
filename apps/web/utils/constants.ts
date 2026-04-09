@@ -34,4 +34,6 @@ export const QUERY_KEYS = {
   getCollections: ["getCollections"],
   getTags: ["getTags"],
   getCount: ["getCount"],
+  getCollectionById: ["getCollectionById"],
+  getTagById: ["getTagById"],
 };
