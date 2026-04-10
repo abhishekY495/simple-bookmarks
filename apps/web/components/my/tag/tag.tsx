@@ -103,7 +103,7 @@ export const Tag = ({ tag }: { tag: TagResponse }) => {
               href={`/my/tags/${tag.id}`}
               className="h-full w-full flex flex-col bg-muted border rounded-t"
             >
-              <div className="p-2.5 px-3">
+              <div className="p-2.5 px-3 flex flex-col gap-0.5">
                 <p className="font-semibold flex items-center">
                   <HashIcon className="size-4 text-muted-foreground" />
                   <span className="text-lg">{tag.name}</span>
