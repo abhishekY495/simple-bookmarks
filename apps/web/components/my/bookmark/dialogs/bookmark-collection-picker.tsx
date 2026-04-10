@@ -128,17 +128,19 @@ export function BookmarkCollectionPicker({
                 {filteredCollections.map((collectionItem) => (
                   <p
                     key={collectionItem.id}
-                    className={`${collectionItem.id === value?.id ? "font-semibold bg-muted" : "bg-muted/30"} px-3 py-1.5 cursor-pointer hover:bg-muted`}
+                    className={`${collectionItem.id === value?.id ? "font-semibold bg-muted" : "bg-muted/30"} px-3 py-1.5 cursor-pointer hover:bg-muted flex items-center gap-0.5`}
                     onClick={() => onChange(collectionItem)}
                   >
-                    {collectionItem.name}
+                    <span>{collectionItem.emoji}</span>
+                    <span>{collectionItem.name}</span>
                   </p>
                 ))}
                 {filteredCollections.length === 0 &&
                   collectionSearch.trim().length > 0 && (
                     <div className="px-3 py-1.5 bg-muted/30 flex items-center justify-between gap-2">
-                      <p className="text-sm truncate">
-                        {collectionSearch.trim()}
+                      <p className="text-sm truncate flex items-center gap-0.5">
+                        <span>📁</span>
+                        <span>{collectionSearch.trim()}</span>
                       </p>
                       <Button
                         type="button"
