@@ -46,6 +46,7 @@ export class CollectionService {
 
           return {
             ...collectionData,
+            emoji: collectionData.emoji ?? undefined,
             bookmarksCount: _count.bookmarks,
             createdAt: collection.createdAt.toISOString(),
           };
@@ -86,6 +87,7 @@ export class CollectionService {
       }
       return {
         ...collection,
+        emoji: collection.emoji ?? undefined,
         bookmarksCount: collection.bookmarks.length,
         createdAt: collection.createdAt.toISOString(),
         bookmarks: collection.bookmarks.map((bookmark) => ({
@@ -123,6 +125,7 @@ export class CollectionService {
       });
       return {
         ...createdCollection,
+        emoji: createdCollection.emoji ?? undefined,
         bookmarksCount: 0,
         createdAt: createdCollection.createdAt.toISOString(),
       };
@@ -173,6 +176,7 @@ export class CollectionService {
 
       return {
         ...collectionData,
+        emoji: collectionData.emoji ?? undefined,
         bookmarksCount: _count.bookmarks,
         createdAt: updatedCollection.createdAt.toISOString(),
       };
@@ -217,6 +221,7 @@ export class CollectionService {
         const { _count, ...collectionData } = collection;
         return {
           ...collectionData,
+          emoji: collectionData.emoji ?? undefined,
           bookmarksCount: _count.bookmarks,
           createdAt: collection.createdAt.toISOString(),
         };

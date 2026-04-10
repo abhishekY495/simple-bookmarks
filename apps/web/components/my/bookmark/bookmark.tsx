@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { EllipsisIcon, FolderIcon, HashIcon, HeartIcon } from "lucide-react";
+import { EllipsisIcon, HashIcon, HeartIcon } from "lucide-react";
 import { ComponentProps, Fragment, useState } from "react";
 import {
   ContextMenu,
@@ -100,11 +100,13 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
       return (
         <Link
           href={`/my/collections/${bookmark.collection.id}`}
-          className="flex gap-1.5 items-center hover:underline underline-offset-2 decoration-muted-foreground/50 mb-0.5"
+          className="flex gap-1.5 items-center  mb-0.5"
         >
-          <FolderIcon className="size-3.5 text-muted-foreground fill-current" />
-          <p className="text-muted-foreground text-sm">
-            {bookmark.collection.name}
+          <p className="text-muted-foreground text-sm flex items-center gap-0.5">
+            <span>{bookmark.collection.emoji}</span>
+            <span className="hover:underline underline-offset-2 decoration-muted-foreground/50">
+              {bookmark.collection.name}
+            </span>
           </p>
         </Link>
       );

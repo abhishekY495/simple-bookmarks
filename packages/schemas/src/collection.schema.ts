@@ -14,12 +14,7 @@ export const CollectionSchema = z.object({
     .min(1, "Name is required")
     .max(100, "Name must be less than 100 characters"),
   isPublic: z.boolean().default(false),
-  cover: z
-    .httpUrl({
-      error: "Invalid URL",
-    })
-    .nullable()
-    .optional(),
+  emoji: z.string().min(1, "Emoji is required").default("📁").optional(),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
 });
@@ -51,16 +46,11 @@ export const UpdateCollectionSchema = z
       .min(1, "Name is required")
       .max(100, "Name must be less than 100 characters")
       .optional(),
-    cover: z
-      .httpUrl({
-        error: "Invalid URL",
-      })
-      .nullable()
-      .optional(),
+    emoji: z.string().min(1, "Emoji is required").default("📁").optional(),
     isPublic: z.boolean().optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
-    message: "At least one field (name, cover, isPublic) is required",
+    message: "At least one field (name, emoji, isPublic) is required",
   });
 export type UpdateCollection = z.infer<typeof UpdateCollectionSchema>;
 

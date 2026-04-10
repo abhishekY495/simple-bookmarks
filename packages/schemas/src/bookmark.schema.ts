@@ -110,6 +110,7 @@ export const BookmarkResponseSchema = BookmarkSchema.omit({
     .object({
       id: z.uuid(),
       name: z.string(),
+      emoji: z.string().nullable().optional(),
     })
     .nullable(),
 });

@@ -43,6 +43,7 @@ export class BookmarkService {
             select: {
               id: true,
               name: true,
+              emoji: true,
             },
           },
         },
@@ -97,6 +98,7 @@ export class BookmarkService {
             select: {
               id: true,
               name: true,
+              emoji: true,
             },
           },
         },
@@ -190,6 +192,7 @@ export class BookmarkService {
               select: {
                 id: true,
                 name: true,
+                emoji: true,
               },
             },
           },
@@ -228,6 +231,7 @@ export class BookmarkService {
             select: {
               id: true,
               name: true,
+              emoji: true,
             },
           },
         },
@@ -312,6 +316,7 @@ export class BookmarkService {
             select: {
               id: true,
               name: true,
+              emoji: true,
             },
           },
         },

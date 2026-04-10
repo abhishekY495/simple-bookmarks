@@ -6,10 +6,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getDefaultCoverImage } from "@/utils/get-default-cover-image";
 import { CollectionResponse } from "@repo/schemas";
 import { EllipsisIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { DeleteCollectionDialog } from "./dialogs/delete-collection-dialog";
 import {
@@ -82,26 +80,19 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
               href={`/my/collections/${collection.id}`}
               className="h-full flex flex-col bg-muted border rounded-t"
             >
-              <Image
-                src={collection.cover ?? getDefaultCoverImage(collection.name)}
-                alt={collection.name ?? "cover image"}
-                loading="eager"
-                width={300}
-                height={200}
-                className="object-cover rounded-t w-full aspect-video"
-              />
-              <div className="p-2.5 border-t">
-                <p className="font-semibold leading-5 text-[15px]">
-                  {collection.name}
-                </p>
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <p>{collection.bookmarksCount} bookmarks</p>
-                  {collection.isPublic && (
-                    <>
-                      <span>•</span>
-                      <p>Public</p>
-                    </>
-                  )}
+              <div className="p-2.5 px-2 flex flex-col gap-1">
+                <span className="rounded text-4xl">{collection.emoji}</span>
+                <div className="flex flex-col px-2">
+                  <p className="font-semibold text-lg">{collection.name}</p>
+                  <div className="flex items-center gap-1.5 text-[15px] text-muted-foreground">
+                    <p>{collection.bookmarksCount} bookmarks</p>
+                    {collection.isPublic && (
+                      <>
+                        <span>•</span>
+                        <p>Public</p>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </Link>
