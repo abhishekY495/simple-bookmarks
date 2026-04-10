@@ -73,10 +73,11 @@ export default function CollectionsPage() {
       ) : !isLoading ? (
         <div className="flex flex-col items-center justify-center gap-2 text-center mt-10">
           <Image
-            src="/empty-inbox-icon.png"
+            src="/folder-icon.png"
             alt="No collections"
             width={62}
             height={62}
+            loading="eager"
           />
           <p className="font-semibold">No collections</p>
         </div>

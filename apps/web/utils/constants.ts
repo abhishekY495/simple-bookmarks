@@ -36,4 +36,7 @@ export const QUERY_KEYS = {
   getCount: ["getCount"],
   getCollectionById: ["getCollectionById"],
   getTagById: ["getTagById"],
+  search: ["search"],
 };
+
+export const DEBOUNCE_TIME = 400;
