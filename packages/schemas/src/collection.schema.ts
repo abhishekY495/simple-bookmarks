@@ -86,6 +86,23 @@ export type CollectionResponse = z.infer<typeof CollectionResponseSchema>;
 //
 //
 //
+// detailed collection response schema
+export const DetailedCollectionResponseSchema = CollectionSchema.omit({
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  bookmarksCount: z.number().default(0),
+  bookmarks: z.array(BookmarkResponseSchema).optional(),
+});
+export type DetailedCollectionResponse = z.infer<
+  typeof DetailedCollectionResponseSchema
+>;
+
+//
+//
+//
+//
+//
 // paginated collections query schema
 export const PaginatedCollectionRequestSchema = z.object({
   cursor: z.uuid().optional(),

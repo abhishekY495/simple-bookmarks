@@ -99,7 +99,7 @@ export const TagResponseSchema = TagSchema.omit({
 });
 export type TagResponse = z.infer<typeof TagResponseSchema>;
 
-// tag response schema for tag
+// detailed tag response schema
 export const DetailedTagResponseSchema = TagSchema.omit({
   userId: true,
   createdAt: true,

@@ -91,6 +91,12 @@ export class CollectionService {
         bookmarks: collection.bookmarks.map((bookmark) => ({
           ...bookmark,
           createdAt: bookmark.createdAt.toISOString(),
+          collection: bookmark.collectionId
+            ? {
+                id: collection.id,
+                name: collection.name,
+              }
+            : null,
           tags: bookmark.tags.map((tag) => tag.tag),
         })),
       };

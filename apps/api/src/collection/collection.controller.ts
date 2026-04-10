@@ -21,6 +21,7 @@ import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 import { SearchCollectionRequestDto } from './dto/search-collection-request.dto';
 import { SearchCollectionResponseDto } from './dto/search-collection-response.dto';
+import { DetailedCollectionResponseDto } from './dto/detailed-collection-response.dto';
 
 @Controller('collection')
 export class CollectionController {
@@ -59,7 +60,7 @@ export class CollectionController {
 
   @Get(':collectionId')
   @UseGuards(AuthGuard)
-  @ZodResponse({ type: CollectionResponseDto })
+  @ZodResponse({ type: DetailedCollectionResponseDto })
   async getCollectionById(
     @Param('collectionId', ParseUUIDPipe) collectionId: string,
     @Req() req: AuthenticatedRequest,
