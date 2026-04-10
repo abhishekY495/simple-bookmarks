@@ -11,15 +11,18 @@ import {
 import { deleteCollectionService } from "@/services/collection-service";
 import { useAuthStore } from "@/store/auth-store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { MessageSquareWarningIcon } from "lucide-react";
 
 type DeleteCollectionDialogProps = {
   collectionId: string;
+  bookmarkCount: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
 export function DeleteCollectionDialog({
   collectionId,
+  bookmarkCount,
   open,
   onOpenChange,
 }: DeleteCollectionDialogProps) {
@@ -47,7 +50,12 @@ export function DeleteCollectionDialog({
           </DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          Are you sure you want to delete the collection?
+          <p>Are you sure you want to delete the collection?</p>
+          <p className="flex items-center gap-1 font-medium">
+            <MessageSquareWarningIcon className="size-4 text-red-500" />
+            {bookmarkCount} {bookmarkCount > 1 ? "bookmarks" : "bookmark"} in
+            this collection will also be deleted.
+          </p>
         </DialogDescription>
         <DialogFooter className="mt-5">
           <DialogClose>

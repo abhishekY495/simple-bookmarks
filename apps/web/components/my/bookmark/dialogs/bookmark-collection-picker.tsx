@@ -126,14 +126,19 @@ export function BookmarkCollectionPicker({
                   <span>Unsorted</span>
                 </p>
                 {filteredCollections.map((collectionItem) => (
-                  <p
+                  <div
                     key={collectionItem.id}
-                    className={`${collectionItem.id === value?.id ? "font-semibold bg-muted" : "bg-muted/30"} px-3 py-1.5 cursor-pointer hover:bg-muted flex items-center gap-0.5`}
+                    className={`${collectionItem.id === value?.id ? "font-semibold bg-muted" : "bg-muted/30"} px-3 py-1.5 cursor-pointer hover:bg-muted flex items-center justify-between gap-0.5`}
                     onClick={() => onChange(collectionItem)}
                   >
-                    <span>{collectionItem.emoji}</span>
-                    <span>{collectionItem.name}</span>
-                  </p>
+                    <p className="flex items-center gap-0.5">
+                      <span>{collectionItem.emoji}</span>
+                      <span>{collectionItem.name}</span>
+                    </p>
+                    <span className="text-muted-foreground">
+                      {collectionItem.bookmarksCount}
+                    </span>
+                  </div>
                 ))}
                 {filteredCollections.length === 0 &&
                   collectionSearch.trim().length > 0 && (

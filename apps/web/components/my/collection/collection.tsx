@@ -140,6 +140,7 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
       </div>
       <DeleteCollectionDialog
         collectionId={collection.id}
+        bookmarkCount={collection.bookmarksCount}
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
       />
