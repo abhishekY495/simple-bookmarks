@@ -1,5 +1,5 @@
 import { getDefaultCoverImage } from "@/utils/get-default-cover-image";
-import { BookmarkResponse } from "@repo/schemas";
+import { BookmarkResponse, UpdateBookmark } from "@repo/schemas";
 import Link from "next/link";
 import Image from "next/image";
 import { formatDate } from "@/utils/format-date";
@@ -23,11 +23,24 @@ import {
 } from "@/components/ui/context-menu";
 import { EditBookmarkDialog } from "./dialogs/edit-bookmark-dialog";
 import { usePathname } from "next/navigation";
+import { updateBookmarkService } from "@/services/bookmark-service";
+import { useAuthStore } from "@/store/auth-store";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const pathname = usePathname();
+  const user = useAuthStore((s) => s.user);
+  const queryClient = useQueryClient();
+
+  const { mutate: updateBookmark, isPending } = useMutation({
+    mutationFn: (payload: UpdateBookmark) =>
+      updateBookmarkService(user?.accessToken ?? "", bookmark.id, payload),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries();
+    },
+  });
 
   const contextMenuItems: Array<{
     label: string;
@@ -48,6 +61,18 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
       variant: "default",
       onClick: () => {
         navigator.clipboard.writeText(bookmark.url);
+      },
+      separator: true,
+    },
+    {
+      label: isPending
+        ? "Updating..."
+        : bookmark.isFavorite
+          ? "Unfavorite"
+          : "Mark as favorite",
+      variant: "default",
+      onClick: () => {
+        updateBookmark({ isFavorite: !bookmark.isFavorite });
       },
       separator: true,
     },
