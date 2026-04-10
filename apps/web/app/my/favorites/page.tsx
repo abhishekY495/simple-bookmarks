@@ -78,6 +78,7 @@ export default function FavoritesPage() {
             alt="No favorites"
             width={62}
             height={62}
+            loading="eager"
           />
           <p className="font-semibold">No favorites</p>
         </div>

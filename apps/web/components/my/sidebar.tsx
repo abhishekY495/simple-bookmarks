@@ -48,7 +48,13 @@ export function Sidebar() {
     <>
       <div className="w-72 h-screen sticky top-0 pl-4">
         <div className="flex items-center gap-1.5 cursor-pointer border-b p-2 py-3">
-          <Image src="/app-icon.png" alt="logo" width={20} height={20} />
+          <Image
+            src="/app-icon.png"
+            alt="logo"
+            width={20}
+            height={20}
+            loading="eager"
+          />
           <p className="font-semibold">Simple Bookmarks</p>
         </div>
         <div className="flex flex-col justify-between mt-2 pr-3">
