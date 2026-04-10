@@ -8,7 +8,6 @@ import { QUERY_KEYS } from "@/utils/constants";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
-import { useMemo } from "react";
 
 export default function CollectionPage() {
   const { id } = useParams<{ id: string }>();
@@ -27,14 +26,7 @@ export default function CollectionPage() {
     queryFn: () => getCollectionByIdService(user.accessToken ?? "", id),
   });
 
-  const bookmarks = useMemo(
-    () =>
-      collection?.bookmarks?.map((bookmark) => ({
-        ...bookmark,
-        collection: null,
-      })) ?? [],
-    [collection],
-  );
+  const bookmarks = collection?.bookmarks ?? [];
 
   if (isLoading) {
     return (

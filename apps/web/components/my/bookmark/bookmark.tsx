@@ -88,7 +88,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
       <div className="flex gap-2 flex-wrap mt-0.5">
         {bookmark.tags.map((tag) => (
           <Link
-            href={`tags/${tag.id}`}
+            href={`/my/tags/${tag.id}`}
             key={tag.id}
             className="flex items-center bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800 w-fit pb-0.5 px-1.5 rounded hover:underline underline-offset-2 decoration-yellow-400"
           >

@@ -73,6 +73,10 @@ export function EditBookmarkDialog({
           queryClient.invalidateQueries({
             queryKey: QUERY_KEYS.getFavoritesBookmarks,
           }),
+        pathname.includes("/my/collections/") &&
+          queryClient.invalidateQueries({
+            queryKey: QUERY_KEYS.getCollectionById,
+          }),
       ]);
     },
     onError: (error) => {

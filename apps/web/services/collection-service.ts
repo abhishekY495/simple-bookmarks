@@ -2,6 +2,7 @@ import { API_URL } from "@/utils/constants";
 import {
   CollectionResponse,
   CreateCollection,
+  DetailedCollectionResponse,
   PaginatedCollectionRequest,
   PaginatedCollectionResponse,
 } from "@repo/schemas";
@@ -77,7 +78,7 @@ export const deleteCollectionService = async (
 export const getCollectionByIdService = async (
   accessToken: string,
   collectionId: string,
-): Promise<CollectionResponse> => {
+): Promise<DetailedCollectionResponse> => {
   const response = await fetch(`${API_URL}/collection/${collectionId}`, {
     method: "GET",
     headers: {
