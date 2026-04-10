@@ -62,14 +62,7 @@ export function BookmarkTagPicker({
         value.some((tag) => tag.id === newTag.id) ? value : [...value, newTag],
       );
       setTagSearch("");
-      await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.getCount,
-        }),
-        await queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.getTags,
-        }),
-      ]);
+      await queryClient.invalidateQueries();
     },
     onError: (mutationError) => {
       onError(mutationError.message);

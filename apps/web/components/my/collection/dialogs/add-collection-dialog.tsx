@@ -13,7 +13,6 @@ import { useState } from "react";
 import { CreateCollection, CreateCollectionSchema } from "@repo/schemas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/auth-store";
-import { QUERY_KEYS } from "@/utils/constants";
 import { addCollectionService } from "@/services/collection-service";
 
 type AddCollectionDialogProps = {
@@ -35,14 +34,7 @@ export function AddCollectionDialog({
       addCollectionService(user?.accessToken ?? "", createCollection),
     onSuccess: async () => {
       handleClose();
-      await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.getCount,
-        }),
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.getCollections,
-        }),
-      ]);
+      await queryClient.invalidateQueries();
     },
     onError: (error) => {
       setValidationError(error.message);

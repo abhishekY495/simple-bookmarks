@@ -41,14 +41,7 @@ export function BookmarkCollectionPicker({
     onSuccess: async (newCollection) => {
       onChange(newCollection);
       setCollectionSearch("");
-      await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.getCount,
-        }),
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.getCollections,
-        }),
-      ]);
+      await queryClient.invalidateQueries();
     },
     onError: (error) => {
       onError(error.message);

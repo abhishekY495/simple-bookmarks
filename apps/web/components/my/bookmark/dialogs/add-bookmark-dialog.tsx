@@ -14,9 +14,7 @@ import { addBookmarkService } from "@/services/bookmark-service";
 import { CreateBookmark, CreateBookmarkSchema } from "@repo/schemas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/auth-store";
-import { QUERY_KEYS } from "@/utils/constants";
 import { getDomainFromUrl } from "@/utils/get-domain-fom-url";
-import { usePathname } from "next/navigation";
 
 type AddBookmarkDialogProps = {
   open: boolean;
@@ -31,26 +29,13 @@ export function AddBookmarkDialog({
   const [validationError, setValidationError] = useState("");
   const user = useAuthStore((s) => s.user);
   const queryClient = useQueryClient();
-  const pathname = usePathname();
 
   const { mutate: addBookmark, isPending } = useMutation({
     mutationFn: (createBookmark: CreateBookmark) =>
       addBookmarkService(user?.accessToken ?? "", createBookmark),
     onSuccess: async () => {
       handleClose();
-      await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.getCount,
-        }),
-        pathname === "/my/unsorted" &&
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEYS.getUnsortedBookmarks,
-          }),
-        pathname === "/my/all" &&
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEYS.getAllBookmarks,
-          }),
-      ]);
+      await queryClient.invalidateQueries();
     },
     onError: (error) => {
       setValidationError(error.message);

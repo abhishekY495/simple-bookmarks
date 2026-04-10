@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { updateBookmarkService } from "@/services/bookmark-service";
 import { useAuthStore } from "@/store/auth-store";
-import { QUERY_KEYS } from "@/utils/constants";
 import {
   BookmarkResponse,
   UpdateBookmark,
@@ -18,7 +17,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { HeartIcon } from "lucide-react";
 import { useState } from "react";
-import { redirect, usePathname } from "next/navigation";
+import { redirect } from "next/navigation";
 import { BookmarkCollectionPicker } from "./bookmark-collection-picker";
 import { BookmarkTagPicker } from "./bookmark-tag-picker";
 
@@ -40,7 +39,6 @@ export function EditBookmarkDialog({
   const [collection, setCollection] = useState(bookmark.collection ?? null);
   const [isFavorite, setIsFavorite] = useState(bookmark.isFavorite);
   const [validationError, setValidationError] = useState("");
-  const pathname = usePathname();
 
   if (!user) {
     redirect("/login");
@@ -60,24 +58,7 @@ export function EditBookmarkDialog({
       updateBookmarkService(user?.accessToken ?? "", bookmark.id, payload),
     onSuccess: async () => {
       handleClose();
-      await Promise.all([
-        pathname === "/my/unsorted" &&
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEYS.getUnsortedBookmarks,
-          }),
-        pathname === "/my/all" &&
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEYS.getAllBookmarks,
-          }),
-        pathname === "/my/favorites" &&
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEYS.getFavoritesBookmarks,
-          }),
-        pathname.includes("/my/collections/") &&
-          queryClient.invalidateQueries({
-            queryKey: QUERY_KEYS.getCollectionById,
-          }),
-      ]);
+      await queryClient.invalidateQueries();
     },
     onError: (error) => {
       setValidationError(error.message);

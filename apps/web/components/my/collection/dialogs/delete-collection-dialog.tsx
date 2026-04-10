@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { deleteCollectionService } from "@/services/collection-service";
 import { useAuthStore } from "@/store/auth-store";
-import { QUERY_KEYS } from "@/utils/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type DeleteCollectionDialogProps = {
@@ -32,14 +31,7 @@ export function DeleteCollectionDialog({
       deleteCollectionService(user?.accessToken ?? "", collectionId),
     onSuccess: async () => {
       onOpenChange(false);
-      await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.getCount,
-        }),
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.getCollections,
-        }),
-      ]);
+      await queryClient.invalidateQueries();
     },
   });
 
