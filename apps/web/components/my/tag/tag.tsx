@@ -18,9 +18,11 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { EditTagDialog } from "./dialogs/edit-tag-dialog";
 
 export const Tag = ({ tag }: { tag: TagResponse }) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const contextMenuItems: Array<{
     label: string;
@@ -49,7 +51,7 @@ export const Tag = ({ tag }: { tag: TagResponse }) => {
     {
       label: "Edit",
       variant: "default",
-      onClick: () => {},
+      onClick: () => setIsEditDialogOpen(true),
       separator: false,
     },
     {
@@ -80,7 +82,10 @@ export const Tag = ({ tag }: { tag: TagResponse }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="rounded">
-            <DropdownMenuItem className="rounded border-b">
+            <DropdownMenuItem
+              className="rounded border-b"
+              onSelect={() => setIsEditDialogOpen(true)}
+            >
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -131,6 +136,11 @@ export const Tag = ({ tag }: { tag: TagResponse }) => {
         tagId={tag.id}
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
+      />
+      <EditTagDialog
+        tag={tag}
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
       />
     </>
   );

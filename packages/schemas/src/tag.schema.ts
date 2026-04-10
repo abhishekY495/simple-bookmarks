@@ -4,11 +4,6 @@ import {
   MAX_PAGINATION_TAKE,
   MIN_PAGINATION_TAKE,
 } from "./constants";
-import {
-  CollectionResponseSchema,
-  CollectionSchema,
-} from "./collection.schema";
-import { BookmarkResponseSchema } from "./bookmark.schema";
 
 // Tag schema
 export const TagSchema = z.object({
@@ -20,7 +15,7 @@ export const TagSchema = z.object({
     .max(100, "Name must be less than 100 characters")
     .regex(
       /^[a-z0-9-]+$/,
-      "Name can only contain letters, numbers, and hyphens",
+      "Only lowercase letters, numbers, and hyphens are allowed",
     )
     .toLowerCase(),
   createdAt: z.iso.datetime(),

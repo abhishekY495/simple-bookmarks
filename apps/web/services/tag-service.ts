@@ -5,6 +5,7 @@ import {
   PaginatedTagRequest,
   PaginatedTagResponse,
   TagResponse,
+  UpdateTag,
 } from "@repo/schemas";
 
 export const getTagsService = async (
@@ -87,6 +88,26 @@ export const getTagByIdService = async (
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message ?? "Failed to get tag by id");
+  }
+  return data;
+};
+
+export const updateTagService = async (
+  accessToken: string,
+  tagId: string,
+  updateTag: UpdateTag,
+): Promise<TagResponse> => {
+  const response = await fetch(`${API_URL}/tag/${tagId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(updateTag),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message ?? "Failed to update tag");
   }
   return data;
 };
