@@ -29,6 +29,24 @@ export const Tag = ({ tag }: { tag: TagResponse }) => {
     separator?: boolean;
   }> = [
     {
+      label: "Open in new tab",
+      variant: "default",
+      onClick: () => {
+        window.open(`/my/tags/${tag.id}`, "_blank");
+      },
+      separator: false,
+    },
+    {
+      label: "Copy to clipboard",
+      variant: "default",
+      onClick: () => {
+        navigator.clipboard.writeText(
+          `${window.location.origin}/my/tags/${tag.id}`,
+        );
+      },
+      separator: true,
+    },
+    {
       label: "Edit",
       variant: "default",
       onClick: () => {},

@@ -29,6 +29,24 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
     separator?: boolean;
   }> = [
     {
+      label: "Open in new tab",
+      variant: "default",
+      onClick: () => {
+        window.open(`/my/collections/${collection.id}`, "_blank");
+      },
+      separator: false,
+    },
+    {
+      label: "Copy to clipboard",
+      variant: "default",
+      onClick: () => {
+        navigator.clipboard.writeText(
+          `${window.location.origin}/my/collections/${collection.id}`,
+        );
+      },
+      separator: true,
+    },
+    {
       label: "Edit",
       variant: "default",
       onClick: () => {},
