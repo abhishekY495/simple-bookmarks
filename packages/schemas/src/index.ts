@@ -93,3 +93,8 @@ export type {
   SearchTagsRequest,
   SearchTagsResponse,
 } from "./tag.schema";
+
+//
+
+export { SearchRequestSchema, SearchResponseSchema } from "./search.schema";
+export type { SearchRequest, SearchResponse } from "./search.schema";

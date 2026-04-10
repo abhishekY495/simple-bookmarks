@@ -13,6 +13,7 @@ import { CollectionModule } from './collection/collection.module';
 import { BullModule } from '@nestjs/bullmq';
 import { DEFFAULT_JOB_OPTIONS } from './utils/constants';
 import { TagModule } from './tag/tag.module';
+import { SearchModule } from './search/search.module';
 
 const CustomZodValidationPipe = createZodValidationPipe({
   createValidationException: (error: unknown) => {
@@ -33,6 +34,7 @@ const CustomZodValidationPipe = createZodValidationPipe({
     BookmarkModule,
     CollectionModule,
     TagModule,
+    SearchModule,
     BullModule.forRoot({
       connection: {
         host: process.env.REDIS_HOST,
