@@ -18,9 +18,11 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { EditCollectionDialog } from "./dialogs/edit-colllection-dialog";
 
 export function Collection({ collection }: { collection: CollectionResponse }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const contextMenuItems: Array<{
     label: string;
@@ -49,7 +51,7 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
     {
       label: "Edit",
       variant: "default",
-      onClick: () => {},
+      onClick: () => setIsEditDialogOpen(true),
       separator: false,
     },
     {
@@ -80,7 +82,10 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="rounded">
-            <DropdownMenuItem className="cursor-pointer rounded border-b">
+            <DropdownMenuItem
+              className="cursor-pointer rounded border-b"
+              onSelect={() => setIsEditDialogOpen(true)}
+            >
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -106,8 +111,8 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
                     <p>{collection.bookmarksCount} bookmarks</p>
                     {collection.isPublic && (
                       <>
-                        <span>•</span>
-                        <p>Public</p>
+                        <span className="text-sm">•</span>
+                        <p className="text-sm">Public</p>
                       </>
                     )}
                   </div>
@@ -137,6 +142,11 @@ export function Collection({ collection }: { collection: CollectionResponse }) {
         collectionId={collection.id}
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
+      />
+      <EditCollectionDialog
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+        collection={collection}
       />
     </>
   );

@@ -5,6 +5,7 @@ import {
   DetailedCollectionResponse,
   PaginatedCollectionRequest,
   PaginatedCollectionResponse,
+  UpdateCollection,
 } from "@repo/schemas";
 
 export const addCollectionService = async (
@@ -89,6 +90,26 @@ export const getCollectionByIdService = async (
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.message ?? "Failed to get collection by id");
+  }
+  return data;
+};
+
+export const updateCollectionService = async (
+  accessToken: string,
+  collectionId: string,
+  updateCollection: UpdateCollection,
+): Promise<CollectionResponse> => {
+  const response = await fetch(`${API_URL}/collection/${collectionId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(updateCollection),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message ?? "Failed to update collection");
   }
   return data;
 };
