@@ -195,9 +195,14 @@ export class CollectionService {
       if (!existingCollection) {
         throw new NotFoundException('Collection not found');
       }
-      await this.prisma.collection.delete({
-        where: { id: collectionId, userId },
-      });
+      await this.prisma.$transaction([
+        this.prisma.bookmark.deleteMany({
+          where: { userId, collectionId },
+        }),
+        this.prisma.collection.delete({
+          where: { id: collectionId, userId },
+        }),
+      ]);
     } catch (error) {
       throw new BadRequestException(
         error instanceof Error ? error.message : 'Unknown error',
