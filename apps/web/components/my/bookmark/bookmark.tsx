@@ -73,12 +73,15 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
       pathname.includes("/my/tags")
     ) {
       return (
-        <div className="flex gap-1.5 items-center">
+        <Link
+          href={`/my/collections/${bookmark.collection.id}`}
+          className="flex gap-1.5 items-center hover:underline underline-offset-2 decoration-muted-foreground/50 mb-0.5"
+        >
           <FolderIcon className="size-3.5 text-muted-foreground fill-current" />
           <p className="text-muted-foreground text-sm">
             {bookmark.collection.name}
           </p>
-        </div>
+        </Link>
       );
     }
   };
