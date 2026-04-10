@@ -62,10 +62,7 @@ export function UpdateEmailDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent
-        className="sm:max-w-md rounded mx-auto"
-        onOpenAutoFocus={(e) => e.preventDefault()}
-      >
+      <DialogContent className="sm:max-w-md rounded mx-auto" autoFocus={false}>
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
             Update email

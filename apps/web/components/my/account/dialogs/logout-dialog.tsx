@@ -32,7 +32,7 @@ export function LogoutDialog({ open, onOpenChange }: LogoutDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="sm:max-w-md rounded mx-auto -mt-20 gap-1"
-        onOpenAutoFocus={(e) => e.preventDefault()}
+        autoFocus={false}
       >
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">Logout</DialogTitle>
