@@ -9,7 +9,7 @@ import {
   USER_AGENT,
   REQUEST_TIMEOUT,
   MAX_REDIRECTS,
-} from './constants';
+} from '../../utils/constants';
 import { ExtractedMetadata, HttpResponse } from './types';
 
 const normalizeValue = (value?: string | null) => {
@@ -28,9 +28,7 @@ const resolveUrl = (value: string | null, pageUrl: string) => {
   }
 };
 
-export const extractMetadata = async (
-  url: string,
-): Promise<ExtractedMetadata> => {
+export const getMetadata = async (url: string): Promise<ExtractedMetadata> => {
   const response = (await axios.get<string>(url, {
     timeout: REQUEST_TIMEOUT,
     maxRedirects: MAX_REDIRECTS,

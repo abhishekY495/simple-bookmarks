@@ -6,7 +6,7 @@ import {
   BOOKMARK_PARSING_QUEUE_NAME,
 } from 'src/utils/constants';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { extractMetadata } from 'src/utils/extract-metadata';
+import { getMetadata } from 'src/bookmark/utils/get-metadata';
 
 @Processor(BOOKMARK_PARSING_QUEUE_NAME, {
   concurrency: 50,
@@ -18,7 +18,7 @@ export class BookmarkWorker extends WorkerHost {
 
   async process(job: Job<BOOKMARK_PARSE_JOB_TYPE>) {
     const { url } = job.data;
-    const metadata = await extractMetadata(url);
+    const metadata = await getMetadata(url);
 
     await this.prisma.bookmark.update({
       where: { id: job.data.bookmarkId },
