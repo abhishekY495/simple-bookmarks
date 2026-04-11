@@ -6,7 +6,6 @@ import {
   BOOKMARK_PARSING_QUEUE_NAME,
 } from 'src/utils/constants';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { getMetadata } from 'src/bookmark/utils/get-metadata';
 import { getMetadataFromCloudflareBrowserRendering } from './utils/get-metadata-from-cloudflare-browser-rendering';
 
 @Processor(BOOKMARK_PARSING_QUEUE_NAME, {
@@ -19,17 +18,8 @@ export class BookmarkWorker extends WorkerHost {
 
   async process(job: Job<BOOKMARK_PARSE_JOB_TYPE>) {
     const { url } = job.data;
-    let metadata = await getMetadata(url);
 
-    if (!metadata.title || !metadata.ogImage) {
-      console.log('No metadata found, using CFBR');
-      const metadataFromCfbr =
-        await getMetadataFromCloudflareBrowserRendering(url);
-      metadata = {
-        title: metadataFromCfbr.title,
-        ogImage: metadataFromCfbr.ogImage,
-      };
-    }
+    const metadata = await getMetadataFromCloudflareBrowserRendering(url);
 
     await this.prisma.bookmark.update({
       where: { id: job.data.bookmarkId },
