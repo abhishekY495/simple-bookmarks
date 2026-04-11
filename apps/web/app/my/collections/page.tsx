@@ -63,7 +63,7 @@ export default function CollectionsPage() {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <>
+    <div className="p-5">
       {collections.length > 0 ? (
         <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
           {collections.map((collection) => (
@@ -88,6 +88,6 @@ export default function CollectionsPage() {
           <Spinner className="size-8 text-muted-foreground mt-10" />
         )}
       </div>
-    </>
+    </div>
   );
 }

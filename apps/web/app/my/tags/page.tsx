@@ -63,7 +63,7 @@ export default function TagsPage() {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <>
+    <div className="p-5">
       {tags.length > 0 ? (
         <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
           {tags.map((tag) => (
@@ -82,6 +82,6 @@ export default function TagsPage() {
           <Spinner className="size-8 text-muted-foreground mt-10" />
         )}
       </div>
-    </>
+    </div>
   );
 }

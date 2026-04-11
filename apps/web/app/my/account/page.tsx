@@ -13,7 +13,7 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="w-full flex flex-col gap-10">
+    <div className="w-full flex flex-col gap-10 p-5">
       {/*  */}
       <div className="flex flex-col gap-2">
         <div className="border rounded p-5 px-8">

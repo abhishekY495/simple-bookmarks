@@ -64,7 +64,7 @@ export default function UnsortedPage() {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <>
+    <div className="p-5">
       {bookmarks.length > 0 ? (
         <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
           {bookmarks.map((bookmark) => (
@@ -88,6 +88,6 @@ export default function UnsortedPage() {
           <Spinner className="size-8 text-muted-foreground mt-10" />
         )}
       </div>
-    </>
+    </div>
   );
 }

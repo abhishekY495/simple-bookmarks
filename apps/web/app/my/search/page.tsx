@@ -39,7 +39,7 @@ export default function SearchPage() {
   const hasSearchTerm = debouncedQuery.trim().length >= 3;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 p-5">
       <div className="relative">
         <Input
           placeholder="Search"
