@@ -210,6 +210,57 @@ export class CollectionService {
     }
   }
 
+  async getPublicCollectionById(collectionId: string) {
+    try {
+      const collection = await this.prisma.collection.findUnique({
+        where: { id: collectionId },
+        include: {
+          bookmarks: {
+            include: {
+              tags: {
+                select: {
+                  tag: {
+                    select: {
+                      id: true,
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      if (!collection) {
+        throw new NotFoundException('Collection not found');
+      }
+      if (!collection.isPublic) {
+        throw new NotFoundException('Collection not found');
+      }
+      return {
+        ...collection,
+        emoji: collection.emoji ?? undefined,
+        bookmarksCount: collection.bookmarks.length,
+        createdAt: collection.createdAt.toISOString(),
+        bookmarks: collection.bookmarks.map((bookmark) => ({
+          ...bookmark,
+          createdAt: bookmark.createdAt.toISOString(),
+          collection: bookmark.collectionId
+            ? {
+                id: collection.id,
+                name: collection.name,
+              }
+            : null,
+          tags: bookmark.tags.map((tag) => tag.tag),
+        })),
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : 'Unknown error',
+      );
+    }
+  }
+
   async searchCollectionsByQuery(userId: string, query: string) {
     try {
       const collections = await this.prisma.collection.findMany({

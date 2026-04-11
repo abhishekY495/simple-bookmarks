@@ -114,4 +114,14 @@ export class CollectionController {
     const userId = req.user.id;
     await this.collectionService.deleteCollectionById(userId, collectionId);
   }
+
+  @Get('public/:collectionId')
+  @ZodResponse({ type: DetailedCollectionResponseDto })
+  async getPublicCollectionById(
+    @Param('collectionId', ParseUUIDPipe) collectionId: string,
+  ) {
+    const collection =
+      await this.collectionService.getPublicCollectionById(collectionId);
+    return collection;
+  }
 }
