@@ -180,7 +180,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
                 height={500}
                 className="object-cover rounded-t w-full aspect-2/1"
               />
-              <div className="p-2.5 border-t flex flex-col gap-0.5">
+              <div className="p-2.5 py-2 border-t flex flex-col gap-0.5">
                 <p className="font-semibold leading-5 text-[15px]">
                   {bookmark.title ?? bookmark.domain}
                 </p>
