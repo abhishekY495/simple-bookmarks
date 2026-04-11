@@ -41,3 +41,4 @@ export const QUERY_KEYS = {
 };
 
 export const DEBOUNCE_TIME = 400;
+export const BOOKMARK_PARSING_INTERVAL = 3000;

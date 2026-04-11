@@ -48,6 +48,24 @@ export const addBookmarkService = async (
   return data;
 };
 
+export const getBookmarkByIdService = async (
+  accessToken: string,
+  bookmarkId: string,
+): Promise<BookmarkResponse> => {
+  const response = await fetch(`${API_URL}/bookmark/${bookmarkId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message ?? "Failed to get bookmark");
+  }
+  return data;
+};
+
 export const deleteBookmarkService = async (
   accessToken: string,
   bookmarkId: string,

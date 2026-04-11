@@ -170,7 +170,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
             <Link
               href={bookmark.url}
               target="_blank"
-              className="h-full w-full flex flex-col bg-muted border rounded-t"
+              className={`h-full w-full flex flex-col bg-muted border rounded-t ${bookmark.parsingStatus === "processing" && "opacity-80 animate-pulse"}`}
             >
               <Image
                 src={bookmark.cover ?? getDefaultCoverImage(bookmark.url)}
