@@ -5,7 +5,6 @@ import {
   TITLE_ELEMENTS,
   TWITTER_IMAGE_ELEMENTS,
   TWITTER_TITLE_ELEMENTS,
-  USER_AGENT,
 } from 'src/utils/constants';
 import { ExtractedMetadata } from './types';
 import { parseScrapes } from './parse-scrapes';
@@ -41,7 +40,6 @@ export const getMetadataFromCloudflareBrowserRendering = async (
       account_id: CLOUDFLARE_ACCOUNT_ID,
       url,
       elements,
-      userAgent: USER_AGENT,
       gotoOptions: {
         waitUntil: 'networkidle2',
       },
@@ -49,10 +47,7 @@ export const getMetadataFromCloudflareBrowserRendering = async (
 
     const { title, ogImage } = parseScrapes(scrapes);
 
-    return {
-      title,
-      ogImage,
-    };
+    return { title, ogImage };
   } catch (error) {
     console.error(error);
     return {

@@ -35,7 +35,7 @@ export const parseScrapes = (scrapes: unknown) => {
     "meta[name='twitter:image']",
   );
 
-  const title: string | null = ogTitle ?? twitterTitle ?? pageTitle;
+  const title: string | null = pageTitle ?? ogTitle ?? twitterTitle;
   const image: string | null = ogImage ?? twitterImage;
 
   return { title, ogImage: image };
