@@ -20,7 +20,7 @@ export function PublicBookmark({ bookmark }: PublicBookmarkProps) {
         loading="eager"
         width={500}
         height={500}
-        className="object-cover rounded-t w-full aspect-2/1"
+        className="object-cover rounded-t w-full aspect-video"
       />
       <div className="p-2.5 py-2 border-t flex flex-col gap-0.5">
         <p className="font-semibold leading-5 text-[15px]">
