@@ -7,7 +7,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS, QUERY_KEYS } from "@/utils/constants";
 import { Button } from "../ui/button";
-import { PlusIcon } from "lucide-react";
 import { AddBookmarkDialog } from "./bookmark/dialogs/add-bookmark-dialog";
 import { AddCollectionDialog } from "./collection/dialogs/add-collection-dialog";
 import { useQuery } from "@tanstack/react-query";
@@ -15,6 +14,7 @@ import { getCountService } from "@/services/user-services";
 import { useAuthStore } from "@/store/auth-store";
 import { Count } from "@repo/schemas";
 import { Skeleton } from "../ui/skeleton";
+import { ThemeToggle } from "../theme-toggle";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -31,7 +31,6 @@ export function Sidebar() {
       setIsAddCollectionDialogOpen(true);
       return;
     }
-
     setIsAddBookmarkDialogOpen(true);
   };
 
@@ -90,8 +89,11 @@ export function Sidebar() {
           </div>
           <div className="flex flex-col gap-2 border-t pt-3 mt-3">
             <Button className="rounded cursor-pointer" onClick={handleAddClick}>
-              <PlusIcon className="size-4" /> Add
+              Add / Ctrl + V
             </Button>
+          </div>
+          <div className="border-t pt-3 mt-3">
+            <ThemeToggle className="w-full" />
           </div>
         </div>
       </div>
