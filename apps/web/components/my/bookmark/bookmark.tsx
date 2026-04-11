@@ -176,9 +176,9 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
                 src={bookmark.cover ?? getDefaultCoverImage(bookmark.url)}
                 alt={bookmark.title ?? "cover image"}
                 loading="eager"
-                width={300}
-                height={200}
-                className="object-cover rounded-t w-full aspect-video"
+                width={500}
+                height={500}
+                className="object-cover rounded-t w-full aspect-2/1"
               />
               <div className="p-2.5 border-t flex flex-col gap-0.5">
                 <p className="font-semibold leading-5 text-[15px]">
