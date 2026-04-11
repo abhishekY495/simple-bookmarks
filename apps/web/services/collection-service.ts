@@ -113,3 +113,19 @@ export const updateCollectionService = async (
   }
   return data;
 };
+
+export const getPublicCollectionByIdService = async (
+  collectionId: string,
+): Promise<DetailedCollectionResponse> => {
+  const response = await fetch(`${API_URL}/collection/public/${collectionId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message ?? "Failed to get public collection by id");
+  }
+  return data;
+};
