@@ -215,20 +215,7 @@ export class CollectionService {
       const collection = await this.prisma.collection.findUnique({
         where: { id: collectionId },
         include: {
-          bookmarks: {
-            include: {
-              tags: {
-                select: {
-                  tag: {
-                    select: {
-                      id: true,
-                      name: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
+          bookmarks: true,
         },
       });
       if (!collection) {
@@ -245,13 +232,6 @@ export class CollectionService {
         bookmarks: collection.bookmarks.map((bookmark) => ({
           ...bookmark,
           createdAt: bookmark.createdAt.toISOString(),
-          collection: bookmark.collectionId
-            ? {
-                id: collection.id,
-                name: collection.name,
-              }
-            : null,
-          tags: bookmark.tags.map((tag) => tag.tag),
         })),
       };
     } catch (error) {

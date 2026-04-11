@@ -116,7 +116,7 @@ export class CollectionController {
   }
 
   @Get('public/:collectionId')
-  @ZodResponse({ type: DetailedCollectionResponseDto })
+  @ZodResponse({ type: CollectionResponseDto })
   async getPublicCollectionById(
     @Param('collectionId', ParseUUIDPipe) collectionId: string,
   ) {
