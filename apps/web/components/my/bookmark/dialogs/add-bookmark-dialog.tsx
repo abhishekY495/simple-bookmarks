@@ -18,7 +18,8 @@ import { CreateBookmark, CreateBookmarkSchema } from "@repo/schemas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/auth-store";
 import { getDomainFromUrl } from "@/utils/get-domain-fom-url";
-import { BOOKMARK_PARSING_INTERVAL, QUERY_KEYS } from "@/utils/constants";
+import { BOOKMARK_PARSING_INTERVAL } from "@/utils/constants";
+import { usePathname } from "next/navigation";
 
 type AddBookmarkDialogProps = {
   open: boolean;
@@ -34,25 +35,16 @@ export function AddBookmarkDialog({
   const pollingTimeoutRef = useRef<number | null>(null);
   const user = useAuthStore((s) => s.user);
   const queryClient = useQueryClient();
+  const pathname = usePathname();
+  const shouldPollParsingStatus =
+    pathname.toLowerCase().includes("/my/all") ||
+    pathname.toLowerCase().includes("/my/unsorted");
 
   const stopPolling = () => {
     if (pollingTimeoutRef.current) {
       window.clearTimeout(pollingTimeoutRef.current);
       pollingTimeoutRef.current = null;
     }
-  };
-
-  const invalidateBookmarkQueries = async () => {
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.getCount }),
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.getAllBookmarks }),
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.getFavoritesBookmarks,
-      }),
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.getUnsortedBookmarks,
-      }),
-    ]);
   };
 
   const pollBookmarkUntilParsed = async (bookmarkId: string) => {
@@ -63,9 +55,9 @@ export function AddBookmarkDialog({
         user.accessToken,
         bookmarkId,
       );
-      await invalidateBookmarkQueries();
+      await queryClient.invalidateQueries();
 
-      if (bookmark.parsingStatus !== "processing") {
+      if (shouldPollParsingStatus && bookmark.parsingStatus !== "processing") {
         stopPolling();
         return;
       }
@@ -85,9 +77,9 @@ export function AddBookmarkDialog({
       handleClose();
 
       stopPolling();
-      await invalidateBookmarkQueries();
+      await queryClient.invalidateQueries();
 
-      if (bookmark.parsingStatus === "processing") {
+      if (shouldPollParsingStatus && bookmark.parsingStatus === "processing") {
         pollingTimeoutRef.current = window.setTimeout(() => {
           void pollBookmarkUntilParsed(bookmark.id);
         }, BOOKMARK_PARSING_INTERVAL);
