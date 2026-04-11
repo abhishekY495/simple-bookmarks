@@ -32,10 +32,8 @@ export const getMetadata = async (url: string): Promise<ExtractedMetadata> => {
   const response = (await axios.get<string>(url, {
     timeout: REQUEST_TIMEOUT,
     maxRedirects: MAX_REDIRECTS,
-    responseType: 'text',
     headers: {
       'User-Agent': USER_AGENT,
-      Accept: 'text/html,application/xhtml+xml',
     },
   })) as HttpResponse;
 

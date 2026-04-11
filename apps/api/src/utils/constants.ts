@@ -11,8 +11,7 @@ export const DEFFAULT_JOB_OPTIONS = {
   removeOnFail: 100,
 };
 
-export const USER_AGENT =
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36';
+export const USER_AGENT = 'SimpleBookmarksBot/1.0';
 export const REQUEST_TIMEOUT = 5000;
 export const MAX_REDIRECTS = 3;
 
