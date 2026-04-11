@@ -35,3 +35,5 @@ export const TWITTER_IMAGE_ELEMENTS = [
   "head > meta[name='twitter:image']",
   "meta[name='twitter:image']",
 ];
+
+export const SITES_LIST = ['x.com'];
