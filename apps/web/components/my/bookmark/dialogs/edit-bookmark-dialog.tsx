@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -150,15 +151,17 @@ export function EditBookmarkDialog({
           )}
 
           <DialogFooter className="mt-2">
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded cursor-pointer"
-              onClick={handleClose}
-              disabled={isPending}
+            <DialogClose
+              render={
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded cursor-pointer"
+                />
+              }
             >
               Cancel
-            </Button>
+            </DialogClose>
             <Button
               type="submit"
               className="rounded cursor-pointer px-5"

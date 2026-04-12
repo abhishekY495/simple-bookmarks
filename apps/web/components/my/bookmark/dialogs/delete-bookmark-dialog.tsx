@@ -50,14 +50,17 @@ export function DeleteBookmarkDialog({
           Are you sure you want to delete the bookmark?
         </DialogDescription>
         <DialogFooter className="mt-5">
-          <DialogClose>
-            <Button
-              variant="outline"
-              className="rounded cursor-pointer"
-              disabled={isPending}
-            >
-              Cancel
-            </Button>
+          <DialogClose
+            render={
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded cursor-pointer"
+                disabled={isPending}
+              />
+            }
+          >
+            Cancel
           </DialogClose>
           <Button
             variant="destructive"

@@ -94,10 +94,16 @@ export function AddCollectionDialog({
           )}
 
           <DialogFooter>
-            <DialogClose>
-              <Button variant="outline" className="rounded cursor-pointer">
-                Cancel
-              </Button>
+            <DialogClose
+              render={
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded cursor-pointer"
+                />
+              }
+            >
+              Cancel
             </DialogClose>
             <Button
               disabled={isPending}

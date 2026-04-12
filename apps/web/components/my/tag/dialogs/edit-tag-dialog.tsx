@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -88,15 +89,17 @@ export function EditTagDialog({ tag, open, onOpenChange }: EditTagDialogProps) {
           )}
 
           <DialogFooter className="mt-2">
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded cursor-pointer"
-              onClick={handleClose}
-              disabled={isPending}
+            <DialogClose
+              render={
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded cursor-pointer"
+                />
+              }
             >
               Cancel
-            </Button>
+            </DialogClose>
             <Button
               type="submit"
               className="rounded cursor-pointer px-5"

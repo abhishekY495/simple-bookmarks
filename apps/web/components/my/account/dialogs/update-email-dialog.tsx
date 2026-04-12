@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -93,15 +94,17 @@ export function UpdateEmailDialog({
           )}
 
           <div className="flex justify-end gap-2 mt-2">
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded cursor-pointer"
-              onClick={handleClose}
-              disabled={isPending}
+            <DialogClose
+              render={
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded cursor-pointer"
+                />
+              }
             >
               Cancel
-            </Button>
+            </DialogClose>
             <Button
               className="rounded cursor-pointer"
               type="submit"
