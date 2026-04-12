@@ -23,10 +23,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   private setRefreshTokenCookie(res: Response, refreshToken: string) {
+    const isProduction = process.env.NODE_ENV === 'production';
     res.cookie(REFRESH_TOKEN_COOKIE_NAME, refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'strict',
       maxAge: REFRESH_TOKEN_EXPIRES_IN,
       path: '/',
     });
