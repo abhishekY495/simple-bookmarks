@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export function Header() {
   return (
-    <nav className="bg-white dark:bg-white sticky pt-5 lg:top-0">
+    <nav className="bg-white dark:bg-white sticky pt-5 z-10">
       <div className="xl:w-[50%] w-full lg:mx-auto flex items-center md:justify-between justify-center bg-neutral-100 dark:bg-neutral-100 p-3 px-6 border-2 dark:border-neutral-200 rounded shadow-lg">
         <Link href="/" className="flex items-center gap-1.5">
           <Image
