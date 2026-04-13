@@ -104,13 +104,6 @@ export const RICH_PREVIEW_BOOKMARKS = [
     tags: ["github"],
   },
   {
-    url: "https://www.youtube.com/watch?v=yFNHDxDcl28",
-    domain: "youtube.com",
-    title: "Night Moves x Unacceptable Color (Full Session)",
-    cover: "https://i.ytimg.com/vi/yFNHDxDcl28/maxresdefault.jpg",
-    tags: ["music"],
-  },
-  {
     url: "https://x.com/hakluke/status/1909413598662639954",
     domain: "x.com",
     title: "Luke Stephens (hakluke) (@hakluke) on X",
@@ -137,15 +130,6 @@ export const RICH_PREVIEW_BOOKMARKS = [
     collection: null,
   },
   {
-    url: "https://github.com/abhishekY495/localtube-manager",
-    domain: "github.com",
-    title: "GitHub - abhishekY495/localtube-manager",
-    cover:
-      "https://opengraph.githubassets.com/f76387143105a637f2c5e776d81f0230486a6f11d11c8957fca1f654964cea85/abhishekY495/localtube-manager",
-    tags: ["github", "open-source"],
-    collection: null,
-  },
-  {
     url: "https://x.com/svpino/status/2030987585842188461",
     domain: "x.com",
     title:
@@ -156,12 +140,19 @@ export const RICH_PREVIEW_BOOKMARKS = [
     collection: null,
   },
   {
-    id: "91057d53-1eb9-41bd-8a63-9855566444e3",
-    url: "https://www.linkedin.com/posts/arnavgupta_so-friends-a-year-long-passion-project-activity-7447804839276818432-IXS9/",
+    url: "https://www.linkedin.com/posts/singhkunal2050_github-tip-hiding-whitespace-noise-in-diffs-activity-7447720380863090688-_Buo/",
     domain: "linkedin.com",
     title:
-      "So friends, a year-long passion project getting closer to seeing light of the day.",
+      "GitHub tip: hiding whitespace noise in diffs. If you've ever reviewed a PR and...",
     cover:
-      "https://media.licdn.com/dms/image/v2/D4E22AQF_Zmn_m9A2_A/feedshare-shrink_800/B4EZ1vrCKGGYAc-/0/1775695046477?e=2147483647&v=beta&t=nVYy0khiFGH0FG-80AhqwZYqtLkCgcHmJKhm4r1LQf0",
+      "https://media.licdn.com/dms/image/v2/D4D22AQGChKacrFp9-Q/feedshare-shrink_800/B4DZ1ueOAfI4Ac-/0/1775674909016?e=2147483647&v=beta&t=1HvQ_4hZQfsJxyAM-mapcAs3cnudhIxv4Szxrfej0e0",
+    tags: ["github", "resource"],
+  },
+  {
+    url: "https://www.youtube.com/watch?v=yFNHDxDcl28",
+    domain: "youtube.com",
+    title: "Night Moves x Unacceptable Color (Full Session)",
+    cover: "https://i.ytimg.com/vi/yFNHDxDcl28/maxresdefault.jpg",
+    tags: ["music"],
   },
 ];
