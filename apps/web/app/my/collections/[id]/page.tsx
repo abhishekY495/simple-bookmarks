@@ -67,7 +67,7 @@ export default function CollectionPage() {
   return (
     <>
       <div className="flex flex-col pb-40">
-        <div className="sticky top-[49px] z-10 flex flex-col items-center justify-center border-b py-5 pt-4 bg-background">
+        <div className="sticky top-[49px] z-10 flex flex-col items-center justify-center border-b py-5 bg-background">
           <div className="flex flex-col items-center justify-center gap-1.5">
             <p className="text-8xl rounded-full">{collection?.emoji}</p>
             <p className="text-4xl font-semibold">{collection?.name}</p>

@@ -115,7 +115,7 @@ export function Bookmark({ bookmark }: { bookmark: BookmarkResponse }) {
 
   const renderTags = () => {
     return (
-      <div className="flex gap-2 flex-wrap mt-0.5">
+      <div className="flex gap-2 flex-wrap my-0.5">
         {bookmark.tags.map((tag) => (
           <Link
             href={`/my/tags/${tag.id}`}
