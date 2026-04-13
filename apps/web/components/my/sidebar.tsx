@@ -89,7 +89,7 @@ export function Sidebar() {
           </div>
           <div className="flex flex-col gap-2 border-t pt-3 mt-3">
             <Button className="rounded cursor-pointer" onClick={handleAddClick}>
-              Add / Ctrl + V
+              {isCollectionsTab ? "Add Collection" : "Add Bookmark"}
             </Button>
           </div>
           <div className="border-t pt-3 mt-3">
