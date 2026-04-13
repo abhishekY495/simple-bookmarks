@@ -36,4 +36,10 @@ export const TWITTER_IMAGE_ELEMENTS = [
   "meta[name='twitter:image']",
 ];
 
-export const SITES_LIST = ['x.com'];
+export const SITES_LIST = [
+  'x.com',
+  'www.x.com',
+  'spotify.com',
+  'www.spotify.com',
+  'open.spotify.com',
+];
