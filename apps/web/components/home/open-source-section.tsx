@@ -13,9 +13,9 @@ export function OpenSourceSection() {
             width={35}
             height={35}
           />
-          <h2 className="text-4xl font-bold text-black">Open Source</h2>
+          <h2 className="text-4xl font-bold">Open Source</h2>
         </div>
-        <p className="text-neutral-500 text-center dark:text-neutral-500">
+        <p className="text-muted-foreground text-center">
           Simple Bookmarks is free and open source. <br /> Thousands of
           developers worldwide can share and contribute to the Simple Bookmarks
           experience.
@@ -25,7 +25,7 @@ export function OpenSourceSection() {
           target="_blank"
         >
           <Button
-            className="text-md rounded py-5 px-8 cursor-pointer bg-neutral-100 dark:bg-neutral-100 text-black dark:border-neutral-200"
+            className="text-md rounded py-5 px-8 cursor-pointer bg-accent dark:bg-muted-foreground/20"
             variant="outline"
           >
             View on GitHub

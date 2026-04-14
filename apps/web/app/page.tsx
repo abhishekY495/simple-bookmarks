@@ -7,7 +7,7 @@ import { OpenSourceSection } from "@/components/home/open-source-section";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen">
       <div className="flex-1 p-5 pt-0 px-8 pb-28">
         <Header />
         <HeroSection />
