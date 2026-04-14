@@ -1,6 +1,5 @@
 "use client";
 
-import { Bookmark } from "@/components/my/bookmark/bookmark";
 import { PublicBookmark } from "@/components/my/bookmark/public-bookmark";
 import { Spinner } from "@/components/ui/spinner";
 import { getPublicCollectionByIdService } from "@/services/collection-service";
