@@ -26,7 +26,9 @@ export function RenderLoadingDialog({
   children: React.ReactNode;
 }) {
   const [storedServerLive] = useState(
-    () => window.sessionStorage.getItem(SERVER_LIVE_SESSION_KEY) === "true",
+    () =>
+      typeof window !== "undefined" &&
+      window.sessionStorage.getItem(SERVER_LIVE_SESSION_KEY) === "true",
   );
   const [isDialogOpen, setIsDialogOpen] = useState(() => !storedServerLive);
 
