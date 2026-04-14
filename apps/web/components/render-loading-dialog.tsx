@@ -2,48 +2,55 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { Button } from "./ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import { healthService } from "@/services/health-service";
-import Link from "next/link";
 import { Light } from "./light";
-import { HEALTH_CHECK_INTERVAL, QUERY_KEYS } from "@/utils/constants";
+import { healthService } from "@/services/health-service";
+import {
+  HEALTH_CHECK_INTERVAL,
+  QUERY_KEYS,
+  SERVER_LIVE_SESSION_KEY,
+} from "@/utils/constants";
 
 export function RenderLoadingDialog({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const [storedServerLive] = useState(
+    () => window.sessionStorage.getItem(SERVER_LIVE_SESSION_KEY) === "true",
+  );
+  const [isDialogOpen, setIsDialogOpen] = useState(() => !storedServerLive);
 
   const { isSuccess } = useQuery({
     queryKey: QUERY_KEYS.serverHealthCheck,
-    queryFn: healthService,
+    queryFn: async () => {
+      const data = await healthService();
+      window.sessionStorage.setItem(SERVER_LIVE_SESSION_KEY, "true");
+      return data;
+    },
+    enabled: !storedServerLive,
     retry: false,
     refetchOnWindowFocus: false,
     refetchInterval: (query) =>
       query.state.status === "success" ? false : HEALTH_CHECK_INTERVAL,
   });
 
-  const handleOpenChange = (open: boolean) => {
-    if (open || isSuccess) {
-      setIsDialogOpen(open);
-    }
-  };
+  const isServerLive = storedServerLive || isSuccess;
 
   return (
     <>
-      {isSuccess ? children : null}
+      {isServerLive ? children : null}
 
-      <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
+      <Dialog open={!storedServerLive && isDialogOpen}>
         <DialogContent
           className="sm:max-w-md rounded -mt-20 gap-1"
           initialFocus={false}
@@ -74,16 +81,13 @@ export function RenderLoadingDialog({
           </DialogDescription>
 
           <DialogFooter>
-            <DialogClose
-              render={
-                <Button
-                  disabled={!isSuccess}
-                  className="rounded px-5 enabled:cursor-pointer disabled:pointer-events-auto disabled:cursor-not-allowed"
-                />
-              }
+            <Button
+              disabled={!isSuccess}
+              className="rounded px-5 enabled:cursor-pointer disabled:pointer-events-auto disabled:cursor-not-allowed"
+              onClick={() => setIsDialogOpen(false)}
             >
               Close
-            </DialogClose>
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

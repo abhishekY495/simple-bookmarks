@@ -44,6 +44,7 @@ export const QUERY_KEYS = {
 export const DEBOUNCE_TIME = 400;
 export const BOOKMARK_PARSING_INTERVAL = 3000;
 export const HEALTH_CHECK_INTERVAL = 5000;
+export const SERVER_LIVE_SESSION_KEY = "serverLive";
 
 const SHARED_COLLECTION_LINK =
   "https://simple-bookmarks-495.vercel.app/collection/public/eeac88fb-d2ec-4004-9f93-90135d37576e";
