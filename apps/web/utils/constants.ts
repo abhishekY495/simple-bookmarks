@@ -38,10 +38,12 @@ export const QUERY_KEYS = {
   getTagById: ["getTagById"],
   search: ["search"],
   getPublicCollectionById: ["getPublicCollectionById"],
+  serverHealthCheck: ["serverHealthCheck"],
 };
 
 export const DEBOUNCE_TIME = 400;
 export const BOOKMARK_PARSING_INTERVAL = 3000;
+export const HEALTH_CHECK_INTERVAL = 5000;
 
 const SHARED_COLLECTION_LINK =
   "https://simple-bookmarks-495.vercel.app/collection/public/eeac88fb-d2ec-4004-9f93-90135d37576e";
@@ -104,14 +106,6 @@ export const RICH_PREVIEW_BOOKMARKS = [
     tags: ["github"],
   },
   {
-    url: "https://x.com/hakluke/status/1909413598662639954",
-    domain: "x.com",
-    title: "Luke Stephens (hakluke) (@hakluke) on X",
-    cover:
-      "https://pbs.twimg.com/ext_tw_video_thumb/1909413520396955648/pu/img/nOIiM7OkmdbTK1Xw.jpg:large",
-    tags: ["security", "resource"],
-  },
-  {
     url: "https://www.crunchyroll.com/series/G3KHEVMN1/tokyo-revengers",
     domain: "crunchyroll.com",
     title: "Watch Tokyo Revengers - Crunchyroll",
@@ -119,6 +113,14 @@ export const RICH_PREVIEW_BOOKMARKS = [
       "https://imgsrv.crunchyroll.com/cdn-cgi/image/fit=contain,format=auto,quality=85,width=1200,height=675/catalog/crunchyroll/7923a0407dbdba324c56acec9f096c13.jpg",
     tags: ["anime", "action", "drama"],
     collection: null,
+  },
+  {
+    url: "https://x.com/hakluke/status/1909413598662639954",
+    domain: "x.com",
+    title: "Luke Stephens (hakluke) (@hakluke) on X",
+    cover:
+      "https://pbs.twimg.com/ext_tw_video_thumb/1909413520396955648/pu/img/nOIiM7OkmdbTK1Xw.jpg:large",
+    tags: ["security", "resource"],
   },
   {
     url: "https://www.bugbountydirectory.com/blogs/i-asked-chatgpt-to-bypass-an-xss-filter-here%E2%80%99s-what-happened",

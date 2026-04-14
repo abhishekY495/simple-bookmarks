@@ -48,6 +48,7 @@
   --radius-4xl: calc(var(--radius) * 2.6);
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  --animate-pulse-fast: pulsefast 0.5s linear infinite;
 }
 
 :root {
@@ -182,5 +183,15 @@
 
   to {
     transform: translateY(calc(-100% - var(--gap)));
+  }
+}
+
+@keyframes pulsefast {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.6;
   }
 }

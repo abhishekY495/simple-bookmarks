@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/auth-provider";
 import { QueryProvider } from "@/components/query-provider";
+import { RenderLoadingDialog } from "@/components/render-loading-dialog";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
@@ -39,7 +40,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <RenderLoadingDialog>
+              <AuthProvider>{children}</AuthProvider>
+            </RenderLoadingDialog>
           </QueryProvider>
         </ThemeProvider>
       </body>
