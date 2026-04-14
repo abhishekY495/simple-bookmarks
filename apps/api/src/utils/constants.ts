@@ -44,4 +44,7 @@ export const SITES_LIST = [
   'open.spotify.com',
   'linkedin.com',
   'www.linkedin.com',
+  'music.youtube.com',
+  'youtube.com',
+  'www.youtube.com',
 ];
