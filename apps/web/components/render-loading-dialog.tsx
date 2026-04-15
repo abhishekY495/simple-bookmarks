@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -25,6 +26,8 @@ export function RenderLoadingDialog({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const isHomepage = pathname === "/";
   const [storedServerLive] = useState(
     () =>
       typeof window !== "undefined" &&
@@ -39,20 +42,20 @@ export function RenderLoadingDialog({
       window.sessionStorage.setItem(SERVER_LIVE_SESSION_KEY, "true");
       return data;
     },
-    enabled: !storedServerLive,
+    enabled: !storedServerLive && !isHomepage,
     retry: false,
     refetchOnWindowFocus: false,
     refetchInterval: (query) =>
       query.state.status === "success" ? false : HEALTH_CHECK_INTERVAL,
   });
 
-  const isServerLive = storedServerLive || isSuccess;
+  const isServerLive = isHomepage || storedServerLive || isSuccess;
 
   return (
     <>
       {isServerLive ? children : null}
 
-      <Dialog open={!storedServerLive && isDialogOpen}>
+      <Dialog open={!storedServerLive && isDialogOpen && !isHomepage}>
         <DialogContent
           className="sm:max-w-md rounded -mt-20 gap-1"
           initialFocus={false}
