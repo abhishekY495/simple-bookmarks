@@ -73,7 +73,7 @@ export default function Login() {
             value={emailValue}
             onChange={(e) => setEmailValue(e.target.value)}
             required
-            className="border rounded px-3 h-9 text-sm dark:bg-neutral-800 focus-visible:ring-2 focus-visible:ring-ring"
+            className="border rounded px-3 h-9 text-sm outline-none dark:bg-neutral-800 focus-visible:ring-2 focus-visible:ring-ring"
           />
         </div>
 
@@ -88,7 +88,7 @@ export default function Login() {
             value={passwordValue}
             onChange={(e) => setPasswordValue(e.target.value)}
             required
-            className="border rounded px-3 h-9 text-sm dark:bg-neutral-800 focus-visible:ring-2 focus-visible:ring-ring"
+            className="border rounded px-3 h-9 text-sm outline-none dark:bg-neutral-800 focus-visible:ring-2 focus-visible:ring-ring"
           />
         </div>
 
