@@ -75,7 +75,7 @@ export default function Register() {
             value={fullNameValue}
             onChange={(e) => setFullNameValue(e.target.value)}
             required
-            className="border rounded px-3 h-9 text-sm bg-white dark:border-neutral-200 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="border rounded px-3 h-9 text-sm outline-none dark:bg-neutral-800 focus-visible:ring-2 focus-visible:ring-ring"
           />
         </div>
 
@@ -90,7 +90,7 @@ export default function Register() {
             value={emailValue}
             onChange={(e) => setEmailValue(e.target.value)}
             required
-            className="border rounded px-3 h-9 text-sm bg-white dark:border-neutral-200 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="border rounded px-3 h-9 text-sm outline-none dark:bg-neutral-800 focus-visible:ring-2 focus-visible:ring-ring"
           />
         </div>
 
@@ -105,7 +105,7 @@ export default function Register() {
             value={passwordValue}
             onChange={(e) => setPasswordValue(e.target.value)}
             required
-            className="border rounded px-3 h-9 text-sm bg-white dark:border-neutral-200 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="border rounded px-3 h-9 text-sm outline-none dark:bg-neutral-800 focus-visible:ring-2 focus-visible:ring-ring"
           />
         </div>
 
@@ -116,18 +116,15 @@ export default function Register() {
         <Button
           type="submit"
           disabled={isPending}
-          className="rounded cursor-pointer text-base py-5 bg-black dark:bg-black text-white dark:text-white"
+          className="rounded cursor-pointer text-base py-5"
         >
           {isPending ? "Registering..." : "Register"}
         </Button>
       </form>
 
-      <p className="text-sm text-center text-neutral-400 dark:text-neutral-400">
-        Already have an account?{" "}
-        <Link
-          href="/login"
-          className="text-neutral-800 underline underline-offset-4 dark:text-neutral-800"
-        >
+      <p className="text-sm text-center">
+        <span className="text-neutral-400">Already have an account? </span>
+        <Link href="/login" className="underline underline-offset-4">
           Log in
         </Link>
       </p>

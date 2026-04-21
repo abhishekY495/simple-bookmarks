@@ -73,7 +73,7 @@ export default function Login() {
             value={emailValue}
             onChange={(e) => setEmailValue(e.target.value)}
             required
-            className="border rounded px-3 h-9 text-sm bg-white dark:border-neutral-200 focus-visible:ring-2 focus-visible:ring-ring"
+            className="border rounded px-3 h-9 text-sm dark:bg-neutral-800 focus-visible:ring-2 focus-visible:ring-ring"
           />
         </div>
 
@@ -88,7 +88,7 @@ export default function Login() {
             value={passwordValue}
             onChange={(e) => setPasswordValue(e.target.value)}
             required
-            className="border rounded px-3 h-9 text-sm bg-white dark:border-neutral-200 focus-visible:ring-2 focus-visible:ring-ring"
+            className="border rounded px-3 h-9 text-sm dark:bg-neutral-800 focus-visible:ring-2 focus-visible:ring-ring"
           />
         </div>
 
@@ -99,18 +99,15 @@ export default function Login() {
         <Button
           type="submit"
           disabled={isPending}
-          className="rounded cursor-pointer text-base py-5 bg-black dark:bg-black text-white dark:text-white"
+          className="rounded cursor-pointer text-base py-5"
         >
           {isPending ? "Logging in..." : "Log in"}
         </Button>
       </form>
 
-      <p className="text-sm text-center text-neutral-400 dark:text-neutral-400">
-        Don&apos;t have an account?{" "}
-        <Link
-          href="/register"
-          className="text-neutral-800 underline underline-offset-4 dark:text-neutral-800"
-        >
+      <p className="text-sm text-center">
+        <span className="text-neutral-400">Don&apos;t have an account? </span>
+        <Link href="/register" className="underline underline-offset-4">
           Register
         </Link>
       </p>
